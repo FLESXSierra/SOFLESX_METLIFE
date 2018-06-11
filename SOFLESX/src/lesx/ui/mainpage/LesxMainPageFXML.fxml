@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.web.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lesx.ui.mainpage.LesxMainPageController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <Pane fx:id="mainPane" BorderPane.alignment="CENTER" />
+         </center>
+         <top>
+            <HBox BorderPane.alignment="CENTER">
+               <children>
+                  <MenuBar fx:id="menu" HBox.hgrow="ALWAYS">
+                     <menus>
+                        <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+                           <items>
+                              <MenuItem fx:id="saveFlesx" mnemonicParsing="false" text="Close" />
+                              <MenuItem fx:id="importXML" mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem fx:id="exportXML" mnemonicParsing="false" text="Unspecified Action" />
+                           </items>
+                        </Menu>
+                        <Menu fx:id="bussiness" mnemonicParsing="false" text="Edit">
+                           <items>
+                              <MenuItem fx:id="newSell" mnemonicParsing="false" text="Delete" />
+                              <MenuItem fx:id="resourcesItem" mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem fx:id="year" mnemonicParsing="false" text="Unspecified Action" />
+                           </items>
+                        </Menu>
+                        <Menu fx:id="comisions" mnemonicParsing="false" text="Help">
+                           <items>
+                              <MenuItem fx:id="capp" mnemonicParsing="false" text="About" />
+                              <MenuItem fx:id="cMonth" mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem fx:id="cYear2" mnemonicParsing="false" text="Unspecified Action" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
+                  <Button fx:id="bButton" mnemonicParsing="false" text="icon" />
+               </children>
+            </HBox>
+         </top>
+      </BorderPane>
+      <HBox fx:id="progressBox" alignment="CENTER" spacing="10.0" style="-fx-background-color: RGB(0,0,0,0.25);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ProgressIndicator />
+            <Label fx:id="loading" text="Loading" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
