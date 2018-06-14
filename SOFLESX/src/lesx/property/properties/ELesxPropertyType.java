@@ -42,7 +42,13 @@ public enum ELesxPropertyType {
   DATE(6) {
     @Override
     public String toString() {
-      return "FECHA";
+      return LesxString.PROPERTY_DATE;
+    }
+  },
+  PRODUCT(7) {
+    @Override
+    public String toString() {
+      return LesxString.PROPERTY_PRODUCT;
     }
   };
 

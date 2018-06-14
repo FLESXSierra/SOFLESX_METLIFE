@@ -60,6 +60,12 @@ public enum ELesxUseCase {
     public String toString() {
       return "Solo Eliminar";
     }
+  },
+  UC_RESOURCES(10) {
+    @Override
+    public String toString() {
+      return "Recursos";
+    }
   };
 
   int key;

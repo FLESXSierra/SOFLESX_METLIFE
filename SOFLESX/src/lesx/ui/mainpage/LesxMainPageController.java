@@ -12,8 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import lesx.gui.message.LesxMessage;
 import lesx.scene.controller.LesxController;
@@ -50,7 +50,7 @@ public class LesxMainPageController extends LesxController {
   @FXML
   Button bButton;
   @FXML
-  Pane mainPane;
+  AnchorPane mainPane;
   @FXML
   HBox progressBox;
   @FXML
@@ -67,6 +67,7 @@ public class LesxMainPageController extends LesxController {
   @FXML
   public void initialize() {
     //Sets all texts
+    LesxSwitcherPane.setMainController(this);
     setTitle(LesxMessage.getMessage("TEXT-TITLE_MAINPAGE"));
     loading.setText(LesxMessage.getMessage("TEXT-LOADING_TITLE"));
     importXML.setText(LesxMessage.getMessage("TEXT-MENUITEM_IMPORT_SAVE"));
@@ -85,6 +86,7 @@ public class LesxMainPageController extends LesxController {
 
   @Override
   public void init() {
+    LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES);
     setUpMenuButtons();
     progressBox.visibleProperty()
         .bind(showProgress);
@@ -135,6 +137,10 @@ public class LesxMainPageController extends LesxController {
   }
 
   public void setMainPane(Node node) {
+    AnchorPane.setBottomAnchor(node, 0.0);
+    AnchorPane.setLeftAnchor(node, 0.0);
+    AnchorPane.setRightAnchor(node, 0.0);
+    AnchorPane.setTopAnchor(node, 0.0);
     mainPane.getChildren()
         .setAll(node);
   }

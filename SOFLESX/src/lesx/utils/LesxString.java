@@ -66,5 +66,11 @@ public class LesxString {
   public static final String PROPERTY_SUM = "Suma";
   public static final String PROPERTY_END_MONTH = "Fin de mes";
   public static final String PROPERTY_PERIOD = "Periodo";
+  public static final String PROPERTY_SOLICITUD = "Solicitud";
+  public static final String PROPERTY_BIRTHDAY = "Fecha de Nacimiento";
+  public static final String PROPERTY_REGISTER_DATE = "Fecha de Registro";
+  public static final String PROPERTY_PRODUCT = "Tipo de Producto";
+  public static final String PROPERTY_PRIMA = "Prima";
+  public static final String PROPERTY_BUSINESS_ID = "Id de Negocio";
 
 }

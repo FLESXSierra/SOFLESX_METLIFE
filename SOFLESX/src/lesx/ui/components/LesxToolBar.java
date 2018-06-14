@@ -181,6 +181,25 @@ public class LesxToolBar extends ToolBar {
         buttons = Arrays.asList(deselect, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
         break;
+      case UC_RESOURCES:
+        delete = new Button();
+        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
+        delete.disableProperty()
+            .bind(Bindings.not(selectedItem));
+        add = new Button();
+        add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
+        add.disableProperty()
+            .bind(Bindings.not(selectedFilterTable));
+        //TODO Add new Button for add business
+        edit = new Button();
+        edit.setText(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
+        edit.disableProperty()
+            .bind(Bindings.not(selectedItem));
+        buttons = Arrays.asList(deselect, add, edit, delete);
+        actions.put(ACTIONS_DELETE, deleteAction);
+        actions.put(ACTIONS_ADD, addAction);
+        actions.put(ACTIONS_EDIT, editAction);
+        break;
       default:
         break;
     }

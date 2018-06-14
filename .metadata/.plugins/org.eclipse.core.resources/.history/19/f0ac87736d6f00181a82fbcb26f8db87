@@ -19,6 +19,7 @@ import lesx.property.properties.LesxResource;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxTableViewPane;
 import lesx.ui.components.LesxTreeViewPane;
+import lesx.utils.LesxString;
 
 public class LesxResourcesPaneController extends LesxController {
 

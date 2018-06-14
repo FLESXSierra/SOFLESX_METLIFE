@@ -5,9 +5,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
+import javafx.scene.Node;
 import lesx.gui.message.LesxMessage;
 import lesx.scene.controller.LesxController;
+import lesx.ui.soflesx.LesxMain;
 
 public class LesxSwitcherPane {
 
@@ -20,7 +21,7 @@ public class LesxSwitcherPane {
 
   private static LesxMainPageController controller;
 
-  public LesxSwitcherPane(LesxMainPageController controller) {
+  public static void setMainController(LesxMainPageController controller) {
     LesxSwitcherPane.controller = controller;
   }
 
@@ -30,12 +31,13 @@ public class LesxSwitcherPane {
   public static void loadPane(String path) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader();
-      Pane root = fxmlLoader.load(LesxSwitcherPane.class.getResource(path)
+      Node root = fxmlLoader.load(LesxMain.getInstance()
+          .getClass()
+          .getResource(path)
           .openStream());
       LesxController controllerPane = (LesxController) fxmlLoader.getController();
       controller.showProgressProperty()
           .bind(controllerPane.showProgressProperty());
-      ;
       controller.setMainPane(root);
     }
     catch (IOException e) {

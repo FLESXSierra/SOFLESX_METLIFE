@@ -19,6 +19,7 @@ import lesx.property.properties.LesxResource;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxTableViewPane;
 import lesx.ui.components.LesxTreeViewPane;
+import lesx.utils.LesxString;
 
 public class LesxResourcesPaneController extends LesxController {
 
@@ -56,7 +57,7 @@ public class LesxResourcesPaneController extends LesxController {
    */
   @SuppressWarnings("unchecked")
   private void configurateColumns() {
-    solicitud = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_SOLICITATION"));
+    solicitud = new TableColumn<>(LesxString.PROPERTY_SOLICITUD);
     solicitud.setCellValueFactory(new Callback<CellDataFeatures<LesxResource, String>, ObservableValue<String>>() {
       @Override
       public ObservableValue<String> call(CellDataFeatures<LesxResource, String> data) {
