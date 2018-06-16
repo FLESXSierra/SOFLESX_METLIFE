@@ -11,7 +11,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.utils.LesxString;
 import lesx.xml.property.LesxResourceXMLParser;
 
-public class LesxResource extends LesxComponent {
+public class LesxResource extends LesxComponent implements Cloneable {
 
   private final static Logger LOGGER = Logger.getLogger(LesxResource.class.getName());
 
@@ -191,6 +191,16 @@ public class LesxResource extends LesxComponent {
 
   public void setRegistration_date(String registration_date) {
     this.registration_date.setValue(registration_date);
+  }
+
+  @Override
+  public String toString() {
+    return getName();
+  }
+
+  @Override
+  public LesxResource clone() {
+    return (LesxResource) super.clone();
   }
 
 }
