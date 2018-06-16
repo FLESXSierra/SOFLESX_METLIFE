@@ -1,12 +1,18 @@
 package lesx.ui.mainpage;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -111,28 +117,28 @@ public class LesxMainPageController extends LesxController {
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.xml)", "*.xml");
     fileChooser.setTitle("Save file");
     fileChooser.setSelectedExtensionFilter(extFilter);
-    fileChooser.setInitialFileName(LesxString.XML_NAME_COSTUMER);
+    fileChooser.setInitialFileName(LesxString.XML_NAME_RESOURCE);
     final File dest = fileChooser.showSaveDialog(LesxMain.getInstance()
         .getStage());
     if (dest != null) {
-      //      try {
-      //        String path = dest.getPath()
-      //            .replaceAll(dest.getName(), LesxString.XML_NAME_COSTUMER);
-      //        File destination = new File(path);
-      //        final File costumer = new File(LesxString.XML_PATH);
-      //        Files.copy(costumer.toPath(), destination.toPath());
+      try {
+        String path = dest.getPath()
+            .replaceAll(dest.getName(), LesxString.XML_NAME_RESOURCE);
+        File destination = new File(path);
+        final File costumer = new File(LesxString.XML_RESOURCE_PATH);
+        Files.copy(costumer.toPath(), destination.toPath());
 
-      //      }
-      //      catch (FileAlreadyExistsException e) {
-      //        LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
-      //        Alert alert = new Alert(AlertType.WARNING);
-      //        alert.setHeaderText(LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
-      //        alert.show();
-      //      }
-      //      catch (IOException ex) {
-      //        LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-EXPORT_XMLS"), ex);
-      //        ex.printStackTrace();
-      //      }
+      }
+      catch (FileAlreadyExistsException e) {
+        LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setHeaderText(LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
+        alert.show();
+      }
+      catch (IOException ex) {
+        LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-EXPORT_XMLS"), ex);
+        ex.printStackTrace();
+      }
     }
   }
 

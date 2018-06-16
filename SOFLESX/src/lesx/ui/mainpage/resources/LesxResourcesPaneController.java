@@ -23,7 +23,6 @@ import javafx.util.Callback;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
-import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxResource;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxTableViewPane;
@@ -68,7 +67,6 @@ public class LesxResourcesPaneController extends LesxController {
     data = dataModel.getMap();
     showProgress.set(true);
     tree = treePane.getTree();
-    tablePane.setUseCase(ELesxUseCase.UC_RESOURCES);
     table = tablePane.getTable();
     configurateColumns();
     fillDataOnTree();
@@ -254,7 +252,7 @@ public class LesxResourcesPaneController extends LesxController {
       fillDataOnTree();
     };
     tablePane.setOnDelete(onDelete);
-    onAdd = (isCreate) -> addNewCostumer(isCreate);
+    onAdd = (isCreate) -> addNewResource(isCreate);
     tablePane.setOnAddNewItem(onAdd);
   }
 
@@ -270,7 +268,7 @@ public class LesxResourcesPaneController extends LesxController {
     }
   }
 
-  private void addNewCostumer(boolean isCreate) {
+  private void addNewResource(boolean isCreate) {
     //    LesxSceneController.showAddResourceDialog(this, isCreate, dataModel, () -> {
     //      pendingChanges.set(true);
     //      filterTable();

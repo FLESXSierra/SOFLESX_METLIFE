@@ -76,6 +76,7 @@ public class LesxController {
           Alert alert = new Alert(AlertType.CONFIRMATION);
           alert.setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_ON_EXIT_STAGE"));
           alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_ON_EXIT_STAGE"));
+          alert.initOwner(primaryStage);
           ButtonType result = alert.showAndWait()
               .orElse(null);
           if (result == ButtonType.CANCEL) {

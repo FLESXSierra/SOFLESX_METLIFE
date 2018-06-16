@@ -34,6 +34,9 @@ public class LesxSceneController {
         main.getWindow()
             .sizeToScene();
       }
+      LesxMain.getInstance()
+          .getStage()
+          .centerOnScreen();
       controller.init();
     }
     catch (IOException e) {
