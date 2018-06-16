@@ -38,6 +38,7 @@ public class LesxSwitcherPane {
       LesxController controllerPane = (LesxController) fxmlLoader.getController();
       controller.showProgressProperty()
           .bind(controllerPane.showProgressProperty());
+      LesxMain.setTitle(controllerPane.getTitle());
       controller.setMainPane(root);
     }
     catch (IOException e) {

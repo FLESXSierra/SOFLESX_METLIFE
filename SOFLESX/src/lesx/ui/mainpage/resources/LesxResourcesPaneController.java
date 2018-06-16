@@ -60,6 +60,7 @@ public class LesxResourcesPaneController extends LesxController {
 
   @FXML
   public void initialize() {
+    setTitle(LesxMessage.getMessage("TEXT-TITLE_MAINPAGE_RESOURCES"));
     //Load Data Base
     dataModel.setMap(LesxMain.getInstance()
         .getDbProperty()

@@ -32,7 +32,7 @@ public class LesxController {
     //Nothing
   }
 
-  protected String getTitle() {
+  public String getTitle() {
     return title;
   }
 
