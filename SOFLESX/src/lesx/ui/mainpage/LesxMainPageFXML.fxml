@@ -16,21 +16,22 @@
                      <menus>
                         <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                            <items>
-                              <MenuItem fx:id="saveFlesx" mnemonicParsing="false" text="Close" />
+                              <MenuItem fx:id="saveFlesx" mnemonicParsing="false" text="Unspecified Action" />
                               <MenuItem fx:id="importXML" mnemonicParsing="false" text="Unspecified Action" />
                               <MenuItem fx:id="exportXML" mnemonicParsing="false" text="Unspecified Action" />
                            </items>
                         </Menu>
                         <Menu fx:id="bussiness" mnemonicParsing="false" text="Edit">
                            <items>
-                              <MenuItem fx:id="newSell" mnemonicParsing="false" text="Delete" />
+                           	  <MenuItem fx:id="main" mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem fx:id="newSell" mnemonicParsing="false" text="Unspecified Action" />
                               <MenuItem fx:id="resourcesItem" mnemonicParsing="false" text="Unspecified Action" />
                               <MenuItem fx:id="year" mnemonicParsing="false" text="Unspecified Action" />
                            </items>
                         </Menu>
-                        <Menu fx:id="comisions" mnemonicParsing="false" text="Help">
+                        <Menu fx:id="comisions" mnemonicParsing="false" text="Edit_2">
                            <items>
-                              <MenuItem fx:id="capp" mnemonicParsing="false" text="About" />
+                              <MenuItem fx:id="capp" mnemonicParsing="false" text="Unspecified Action" />
                               <MenuItem fx:id="cMonth" mnemonicParsing="false" text="Unspecified Action" />
                               <MenuItem fx:id="cYear2" mnemonicParsing="false" text="Unspecified Action" />
                            </items>

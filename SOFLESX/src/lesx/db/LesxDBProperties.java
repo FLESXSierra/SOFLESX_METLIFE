@@ -54,13 +54,13 @@ public class LesxDBProperties {
 
   @SuppressWarnings("unchecked")
   public Map<Long, LesxResource> getResourceMap() {
-    LOGGER.log(Level.INFO, "Called getCostumerMap");
+    LOGGER.log(Level.INFO, "Called getResourceMap");
     return (Map<Long, LesxResource>) dataMap.get(ELesxPropertyKeys.RESOURCE.getValue());
   }
 
   @SuppressWarnings("unchecked")
   public Map<Long, LesxBusiness> getBusinessMap() {
-    LOGGER.log(Level.INFO, "Called getPriceMap");
+    LOGGER.log(Level.INFO, "Called getBusinessMap");
     return (Map<Long, LesxBusiness>) dataMap.get(ELesxPropertyKeys.BUSINESS.getValue());
   }
 
@@ -93,7 +93,7 @@ public class LesxDBProperties {
    * @param run Runnable that runs on succeeded or failed
    */
   public void saveResourceXML(Map<Long, LesxResource> data, Runnable run) {
-    LOGGER.log(Level.INFO, "Called saveXML");
+    LOGGER.log(Level.INFO, "Called saveResourceXML");
     setResourceMap(data);
     LesxXMLSaveData saveThread = new LesxXMLSaveData(data.values(), ELesxUseCase.UC_XML_RESOURCE);
     saveThread.start(); // Saving loading message
@@ -102,7 +102,7 @@ public class LesxDBProperties {
   }
 
   public void saveBusinessXML(Map<Long, LesxBusiness> priceMap, Runnable run) {
-    LOGGER.log(Level.INFO, "savePriceXML");
+    LOGGER.log(Level.INFO, "saveBusinessXML");
     setBusinessMap(priceMap);
     LesxXMLSaveData saveThread = new LesxXMLSaveData(priceMap.values(), ELesxUseCase.UC_XML_BUSINESS);
     saveThread.start();

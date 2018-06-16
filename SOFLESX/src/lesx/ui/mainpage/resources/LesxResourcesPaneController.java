@@ -60,13 +60,13 @@ public class LesxResourcesPaneController extends LesxController {
 
   @FXML
   public void initialize() {
+    showProgress.set(true);
     setTitle(LesxMessage.getMessage("TEXT-TITLE_MAINPAGE_RESOURCES"));
     //Load Data Base
     dataModel.setMap(LesxMain.getInstance()
         .getDbProperty()
         .getResourceMap());
     data = dataModel.getMap();
-    showProgress.set(true);
     tree = treePane.getTree();
     table = tablePane.getTable();
     configurateColumns();

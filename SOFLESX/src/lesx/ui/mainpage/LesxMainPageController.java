@@ -34,6 +34,8 @@ public class LesxMainPageController extends LesxController {
   @FXML
   MenuItem saveFlesx;
   @FXML
+  MenuItem main;
+  @FXML
   MenuItem newSell;
   @FXML
   MenuItem resourcesItem;
@@ -81,6 +83,7 @@ public class LesxMainPageController extends LesxController {
     saveFlesx.setText(LesxMessage.getMessage("TEXT-MENUITEM_FILE_SAVE"));
     fileMenu.setText(LesxMessage.getMessage("TEXT-MENUBAR_FILE"));
     resourcesItem.setText(LesxMessage.getMessage("TEXT-MENUITEM_EDIT_RESOURCES"));
+    main.setText(LesxMessage.getMessage("TEXT-MENUITEM_MAIN"));
     newSell.setText(LesxMessage.getMessage("TEXT-MENUITEM_NEW_SELL"));
     year.setText(LesxMessage.getMessage("TEXT-MENUITEM_YEAR"));
     bussiness.setText(LesxMessage.getMessage("TEXT-MENUBAR_BUSSINESS"));
@@ -107,6 +110,8 @@ public class LesxMainPageController extends LesxController {
     cYear2.setDisable(true);
     importXML.setDisable(true);
     exportXML.setOnAction(obs -> exportXML());
+    main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
+    resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
   }
 
   /**

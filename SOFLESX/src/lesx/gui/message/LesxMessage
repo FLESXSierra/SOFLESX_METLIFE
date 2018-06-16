@@ -1,6 +1,7 @@
 
 TEXT-TITLE_READING_XML = Cargando XML.
 TEXT-TITLE_MAINPAGE_RESOURCES = Clientes.
+TEXT-TITLE_MAINPAGE = FLESX.
 TEXT-TITLE_MAINPAGE_MAIN = FLESX.
 TEXT-TITLE_COSTUMER_DIALOG_CREATE = Crear nuevo Objeto.
 TEXT-TITLE_PRICE_DIALOG_CREATE = Crear nuevo Precio.
@@ -63,6 +64,7 @@ TEXT-MENUITEM_REPORTS = Reportes
 TEXT-MENUBAR_FILE = Archivo
 TEXT-MENUBAR_BUSSINESS = Negocios
 TEXT-MENUBAR_COMISIONS = Comisiones
+TEXT-MENUITEM_MAIN = Inicio
 
 TEXT-TOOLTIP_SELECT_CHILDREN = Cuando este botón está activo, permite seleccionar los objectos que están asignados a los hijos del árbol de búsqueda.
 TEXT-TOOLTIP_MANDATORY_PROPERTY = Esta propiedad es de tipo mandatoria, se requiere que se llene de algún tipo de valor.
