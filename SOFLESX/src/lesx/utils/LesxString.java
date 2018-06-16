@@ -5,8 +5,8 @@ public class LesxString {
   /**
    * XML Strings
    */
-  public static final String XML_PATH = "src\\lesx\\xml\\files\\LesxCostumerXML.xml";
-  public static final String XML_PRICE_PATH = "src\\lesx\\xml\\files\\LesxPriceXML.xml";
+  public static final String XML_RESOURCE_PATH = "src\\lesx\\xml\\files\\LesxResourceXML.xml";
+  public static final String XML_BUSINESS_PATH = "src\\lesx\\xml\\files\\LesxBusinessXML.xml";
   public static final String XML_REPORT_TREE_PATH = "src\\lesx\\xml\\files\\LesxReportTreeXML.xml";
   public static final String XML_REPORT_ITEMS_PATH = "src\\lesx\\xml\\files\\LesxReportItemsXML.xml";
   public static final String XML_NAME_COSTUMER = "LesxCostumerXML.xml";
@@ -21,6 +21,7 @@ public class LesxString {
   public static final String ELEMENT_XML_PRICE = "PRICE";
   public static final String ELEMENT_XML_REPORT_TREE = "REPORT_TREE";
   public static final String ELEMENT_XML_REPORT_ELEMENT = "REPORT_ELEMENT";
+  public static final String ELEMENT_XML_BUSINESS = "BUSINESS";
   public static final String ATTR_XML_NAME = "NAME";
   public static final String ATTR_XML_ID = "ID";
   public static final String ATTR_XML_CC = "CC";
@@ -35,6 +36,12 @@ public class LesxString {
   public static final String ATTR_XML_TREE = "REPORTE";
   public static final String ATTR_XML_ITEMS = "FUNCION";
   public static final String ATTR_XML_VALID_FROM = "VALIDO_DESDE";
+  public static final String ATTR_XML_BUSINESS_ID = "BUSINESS_ID";
+  public static final String ATTR_XML_SOLICITATION = "SOLICITATION";
+  public static final String ATTR_XML_BIRTHDAY = "BIRTHDAY";
+  public static final String ATTR_XML_REGISTRATION = "REGISTRATION";
+  public static final String ATTR_XML_PRODUCT = "PRODUCT";
+  public static final String ATTR_XML_NBS = "NBS";
 
   /**
    * Scene Controller

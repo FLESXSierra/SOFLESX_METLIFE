@@ -109,6 +109,7 @@ LOGGER-LOG_MESSAGE = [LOG] {0} -
 LOGGER-WARNING_NO_KEY = No se han encontrado mensajes con la key {0}.
 
 ERROR-XML_READER = Error leyendo el archivo con el path '{0}'.
+ERROR-XML_READER_DATA = No se pudo leer la base de datos, por favor contacte al admin.
 ERROR-XML_WRITER = Error al escribir en el archivo con el path '{0}'.
 ERROR-XML_USECASE_NOT_SUPPORTED = El caso de uso '{0}' no esta soportado por el momento.
 ERROR-SAVE_XML_DATA = Ocurrió un error al guardar el archivo con el caso de uso '{0}'.
@@ -136,4 +137,5 @@ WARNING-FILES_ALREADY_EXIST = Uno o varios archivos ya existen, por favor ten cu
 
 INFO-XML_WRITER_COMPLETE = XML Creado exitosamente.
 INFO-XML_READER_COMPLETE = XML Leido exitosamente.
+INFO-XML_LOADED_CORRECTLY = XML Cargados exitosamente, cargando página principal.
 INFO-OBJECT_ADDED = Se han agregado {0} objectos.

@@ -3,13 +3,13 @@ package lesx.property.properties;
 import lesx.utils.LesxString;
 
 public enum ELesxPropertyKeys {
-  COSTUMER(0L) {
+  RESOURCE(0L) {
     @Override
     public String toString() {
       return LesxString.ELEMENT_XML_COSTUMER;
     }
   },
-  PRICE(1L) {
+  BUSINESS(1L) {
     @Override
     public String toString() {
       return LesxString.ELEMENT_XML_PRICE;

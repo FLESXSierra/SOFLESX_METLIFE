@@ -12,6 +12,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeView;
 import javafx.util.Callback;
+import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
 import lesx.property.properties.ELesxUseCase;
@@ -40,6 +41,8 @@ public class LesxResourcesPaneController extends LesxController {
   private TableColumn<LesxResource, String> fechaRegistro;
   // Lists
   private final ObservableList<LesxResource> currentList = FXCollections.observableArrayList();
+  //Data Model
+  private LesxResourcesDataModel dataModel;
 
   @FXML
   public void initialize() {

@@ -1,10 +1,16 @@
 package lesx.property.properties;
 
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import lesx.gui.message.LesxMessage;
 import lesx.utils.LesxString;
+import lesx.xml.property.LesxBusinessXMLParser;
 
 public class LesxBusiness extends LesxComponent {
+
+  private final static Logger LOGGER = Logger.getLogger(LesxResource.class.getName());
 
   private LesxProperty id;
   private LesxProperty producto;
@@ -13,6 +19,20 @@ public class LesxBusiness extends LesxComponent {
 
   public LesxBusiness() {
     initializeProperty();
+  }
+
+  public LesxBusiness(LesxBusinessXMLParser parse) {
+    initializeProperty();
+    if (parse.getId() == null) {
+      LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_ID"));
+      id.setValue(-1L);
+    }
+    else {
+      id.setValue(parse.getId());
+    }
+    producto.setValue(parse.getProducto());
+    prima.setValue(parse.getPrima());
+    nbs.setValue(parse.getNbs());
   }
 
   private void initializeProperty() {
@@ -38,6 +58,42 @@ public class LesxBusiness extends LesxComponent {
     nbs.setReadOnly(true);
     nbs.setValue(0L);
     setPropertyValues(Arrays.asList(id, producto, prima, nbs));
+  }
+
+  public Long getId() {
+    return (Long) id.getValue();
+  }
+
+  public void setId(Long id) {
+    this.id.setValue(id);
+  }
+
+  public ELesxProductType getProduct() {
+    return (ELesxProductType) producto.getValue();
+  }
+
+  public void setProduct(ELesxProductType producto) {
+    this.producto.setValue(producto);
+  }
+
+  public void setProduct(Integer producto) {
+    this.producto.setValue(ELesxProductType.valueOf(producto));
+  }
+
+  public Long getPrima() {
+    return (Long) prima.getValue();
+  }
+
+  public void setPrima(Long prima) {
+    this.prima.setValue(prima);
+  }
+
+  public Long getNbs() {
+    return (Long) nbs.getValue();
+  }
+
+  public void setNbs(Long nbs) {
+    this.nbs.setValue(nbs);
   }
 
 }

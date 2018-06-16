@@ -19,13 +19,13 @@ public enum ELesxUseCase {
       return "Solo lectura";
     }
   },
-  UC_XML_COSTOMER(3) {
+  UC_XML_RESOURCE(3) {
     @Override
     public String toString() {
       return "Costumer";
     }
   },
-  UC_XML_PRICE(4) {
+  UC_XML_BUSINESS(4) {
     @Override
     public String toString() {
       return "Precios";

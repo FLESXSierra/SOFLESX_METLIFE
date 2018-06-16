@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import lesx.gui.message.LesxMessage;
 import lesx.utils.LesxString;
+import lesx.xml.property.LesxResourceXMLParser;
 
 public class LesxResource extends LesxComponent {
+
+  private final static Logger LOGGER = Logger.getLogger(LesxResource.class.getName());
 
   private LesxProperty id;
   private LesxProperty business_id;
@@ -22,6 +27,31 @@ public class LesxResource extends LesxComponent {
 
   public LesxResource() {
     initializeProperty();
+  }
+
+  public LesxResource(LesxResourceXMLParser parse) {
+    initializeProperty();
+    if (parse.getId() == null) {
+      LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_ID"));
+      id.setValue(-1L);
+    }
+    else {
+      id.setValue(parse.getId());
+    }
+    if (parse.getLocation() == null) {
+      LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_LOCATION"));
+      location.setValue(0L);
+    }
+    else {
+      setLocation(parse.getLocation());
+    }
+    business_id.setValue(parse.getBusiness_id());
+    solicitud.setValue(parse.getSolicitud());
+    name.setValue(parse.getName());
+    cc.setValue(parse.getCc());
+    birthday.setValue(parse.getBirthday());
+    registration_date.setValue(parse.getRegistration_date());
+    setKey(ELesxPropertyKeys.RESOURCE);
   }
 
   private void initializeProperty() {
@@ -64,8 +94,9 @@ public class LesxResource extends LesxComponent {
     registration_date = new LesxProperty();
     registration_date.setType(ELesxPropertyType.DATE);
     registration_date.setName(LesxString.PROPERTY_REGISTER_DATE);
-    registration_date.setValue(LocalDate.parse(LocalDate.now()
-        .toString(), formatter));
+    registration_date.setValue(LocalDate.now()
+        .format(formatter)
+        .toString());
     registration_date.setMandatory(true);
     setPropertyValues(Arrays.asList(id, business_id, solicitud, name, cc, location, birthday, registration_date));
   }

@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lesx.db.LesxDBProperties;
 import lesx.gui.message.LesxMessage;
 import lesx.logger.LesxLogger;
 import lesx.scene.controller.LesxSceneController;
@@ -19,9 +20,10 @@ public class LesxMain extends Application {
 
   private static Logger LOGGER;
   private static LesxMain instance;
-  private Stage mainStage;
+  private static LesxDBProperties dbProperty;
   private static StringProperty title = new SimpleStringProperty("title");
   private static LesxSceneController sceneController;
+  private Stage mainStage;
 
   public static void main(String[] args) {
     //Setting Logger
@@ -31,6 +33,8 @@ public class LesxMain extends Application {
         .getLogger("");
     LOGGER.addHandler(new LesxLogger());
     LOGGER.log(Level.INFO, "Initializing");
+    //Create DataBase
+    dbProperty = new LesxDBProperties();
     //Create DataBase
     launch(args);
   }
@@ -71,6 +75,10 @@ public class LesxMain extends Application {
 
   public static void setTitle(String newTitle) {
     title.set(newTitle);
+  }
+
+  public LesxDBProperties getDbProperty() {
+    return dbProperty;
   }
 
   public void activateScene(String path) {

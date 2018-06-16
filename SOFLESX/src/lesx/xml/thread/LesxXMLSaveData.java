@@ -9,33 +9,49 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxUseCase;
+import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxComponent;
+import lesx.property.properties.LesxResource;
+import lesx.utils.LesxPropertyUtils;
 import lesx.utils.LesxString;
+import lesx.xml.property.LesxListBusinessXMLParser;
+import lesx.xml.property.LesxListResourceXMLParser;
 
 public class LesxXMLSaveData extends Service<Boolean> {
 
   private final static Logger LOGGER = Logger.getLogger(LesxXMLSaveData.class.getName());
 
-  private List<LesxComponent> test = new ArrayList<>();
+  private List<LesxResource> resources = new ArrayList<>();
+  private List<LesxBusiness> business = new ArrayList<>();
   private String path = "";
   private ELesxUseCase useCase;
 
-  public LesxXMLSaveData(Collection<? extends LesxComponent> costumer, ELesxUseCase useCase) {
+  public LesxXMLSaveData(Collection<? extends LesxComponent> map, ELesxUseCase useCase) {
     this.useCase = useCase;
     try {
       switch (useCase) {
-        case UC_XML_COSTOMER:
-          test.clear();
-          test.addAll(costumer.stream()
-              .map(LesxComponent.class::cast)
+        case UC_XML_RESOURCE:
+          resources.clear();
+          resources.addAll(map.stream()
+              .map(LesxResource.class::cast)
               .collect(Collectors.toList()));
-          path = LesxString.XML_PATH;
+          path = LesxString.XML_RESOURCE_PATH;
+          break;
+        case UC_XML_BUSINESS:
+          business.clear();
+          business.addAll(map.stream()
+              .map(LesxBusiness.class::cast)
+              .collect(Collectors.toList()));
+          path = LesxString.XML_BUSINESS_PATH;
           break;
         default:
           new Throwable(new IllegalArgumentException("Use case not supported"));
@@ -43,7 +59,7 @@ public class LesxXMLSaveData extends Service<Boolean> {
       }
     }
     catch (ClassCastException ce) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-CAST_XML_DATA_SAVE", costumer.getClass(), useCase), ce);
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-CAST_XML_DATA_SAVE", map.getClass(), useCase), ce);
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-SAVE_XML_DATA", useCase), e);
@@ -60,23 +76,35 @@ public class LesxXMLSaveData extends Service<Boolean> {
         boolean success = false;
         File xmlFile = new File(path);
         if (xmlFile.exists()) {
-          //          JAXBContext context;
-          //          Unmarshaller jaxbUnmarshaller;
-          //          JAXBContext jaxbContext;
-          //          Marshaller jaxbMarshaller;
+          JAXBContext context;
+          Unmarshaller jaxbUnmarshaller;
+          JAXBContext jaxbContext;
+          Marshaller jaxbMarshaller;
           try {
             switch (useCase) {
-              case UC_XML_COSTOMER:
-                //                context = JAXBContext.newInstance(LesxListPropertiesXMLParser.class);
-                //                jaxbUnmarshaller = context.createUnmarshaller();
-                //                //convert to desired object
-                //                final LesxListPropertiesXMLParser properties = (LesxListPropertiesXMLParser) jaxbUnmarshaller.unmarshal(xmlFile);
-                //                properties.setCostumer(LesxPropertyUtils.convertLesxCostumerIntoXMLParser(test));
-                //                //save data
-                //                jaxbContext = JAXBContext.newInstance(LesxListPropertiesXMLParser.class);
-                //                jaxbMarshaller = jaxbContext.createMarshaller();
-                //                jaxbMarshaller.marshal(properties, xmlFile);
-                //                success = true;
+              case UC_XML_RESOURCE:
+                context = JAXBContext.newInstance(LesxListResourceXMLParser.class);
+                jaxbUnmarshaller = context.createUnmarshaller();
+                //convert to desired object
+                final LesxListResourceXMLParser propertiesResources = (LesxListResourceXMLParser) jaxbUnmarshaller.unmarshal(xmlFile);
+                propertiesResources.setResources(LesxPropertyUtils.convertLesxCostumerIntoXMLParser(resources));
+                //save data
+                jaxbContext = JAXBContext.newInstance(LesxListResourceXMLParser.class);
+                jaxbMarshaller = jaxbContext.createMarshaller();
+                jaxbMarshaller.marshal(propertiesResources, xmlFile);
+                success = true;
+                break;
+              case UC_XML_BUSINESS:
+                context = JAXBContext.newInstance(LesxListBusinessXMLParser.class);
+                jaxbUnmarshaller = context.createUnmarshaller();
+                //convert to desired object
+                final LesxListBusinessXMLParser propertiesBusiness = (LesxListBusinessXMLParser) jaxbUnmarshaller.unmarshal(xmlFile);
+                propertiesBusiness.setBusiness(LesxPropertyUtils.convertLesxBusinessIntoXMLParser(business));
+                //save data
+                jaxbContext = JAXBContext.newInstance(LesxListBusinessXMLParser.class);
+                jaxbMarshaller = jaxbContext.createMarshaller();
+                jaxbMarshaller.marshal(propertiesBusiness, xmlFile);
+                success = true;
                 break;
               default:
                 break;
