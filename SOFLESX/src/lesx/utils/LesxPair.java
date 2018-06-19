@@ -17,4 +17,8 @@ public class LesxPair<V, K> {
     return second;
   }
 
+  public static <V, K> LesxPair<V, K> of(V first, K second) {
+    return new LesxPair<V, K>(first, second);
+  }
+
 }

@@ -29,6 +29,8 @@ TEXT-PRICE_DIALOG_HEADER = Panel de manejo de precios, puede crear, editar y eli
 TEXT-LOADING_TITLE = Cargando.
 TEXT-LOADING_ERROR_TITLE = ¡Un error se ha generado!.
 
+TEXT-YEAR = Año
+
 TEXT-COLUMN_NAME_NAME = Nombre
 TEXT-COLUMN_NAME_CC = C.C.
 TEXT-COLUMN_NAME_LOCATION = Localidad
@@ -41,6 +43,12 @@ TEXT-COLUMN_DATE = Fecha
 TEXT-COLUMN_NAME_BIRTHDAY = Nacimiento
 TEXT-COLUMN_NAME_REGISTRATION_DATE = Registro
 TEXT-COLUMN_NAME_SOLICITATION = Solicitud
+TEXT-COLUMN_NAME_TYPE_PRODUCT = Tipo de producto
+TEXT-COLUMN_NAME_LIFE = Vida
+TEXT-COLUMN_NAME_AP = AP
+TEXT-COLUMN_NAME_TYPE_PRIMA = Prima
+TEXT-COLUMN_NAME_NBS = NBS
+TEXT-COLUMN_NAME_COMISION = Comisión
 
 TEXT-HEADER_READING_XML = Por favor espere mientras el archivo XML se carga.
 TEXT-DESELECT_BUTTON = Deseleccionar
@@ -136,6 +144,7 @@ WARNING-FOUND_NULL_RESOURCE_ID = No se encontró un Id de recurso en el objecto i
 WARNING-FOUND_NULL_PARENT_ID = No se encontró un Parent Id de Report Items en el objecto importado, se asignará un Parent Id de '0' temporalmente.
 WARNING-FOUND_NULL_VALID_FROM = No se encontró una fecha válida, se asignará la fecha de hoy temporalmente.
 WARNING-FILES_ALREADY_EXIST = Uno o varios archivos ya existen, por favor ten cuidado con estos archivos.
+WARNING-FOUND_NULL_DATAMODEL = Hay un DataModel vacio, lo cual no permite la construcción de los pares. Contacte a un admin.
 
 INFO-XML_WRITER_COMPLETE = XML Creado exitosamente.
 INFO-XML_READER_COMPLETE = XML Leido exitosamente.

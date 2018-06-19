@@ -19,6 +19,8 @@ public class LesxBusinessXMLParser {
   private Long prima;
   @XmlElement(name = LesxString.ATTR_XML_NBS)
   private Long nbs;
+  @XmlElement(name = LesxString.ATTR_XML_NBS)
+  private Long resource_id;
 
   public LesxBusinessXMLParser() {
 
@@ -30,6 +32,7 @@ public class LesxBusinessXMLParser {
         .getKey();
     this.prima = business.getPrima();
     this.nbs = business.getNbs();
+    this.resource_id = business.getResource_id();
   }
 
   public Long getId() {
@@ -62,6 +65,14 @@ public class LesxBusinessXMLParser {
 
   public void setNbs(Long nbs) {
     this.nbs = nbs;
+  }
+
+  public Long getResource_id() {
+    return resource_id;
+  }
+
+  public void setResource_id(Long resource_id) {
+    this.resource_id = resource_id;
   }
 
 }

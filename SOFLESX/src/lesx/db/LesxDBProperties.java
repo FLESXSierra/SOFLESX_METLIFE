@@ -89,22 +89,22 @@ public class LesxDBProperties {
   /**
    * Saves into XML the given data map.
    *
-   * @param data Map containing data
+   * @param resourceMap Map containing data
    * @param run Runnable that runs on succeeded or failed
    */
-  public void saveResourceXML(Map<Long, LesxResource> data, Runnable run) {
+  public void saveResourceXML(Map<Long, LesxResource> resourceMap, Runnable run) {
     LOGGER.log(Level.INFO, "Called saveResourceXML");
-    setResourceMap(data);
-    LesxXMLSaveData saveThread = new LesxXMLSaveData(data.values(), ELesxUseCase.UC_XML_RESOURCE);
+    setResourceMap(resourceMap);
+    LesxXMLSaveData saveThread = new LesxXMLSaveData(resourceMap.values(), ELesxUseCase.UC_XML_RESOURCE);
     saveThread.start(); // Saving loading message
     saveThread.setOnSucceeded(obs -> run.run());
     saveThread.setOnFailed(obs -> run.run());
   }
 
-  public void saveBusinessXML(Map<Long, LesxBusiness> priceMap, Runnable run) {
+  public void saveBusinessXML(Map<Long, LesxBusiness> businessMap, Runnable run) {
     LOGGER.log(Level.INFO, "saveBusinessXML");
-    setBusinessMap(priceMap);
-    LesxXMLSaveData saveThread = new LesxXMLSaveData(priceMap.values(), ELesxUseCase.UC_XML_BUSINESS);
+    setBusinessMap(businessMap);
+    LesxXMLSaveData saveThread = new LesxXMLSaveData(businessMap.values(), ELesxUseCase.UC_XML_BUSINESS);
     saveThread.start();
     saveThread.setOnSucceeded(obs -> run.run());
     saveThread.setOnFailed(obs -> run.run());

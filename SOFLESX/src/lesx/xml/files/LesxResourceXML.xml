@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <PROPERTIES>
-    <COSTUMER ID="0" BUSINESS_ID="0">
+    <COSTUMER ID="0">
         <NAME>NAME</NAME>
         <CC>0</CC>
         <LOCATION>0</LOCATION>
-        <BIRTHDAY>16.06.2018</BIRTHDAY>
-        <REGISTRATION>16.06.2018</REGISTRATION>
+        <BIRTHDAY>18.06.2018</BIRTHDAY>
+        <REGISTRATION>18.06.2018</REGISTRATION>
     </COSTUMER>
 </PROPERTIES>

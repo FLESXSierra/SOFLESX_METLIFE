@@ -126,7 +126,6 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         costumerDemo.setBirthday(LocalDate.now()
             .format(formatter)
             .toString());
-        costumerDemo.setBusiness_id(0L);
         costumerDemo.setRegistration_date(LocalDate.now()
             .format(formatter)
             .toString());
@@ -144,6 +143,7 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         businessDemo.setPrima(200000L);
         businessDemo.setNbs(12 * businessDemo.getPrima());
         businessDemo.setProducto(0);
+        businessDemo.setResource_id(0L);
         LesxListBusinessXMLParser listBusiness = new LesxListBusinessXMLParser();
         listBusiness.setBusiness(Arrays.asList(businessDemo));
         jaxbMarshaller.marshal(listBusiness, file);

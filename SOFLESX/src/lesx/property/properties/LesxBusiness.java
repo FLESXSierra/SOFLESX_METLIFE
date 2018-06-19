@@ -16,6 +16,7 @@ public class LesxBusiness extends LesxComponent {
   private LesxProperty producto;
   private LesxProperty prima;
   private LesxProperty nbs;
+  private LesxProperty resource_id;
 
   public LesxBusiness() {
     initializeProperty();
@@ -57,7 +58,14 @@ public class LesxBusiness extends LesxComponent {
     nbs.setName(LesxString.PROPERTY_PRIMA);
     nbs.setReadOnly(true);
     nbs.setValue(0L);
-    setPropertyValues(Arrays.asList(id, producto, prima, nbs));
+    resource_id = new LesxProperty();
+    resource_id.setType(ELesxPropertyType.LONG);
+    resource_id.setName(LesxString.PROPERTY_RESOURCE_ID);
+    resource_id.setMandatory(true);
+    resource_id.setReadOnly(true);
+    resource_id.setUnique(true);
+    resource_id.setVisible(false);
+    setPropertyValues(Arrays.asList(id, resource_id, producto, prima, nbs));
   }
 
   public Long getId() {
@@ -94,6 +102,14 @@ public class LesxBusiness extends LesxComponent {
 
   public void setNbs(Long nbs) {
     this.nbs.setValue(nbs);
+  }
+
+  public Long getResource_id() {
+    return (Long) resource_id.getValue();
+  }
+
+  public void setResource_id(Long resource_id) {
+    this.resource_id.setValue(resource_id);
   }
 
 }

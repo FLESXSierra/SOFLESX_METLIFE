@@ -13,8 +13,6 @@ public class LesxResourceXMLParser {
 
   @XmlAttribute(name = LesxString.ATTR_XML_ID)
   private Long id;
-  @XmlAttribute(name = LesxString.ATTR_XML_BUSINESS_ID)
-  private Long business_id;
   @XmlElement(name = LesxString.ATTR_XML_NAME)
   private String name;
   @XmlElement(name = LesxString.ATTR_XML_CC)
@@ -37,7 +35,6 @@ public class LesxResourceXMLParser {
     this.name = resource.getName();
     this.cc = resource.getCc();
     this.location = resource.getLocation();
-    this.business_id = resource.getBusiness_id();
     this.solicitud = resource.getSolicitud();
     this.birthday = resource.getBirthday();
     this.registration_date = resource.getRegistration_date();
@@ -73,14 +70,6 @@ public class LesxResourceXMLParser {
 
   public void setCc(Long cc) {
     this.cc = cc;
-  }
-
-  public Long getBusiness_id() {
-    return business_id;
-  }
-
-  public void setBusiness_id(Long business_id) {
-    this.business_id = business_id;
   }
 
   public Long getSolicitud() {

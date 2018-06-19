@@ -26,7 +26,6 @@ public class LesxTreeTableViewPane<T> extends VBox {
   private LesxToolBar toolBar;
   private TreeTableView<T> table;
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
-  private BooleanProperty selectedFilterTable = new SimpleBooleanProperty(this, "selectedFilterTable", true);
   private Consumer<Boolean> addNewItem;
   private Runnable onDeleteItem;
   private ELesxUseCase useCase;
@@ -36,8 +35,6 @@ public class LesxTreeTableViewPane<T> extends VBox {
     toolBar = new LesxToolBar(useCase);
     toolBar.setPrefHeight(40);
     toolBar.setMinHeight(Region.USE_PREF_SIZE);
-    toolBar.selectedFilterTableProperty()
-        .bind(selectedFilterTable);
     table = new TreeTableView<>();
     table.getSelectionModel()
         .selectedItemProperty()
@@ -152,10 +149,6 @@ public class LesxTreeTableViewPane<T> extends VBox {
   public void setOnDelete(Runnable runnable) {
     onDeleteItem = runnable;
     installToolBarActions();
-  }
-
-  public BooleanProperty selectedFilterTableProperty() {
-    return selectedFilterTable;
   }
 
 }

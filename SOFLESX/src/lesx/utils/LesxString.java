@@ -78,6 +78,5 @@ public class LesxString {
   public static final String PROPERTY_REGISTER_DATE = "Fecha de Registro";
   public static final String PROPERTY_PRODUCT = "Tipo de Producto";
   public static final String PROPERTY_PRIMA = "Prima";
-  public static final String PROPERTY_BUSINESS_ID = "Id de Negocio";
 
 }

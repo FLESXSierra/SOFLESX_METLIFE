@@ -16,14 +16,13 @@ public class LesxResource extends LesxComponent implements Cloneable {
   private final static Logger LOGGER = Logger.getLogger(LesxResource.class.getName());
 
   private LesxProperty id;
-  private LesxProperty business_id;
   private LesxProperty solicitud;
   private LesxProperty name;
   private LesxProperty cc;
   private LesxProperty birthday;
   private LesxProperty location;
   private LesxProperty registration_date;
-  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
 
   public LesxResource() {
     initializeProperty();
@@ -45,7 +44,6 @@ public class LesxResource extends LesxComponent implements Cloneable {
     else {
       setLocation(parse.getLocation());
     }
-    business_id.setValue(parse.getBusiness_id());
     solicitud.setValue(parse.getSolicitud());
     name.setValue(parse.getName());
     cc.setValue(parse.getCc());
@@ -62,13 +60,6 @@ public class LesxResource extends LesxComponent implements Cloneable {
     id.setReadOnly(true);
     id.setUnique(true);
     id.setVisible(false);
-    business_id = new LesxProperty();
-    business_id.setType(ELesxPropertyType.LONG);
-    business_id.setName(LesxString.PROPERTY_BUSINESS_ID);
-    business_id.setMandatory(true);
-    business_id.setReadOnly(true);
-    business_id.setUnique(true);
-    business_id.setVisible(false);
     solicitud = new LesxProperty();
     solicitud.setType(ELesxPropertyType.LONG);
     solicitud.setName(LesxString.PROPERTY_SOLICITUD);
@@ -98,7 +89,7 @@ public class LesxResource extends LesxComponent implements Cloneable {
         .format(formatter)
         .toString());
     registration_date.setMandatory(true);
-    setPropertyValues(Arrays.asList(id, business_id, solicitud, name, cc, location, birthday, registration_date));
+    setPropertyValues(Arrays.asList(id, solicitud, name, cc, location, birthday, registration_date));
   }
 
   public String getName() {
@@ -147,14 +138,6 @@ public class LesxResource extends LesxComponent implements Cloneable {
 
   public void setId(Long id) {
     this.id.setValue(id);
-  }
-
-  public Long getBusiness_id() {
-    return (Long) business_id.getValue();
-  }
-
-  public void setBusiness_id(Long business_id) {
-    this.business_id.setValue(business_id);
   }
 
   public Long getSolicitud() {

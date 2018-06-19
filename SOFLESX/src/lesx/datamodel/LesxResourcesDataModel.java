@@ -8,8 +8,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import lesx.property.properties.ELesxLocations;
+import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxResource;
 import lesx.utils.LesxMisc;
+import lesx.utils.LesxPair;
 import lesx.utils.LesxString;
 
 public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
@@ -127,6 +129,10 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
     else {
       this.resourceSelected = null;
     }
+  }
+
+  public LesxPair<LesxResource, LesxBusiness> createResourceBusinessPair() {
+    return null;// TODO LesxPair
   }
 
 }
