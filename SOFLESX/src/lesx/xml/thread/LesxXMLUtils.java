@@ -24,7 +24,7 @@ public class LesxXMLUtils {
       if (obs.getKey()) {
         LesxMain.getInstance()
             .getDbProperty()
-            .setDataMap(obs.getValue());
+            .addDataMap(obs.getValue());
         run.run();
       }
       else {
@@ -32,7 +32,7 @@ public class LesxXMLUtils {
           if (available.getKey()) {
             LesxMain.getInstance()
                 .getDbProperty()
-                .setDataMap(available.getValue());
+                .addDataMap(available.getValue());
             run.run();
           }
           else {

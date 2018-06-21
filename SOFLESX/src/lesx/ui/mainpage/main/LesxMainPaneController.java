@@ -3,16 +3,17 @@ package lesx.ui.mainpage.main;
 import java.util.Map;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeTableView;
 import javafx.util.Callback;
 import lesx.datamodel.LesxBusinessResourceDataModel;
@@ -21,6 +22,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxResource;
+import lesx.property.properties.LesxResourceBusiness;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxTreeTableViewPane;
 import lesx.ui.soflesx.LesxMain;
@@ -29,39 +31,37 @@ import lesx.utils.LesxPair;
 public class LesxMainPaneController extends LesxController {
 
   @FXML
-  Label yearLabel;
-  @FXML
-  ComboBox<Integer> yearCombo;
-  @FXML
-  LesxTreeTableViewPane<LesxPair<LesxResource, LesxBusiness>> mainPane;
+  LesxTreeTableViewPane<LesxResourceBusiness> mainPane;
 
   private BooleanProperty showProgress = new SimpleBooleanProperty(this, "showProgress", false);
   //Components
-  private TreeTableView<LesxPair<LesxResource, LesxBusiness>> table;
+  private TreeTableView<LesxResourceBusiness> table;
   //Columns
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> solicitud;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> nameColumn;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> cc;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> tipo;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> tipoVida;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> tipoAP;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> prima;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> primaVida;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> primaAP;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> nbs;
-  private TreeTableColumn<LesxPair<LesxResource, LesxBusiness>, String> comision;
+  private TreeTableColumn<LesxResourceBusiness, String> solicitud;
+  private TreeTableColumn<LesxResourceBusiness, String> nameColumn;
+  private TreeTableColumn<LesxResourceBusiness, String> cc;
+  private TreeTableColumn<LesxResourceBusiness, String> tipo;
+  private TreeTableColumn<LesxResourceBusiness, String> tipoVida;
+  private TreeTableColumn<LesxResourceBusiness, String> tipoAP;
+  private TreeTableColumn<LesxResourceBusiness, String> prima;
+  private TreeTableColumn<LesxResourceBusiness, String> primaVida;
+  private TreeTableColumn<LesxResourceBusiness, String> primaAP;
+  private TreeTableColumn<LesxResourceBusiness, String> nbs;
+  private TreeTableColumn<LesxResourceBusiness, String> comision;
+  private TreeTableColumn<LesxResourceBusiness, String> month;
   //Data
   private Map<Long, LesxResource> dataResource;
   private LesxResourcesDataModel dataModelResource = new LesxResourcesDataModel();
   private LesxBusinessResourceDataModel dataModel = new LesxBusinessResourceDataModel();
   private ObservableList<LesxPair<LesxResource, LesxBusiness>> currentList = FXCollections.observableArrayList();
+  private IntegerProperty year = new SimpleIntegerProperty();
 
   @FXML
   public void initialize() {
     showProgress.set(true);
     setTitle(LesxMessage.getMessage("TEXT-TITLE_MAINPAGE_MAIN"));
-    yearLabel.setText(LesxMessage.getMessage("TEXT-YEAR"));
     table = mainPane.getTable();
+    year.bind(mainPane.yearProperty());
     //Load Data Base
     dataModelResource.setMap(LesxMain.getInstance()
         .getDbProperty()
@@ -70,7 +70,7 @@ public class LesxMainPaneController extends LesxController {
     dataModel.setResourceMap(dataResource);
     dataModel.setBusinessMap(LesxMain.getInstance()
         .getDbProperty()
-        .getBusinessMap()); // TODO Not loading
+        .getBusinessMap());
     dataModel.buildResourceBusinessPairs();
     configurateColumns();
     showProgress.set(false);
@@ -82,143 +82,233 @@ public class LesxMainPaneController extends LesxController {
   @SuppressWarnings("unchecked")
   private void configurateColumns() {
     solicitud = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_SOLICITATION"));
-    solicitud.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    solicitud.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, true) && param.getValue()
             .getValue()
-            .getFirst()
-            .getSolicitud()
-            .toString());
+            .getResource()
+            .getSolicitud() != null
+                ? param.getValue()
+                    .getValue()
+                    .getResource()
+                    .getSolicitud()
+                    .toString()
+                : "");
       }
     });
     cc = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_CC"));
-    cc.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    cc.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, true) && param.getValue()
             .getValue()
-            .getFirst()
-            .getCc()
-            .toString());
+            .getResource()
+            .getCc() != null
+                ? param.getValue()
+                    .getValue()
+                    .getResource()
+                    .getCc()
+                    .toString()
+                : "");
       }
     });
     nameColumn = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_NAME"));
-    nameColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    nameColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, true) && param.getValue()
             .getValue()
-            .getFirst()
-            .getName());
+            .getResource()
+            .getName() != null
+                ? param.getValue()
+                    .getValue()
+                    .getResource()
+                    .getName()
+                : "");
       }
     });
     tipo = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_TYPE_PRODUCT"));
     tipoVida = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_LIFE"));
-    tipoVida.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    tipoVida.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getSecond()
-            .getProduct()
-            .toString());
+            .getBusiness()
+            .getProduct() != null
+                ? param.getValue()
+                    .getValue()
+                    .getBusiness()
+                    .getProduct()
+                    .toString()
+                : "");
       }
     });
     tipoAP = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_AP"));
-    tipoAP.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    tipoAP.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
+
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getSecond()
-            .getProduct()
-            .toString());
+            .getBusiness()
+            .getProduct() != null
+                ? param.getValue()
+                    .getValue()
+                    .getBusiness()
+                    .getProduct()
+                    .toString()
+                : "");
       }
     });
     tipo.getColumns()
         .addAll(tipoVida, tipoAP);
     prima = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_TYPE_PRIMA"));
     primaVida = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_LIFE"));
-    primaVida.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    primaVida.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getSecond()
-            .getProduct()
-            .toString());
+            .getBusiness()
+            .getProduct() != null
+                ? param.getValue()
+                    .getValue()
+                    .getBusiness()
+                    .getProduct()
+                    .toString()
+                : "");
       }
     });
     primaAP = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_AP"));
-    primaAP.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    primaAP.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getSecond()
-            .getProduct()
-            .toString());
+            .getBusiness()
+            .getProduct() != null
+                ? param.getValue()
+                    .getValue()
+                    .getBusiness()
+                    .getProduct()
+                    .toString()
+                : "");
       }
     });
     prima.getColumns()
         .addAll(primaVida, primaAP);
     nbs = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_NBS"));
-    nbs.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    nbs.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getSecond()
-            .getNbs()
-            .toString());
+            .getBusiness()
+            .getNbs() != null
+                ? param.getValue()
+                    .getValue()
+                    .getBusiness()
+                    .getNbs()
+                    .toString()
+                : "");
       }
     });
     comision = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_COMISION"));
-    comision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String>, ObservableValue<String>>() {
+    comision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxPair<LesxResource, LesxBusiness>, String> param) {
-        return new SimpleStringProperty(param.getValue()
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getSecond()
-            .getPrima()
-            .toString()); // TODO Calculate Comision
+            .getBusiness()
+            .getPrima() != null
+                ? param.getValue()
+                    .getValue()
+                    .getBusiness()
+                    .getPrima()
+                    .toString()
+                : ""); // TODO Calculate Comision
       }
     });
 
+    month = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_MONTH"));
+    month.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        return new SimpleStringProperty(param != null && param.getValue() != null && param.getValue()
+            .getValue() != null
+            && param.getValue()
+                .getValue()
+                .getMonth() != null
+                    ? param.getValue()
+                        .getValue()
+                        .getMonth()
+                    : "");
+      }
+    });
+
+    month.prefWidthProperty()
+        .bind(table.widthProperty()
+            .multiply(0.1));
     solicitud.prefWidthProperty()
         .bind(table.widthProperty()
             .multiply(0.1));
     nameColumn.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.15));
+            .multiply(0.14));
     cc.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.15));
+            .multiply(0.1));
+    tipoAP.prefWidthProperty()
+        .bind(table.widthProperty()
+            .multiply(0.07));
+    tipoVida.prefWidthProperty()
+        .bind(table.widthProperty()
+            .multiply(0.07));
     tipo.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.15));
+            .multiply(0.14));
+    primaAP.prefWidthProperty()
+        .bind(table.widthProperty()
+            .multiply(0.07));
+    primaVida.prefWidthProperty()
+        .bind(table.widthProperty()
+            .multiply(0.07));
     prima.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.15));
+            .multiply(0.14));
     nbs.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.15));
+            .multiply(0.14));
     comision.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.15));
+            .multiply(0.14));
 
     table.setShowRoot(false);
     updateTreeTableData();
     table.getColumns()
-        .setAll(solicitud, nameColumn, cc, tipo, prima, nbs, comision);
+        .setAll(month, solicitud, nameColumn, cc, tipo, prima, nbs, comision);
+  }
+
+  protected boolean parameterNotNull(CellDataFeatures<LesxResourceBusiness, String> param, boolean resource) {
+    final boolean result = (param != null && param.getValue() != null && param.getValue()
+        .getValue() != null);
+    if (resource) {
+      return (result && param.getValue()
+          .getValue()
+          .getResource() != null);
+    }
+    return (result && param.getValue()
+        .getValue()
+        .getBusiness() != null);
   }
 
   private void updateTreeTableData() {
-    final TreeItem<LesxPair<LesxResource, LesxBusiness>> root = new TreeItem<>();
+    final TreeItem<LesxResourceBusiness> root = new TreeItem<>();
     for (ELesxMonth month : ELesxMonth.values()) {
       root.getChildren()
-          .addAll(dataModel.getTreeItem(month, yearCombo.getValue()));
+          .add(dataModel.getTreeItem(month, year.getValue()));
     }
     table.setRoot(root);
   }

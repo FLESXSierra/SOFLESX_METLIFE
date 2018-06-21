@@ -31,7 +31,14 @@ public class LesxBusiness extends LesxComponent {
     else {
       id.setValue(parse.getId());
     }
-    producto.setValue(parse.getProducto());
+    if (parse.getId() == null) {
+      LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_RESOURCE_ID"));
+      resource_id.setValue(-1L);
+    }
+    else {
+      resource_id.setValue(parse.getResource_id());
+    }
+    producto.setValue(ELesxProductType.valueOf(parse.getProducto()));
     prima.setValue(parse.getPrima());
     nbs.setValue(parse.getNbs());
   }

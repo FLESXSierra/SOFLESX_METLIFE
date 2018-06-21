@@ -16,6 +16,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxResource;
+import lesx.property.properties.LesxResourceBusiness;
 import lesx.utils.LesxPair;
 
 public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<LesxResource, LesxBusiness>> {
@@ -76,18 +77,21 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<Le
     // No persist here
   }
 
-  public List<TreeItem<LesxPair<LesxResource, LesxBusiness>>> getTreeItem(ELesxMonth month, Integer year) {
-    List<TreeItem<LesxPair<LesxResource, LesxBusiness>>> listLeaf = new ArrayList<>();
+  public TreeItem<LesxResourceBusiness> getTreeItem(ELesxMonth month, Integer year) {
+    LesxResourceBusiness monthRes = new LesxResourceBusiness();
+    monthRes.setMonth(month.toString());
+    TreeItem<LesxResourceBusiness> monthLeaf = new TreeItem<>(monthRes);
     if (year != null) {
       for (LesxPair<LesxResource, LesxBusiness> pair : getPairList()) {
         LocalDate date = LocalDate.parse(pair.getFirst()
             .getRegistration_date(), formatter);
         if ((month.getKey() + 1) == date.getMonthValue() && date.getYear() == year) {
-          listLeaf.add(new TreeItem<>(pair));
+          monthLeaf.getChildren()
+              .add(new TreeItem<>(LesxResourceBusiness.of(pair.getFirst(), pair.getSecond())));
         }
       }
     }
-    return listLeaf;
+    return monthLeaf;
   }
 
 }

@@ -6,6 +6,8 @@ import static lesx.property.properties.ELesxActions.ACTIONS_DELETE;
 import static lesx.property.properties.ELesxActions.ACTIONS_DESELECT;
 import static lesx.property.properties.ELesxActions.ACTIONS_EDIT;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +16,14 @@ import java.util.Map.Entry;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
@@ -36,6 +40,7 @@ public class LesxToolBar extends ToolBar {
   private Button add;
   private Button edit;
   private ToggleButton children;
+  private ComboBox<Integer> year;
 
   private Map<ELesxActions, EventHandler<ActionEvent>> actions;
   private EventHandler<ActionEvent> deselectAction;
@@ -73,6 +78,9 @@ public class LesxToolBar extends ToolBar {
         sep.setOrientation(Orientation.VERTICAL);
         getItems().add((ButtonBase) button);
         getItems().add(sep);
+      }
+      if (year != null) {
+        getItems().add(year);
       }
     }
   }
@@ -127,6 +135,7 @@ public class LesxToolBar extends ToolBar {
 
   private void buildButtons(ELesxUseCase useCase) {
     getItems().clear();
+    year = null;
     actions.clear();
     actions.put(ACTIONS_DESELECT, deselectAction);
     switch (useCase) {
@@ -200,10 +209,45 @@ public class LesxToolBar extends ToolBar {
         actions.put(ACTIONS_ADD, addAction);
         actions.put(ACTIONS_EDIT, editAction);
         break;
+      case UC_TREE_TABLE_INICIO:
+        year = new ComboBox<>();
+        year.setMaxWidth(100);
+        year.getItems()
+            .addAll(generateYears());
+        year.setValue(LocalDate.now()
+            .getYear());
+        delete = new Button();
+        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
+        delete.disableProperty()
+            .bind(Bindings.not(selectedItem));
+        add = new Button();
+        add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
+        add.disableProperty()
+            .bind(Bindings.not(selectedFilterTable));
+        //TODO Add new Button for add business
+        edit = new Button();
+        edit.setText(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
+        edit.disableProperty()
+            .bind(Bindings.not(selectedItem));
+        buttons = Arrays.asList(deselect, add, edit, delete);
+        actions.put(ACTIONS_DELETE, deleteAction);
+        actions.put(ACTIONS_ADD, addAction);
+        actions.put(ACTIONS_EDIT, editAction);
+        break;
       default:
         break;
     }
     addButtonsToToolBar();
+  }
+
+  private List<Integer> generateYears() {
+    Integer yearNow = LocalDate.now()
+        .getYear();
+    List<Integer> years = new ArrayList<>();
+    for (int year = (yearNow - 5); year <= (yearNow + 5); year++) {
+      years.add(year);
+    }
+    return years;
   }
 
   public BooleanProperty selectedFilterTableProperty() {
@@ -233,6 +277,10 @@ public class LesxToolBar extends ToolBar {
         edit.setOnAction(null);
         break;
     }
+  }
+
+  public ObjectProperty<Integer> yearProperty() {
+    return year.valueProperty();
   }
 
 }

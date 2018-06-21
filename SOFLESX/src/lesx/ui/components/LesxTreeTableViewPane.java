@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,7 +46,7 @@ public class LesxTreeTableViewPane<T> extends VBox {
   }
 
   private void initialize() {
-    useCase = ELesxUseCase.UC_TABLE;
+    useCase = ELesxUseCase.UC_TREE_TABLE_INICIO;
     addNewItem = (isCreate) -> {
       //Nothing
     };
@@ -149,6 +150,10 @@ public class LesxTreeTableViewPane<T> extends VBox {
   public void setOnDelete(Runnable runnable) {
     onDeleteItem = runnable;
     installToolBarActions();
+  }
+
+  public ObjectProperty<Integer> yearProperty() {
+    return toolBar.yearProperty();
   }
 
 }

@@ -19,7 +19,7 @@ public class LesxBusinessXMLParser {
   private Long prima;
   @XmlElement(name = LesxString.ATTR_XML_NBS)
   private Long nbs;
-  @XmlElement(name = LesxString.ATTR_XML_NBS)
+  @XmlElement(name = LesxString.ATTR_XML_RESOURCE_ID)
   private Long resource_id;
 
   public LesxBusinessXMLParser() {

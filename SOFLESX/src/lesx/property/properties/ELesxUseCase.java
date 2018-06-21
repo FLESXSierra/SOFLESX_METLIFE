@@ -66,6 +66,12 @@ public enum ELesxUseCase {
     public String toString() {
       return "Recursos";
     }
+  },
+  UC_TREE_TABLE_INICIO(11) {
+    @Override
+    public String toString() {
+      return "Inicio";
+    }
   };
 
   int key;

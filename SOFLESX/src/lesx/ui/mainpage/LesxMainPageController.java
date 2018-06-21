@@ -95,7 +95,7 @@ public class LesxMainPageController extends LesxController {
 
   @Override
   public void init() {
-    LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES);
+    LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN);
     setUpMenuButtons();
     progressBox.visibleProperty()
         .bind(showProgress);

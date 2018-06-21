@@ -118,19 +118,20 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         jaxbContext = JAXBContext.newInstance(LesxListResourceXMLParser.class);
         jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        LesxResourceXMLParser costumerDemo = new LesxResourceXMLParser();
-        costumerDemo.setCc(0L);
-        costumerDemo.setId(0L);
-        costumerDemo.setName(LesxString.ATTR_XML_NAME);
-        costumerDemo.setLocation(0L);
-        costumerDemo.setBirthday(LocalDate.now()
+        LesxResourceXMLParser resourceDemo = new LesxResourceXMLParser();
+        resourceDemo.setCc(0L);
+        resourceDemo.setId(0L);
+        resourceDemo.setName(LesxString.ATTR_XML_NAME);
+        resourceDemo.setLocation(0L);
+        resourceDemo.setSolicitud(0L);
+        resourceDemo.setBirthday(LocalDate.now()
             .format(formatter)
             .toString());
-        costumerDemo.setRegistration_date(LocalDate.now()
+        resourceDemo.setRegistration_date(LocalDate.now()
             .format(formatter)
             .toString());
         LesxListResourceXMLParser list = new LesxListResourceXMLParser();
-        list.setResources(Arrays.asList(costumerDemo));
+        list.setResources(Arrays.asList(resourceDemo));
         jaxbMarshaller.marshal(list, file);
         resultMap = LesxPropertyUtils.converXMLPropertyIntoLesxProperty(list, ELesxUseCase.UC_XML_RESOURCE);
         break;
