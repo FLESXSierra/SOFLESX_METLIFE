@@ -48,7 +48,7 @@ public class LesxString {
    */
   public static final String MAIN_SCENE_PATH = "/lesx/ui/soflesx/MainFXML.fxml";
   public static final String MAINPAGE_PATH = "/lesx/ui/mainpage/LesxMainPageFXML.fxml";
-  public static final String COSTUMER_DIALOG_PATH = "/lesx/ui/costumer/dialog/LesxCostumerDialogPaneFXML.fxml";
+  public static final String EDIT_COMPONENT_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxEditComponentDialogFXML.fxml";
   public static final String PRICES_DIALOG_PATH = "/lesx/ui/prices/LesxPricesDialogFXML.fxml";
   public static final String REPORT_DIALOG_PATH = "/lesx/ui/reports/LesxReportPane.fxml";
   public static final String SELECT_COSTUMER_DIALOG_PATH = "/lesx/ui/costumer/dialog/LesxSelectCostumerDialogFXML.fxml";

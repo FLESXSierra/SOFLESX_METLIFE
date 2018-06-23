@@ -134,7 +134,14 @@ public class LesxTreeTableViewPane<T> extends VBox {
 
   private void selectedItemTable() {
     selectedItemTable.set(table.getSelectionModel()
-        .getSelectedItem() != null);
+        .getSelectedItem() != null
+        && table.getSelectionModel()
+            .getSelectedItem()
+            .getParent() != null
+        && table.getSelectionModel()
+            .getSelectedItem()
+            .getParent()
+            .getValue() != null);
   }
 
   public void setOnAddNewItem(Consumer<Boolean> consumer) {

@@ -3,6 +3,7 @@ package lesx.property.properties;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +27,39 @@ public class LesxResource extends LesxComponent implements Cloneable {
 
   public LesxResource() {
     initializeProperty();
+  }
+
+  /**
+   * Constructor to create property on the property sheet
+   *
+   * @param properties List of edited properties
+   */
+  public LesxResource(Collection<LesxProperty> properties) {
+    initializeProperty();
+    for (LesxProperty property : properties) {
+      if (id.propertyEquals(property)) {
+        id.setValue(property.getValue());
+      }
+      if (solicitud.propertyEquals(property)) {
+        solicitud.setValue(property.getValue());
+      }
+      if (name.propertyEquals(property)) {
+        name.setValue(property.getValue());
+      }
+      if (cc.propertyEquals(property)) {
+        cc.setValue(property.getValue());
+      }
+      if (birthday.propertyEquals(property)) {
+        birthday.setValue(property.getValue());
+      }
+      if (location.propertyEquals(property)) {
+        location.setValue(property.getValue());
+      }
+      if (registration_date.propertyEquals(property)) {
+        registration_date.setValue(property.getValue());
+      }
+    }
+    setPropertyValues(Arrays.asList(id, solicitud, name, cc, location, birthday, registration_date));
   }
 
   public LesxResource(LesxResourceXMLParser parse) {
@@ -76,7 +110,7 @@ public class LesxResource extends LesxComponent implements Cloneable {
     location = new LesxProperty();
     location.setType(ELesxPropertyType.LOCATION);
     location.setName(LesxString.PROPERTY_LOCATION);
-    location.setValue(ELesxLocations.COLOMBIA);
+    location.setValue(ELesxLocations.COLOMBIA.getKey());
     location.setMandatory(true);
     birthday = new LesxProperty();
     birthday.setType(ELesxPropertyType.DATE);
@@ -90,6 +124,7 @@ public class LesxResource extends LesxComponent implements Cloneable {
         .toString());
     registration_date.setMandatory(true);
     setPropertyValues(Arrays.asList(id, solicitud, name, cc, location, birthday, registration_date));
+    setKey(ELesxPropertyKeys.RESOURCE);
   }
 
   public String getName() {

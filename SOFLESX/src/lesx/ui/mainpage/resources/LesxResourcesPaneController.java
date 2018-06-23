@@ -25,6 +25,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
 import lesx.property.properties.LesxResource;
 import lesx.scene.controller.LesxController;
+import lesx.scene.controller.LesxSceneController;
 import lesx.ui.components.LesxTableViewPane;
 import lesx.ui.components.LesxTreeViewPane;
 import lesx.ui.soflesx.LesxMain;
@@ -50,7 +51,6 @@ public class LesxResourcesPaneController extends LesxController {
   // Lists
   private final ObservableList<LesxResource> currentList = FXCollections.observableArrayList();
   //Data
-  private Map<Long, LesxResource> data;
   private LesxResourcesDataModel dataModel = new LesxResourcesDataModel();
   private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
@@ -66,7 +66,6 @@ public class LesxResourcesPaneController extends LesxController {
     dataModel.setMap(LesxMain.getInstance()
         .getDbProperty()
         .getResourceMap());
-    data = dataModel.getMap();
     tree = treePane.getTree();
     table = tablePane.getTable();
     configurateColumns();
@@ -86,7 +85,8 @@ public class LesxResourcesPaneController extends LesxController {
       @Override
       public ObservableValue<String> call(CellDataFeatures<LesxResource, String> data) {
         return new SimpleStringProperty(data.getValue()
-            .getName());
+            .getSolicitud()
+            .toString());
       }
     });
     locations = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_LOCATION"));
@@ -169,7 +169,7 @@ public class LesxResourcesPaneController extends LesxController {
       currentList.setAll(dataModel.getValuesByLocation(location, treePane.isChildrenAlso()));
     }
     else {
-      currentList.setAll(data.values());
+      currentList.setAll(dataModel.getResources());
     }
     table.refresh();
   }
@@ -270,11 +270,11 @@ public class LesxResourcesPaneController extends LesxController {
   }
 
   private void addNewResource(boolean isCreate) {
-    //    LesxSceneController.showAddResourceDialog(this, isCreate, dataModel, () -> {
-    //      pendingChanges.set(true);
-    //      filterTable();
-    //      fillDataOnTree();
-    //    });
+    LesxSceneController.showResourceEditDialog(this, isCreate, dataModel, () -> {
+      pendingChanges.set(true);
+      filterTable();
+      fillDataOnTree();
+    });
   }
 
   @Override

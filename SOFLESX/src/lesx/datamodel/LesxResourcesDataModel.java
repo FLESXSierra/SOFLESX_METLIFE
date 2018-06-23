@@ -1,20 +1,27 @@
 package lesx.datamodel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
 import lesx.property.properties.LesxBusiness;
+import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResource;
 import lesx.utils.LesxMisc;
 import lesx.utils.LesxPair;
 import lesx.utils.LesxString;
 
 public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
+
+  private final static Logger LOGGER = Logger.getLogger(LesxBusinessResourceDataModel.class.getName());
 
   private Map<Long, LesxResource> map;
   private ELesxLocations locationsSelected;
@@ -118,10 +125,6 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
     }
   }
 
-  public LesxResource getResourceSelected() {
-    return resourceSelected;
-  }
-
   public void setResourceSelected(LesxResource resourceSelected) {
     if (resourceSelected != null) {
       this.resourceSelected = resourceSelected.clone();
@@ -133,6 +136,59 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
 
   public LesxPair<LesxResource, LesxBusiness> createResourceBusinessPair() {
     return null;// TODO LesxPair
+  }
+
+  @Override
+  public LesxResource getComponentSelected() {
+    return resourceSelected;
+  }
+
+  @Override
+  public void setComponentSelected(LesxResource component) {
+    resourceSelected = component;
+  }
+
+  @Override
+  public boolean isUniqueProperty(LesxProperty property, Long keyComponent, boolean isCreate) {
+    String name = property.getName();
+    Object newKey = property.getValue();
+    for (Entry<Long, LesxResource> entry : map.entrySet()) {
+      if (LesxMisc.equals(entry.getValue()
+          .getPropertyByName(name)
+          .getValue(), newKey)) {
+        if (isCreate || !entry.getKey()
+            .equals(keyComponent)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public Long createNewKeyForIdProperty() {
+    return (Collections.max(map.keySet()) + 1);
+  }
+
+  public boolean isDuplicate(LesxResource resource, boolean isCreate) {
+    return isCreate ? map.keySet()
+        .contains(resource.getId()) : false;
+  }
+
+  public void addResource(LesxResource resource) {
+    try {
+      final LesxResource temp = resource.clone();
+      map.remove(temp.getId());
+      map.put(temp.getId(), temp);
+      LOGGER.log(Level.INFO, LesxMessage.getMessage("INFO-OBJECT_ADDED", 1));
+    }
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-DATA_MODEL_SAVE", resource.getName(), resource));
+      e.printStackTrace();
+    }
+  }
+
+  public List<LesxResource> getResources() {
+    return (List<LesxResource>) map.values();
   }
 
 }

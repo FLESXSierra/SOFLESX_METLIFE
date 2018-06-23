@@ -3,8 +3,8 @@ TEXT-TITLE_READING_XML = Cargando XML.
 TEXT-TITLE_MAINPAGE_RESOURCES = Clientes.
 TEXT-TITLE_MAINPAGE = FLESX.
 TEXT-TITLE_MAINPAGE_MAIN = FLESX.
-TEXT-TITLE_COSTUMER_DIALOG_CREATE = Crear nuevo Objeto.
-TEXT-TITLE_PRICE_DIALOG_CREATE = Crear nuevo Precio.
+TEXT-TITLE_COMPONENT_DIALOG_CREATE = Crear nuevo Objeto.
+TEXT-TITLE_RESOURCE_DIALOG_CREATE = Crear nuevo Cliente.
 TEXT-TITLE_SELECT_COSTUMER_DIALOG = Selección de Objectos.
 TEXT-TITLE_REPORT_DIALOG_CREATE = Crear nuevo Reporte.
 
@@ -14,14 +14,16 @@ TEXT-BUTTON_CANCEL = Cancelar
 TEXT-EDIT_BUTTON = Editar
 TEXT-BUTTON_ADD = Agregar
 
-TEXT-DESCRIPTION_LABEL_NEW_COSTUMER = Panel de creación de nuevo objeto, por favor llene las propiedades requeridas.
-TEXT-DESCRIPTION_LABEL_EDIT_COSTUMER = Panel de edición de objectos, por favor llene las propiedades requeridas.
+TEXT-DESCRIPTION_LABEL_NEW_COMPONENT = Panel de creación de nuevo objeto, por favor llene las propiedades requeridas.
+TEXT-DESCRIPTION_LABEL_EDIT_COMPONENT = Panel de edición de objectos, por favor llene las propiedades requeridas.
+TEXT-DESCRIPTION_LABEL_NEW_RESOURCE = Panel de creación de nuevo Cliente, por favor llene las propiedades requeridas.
+TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE = Panel de edición de Cliente, por favor llene las propiedades requeridas.
 TEXT-DESCRIPTION_LABEL_NEW_REPORT = Panel de creación de Reporte, por favor llene las propiedades requeridas.
 TEXT-DESCRIPTION_LABEL_EDIT_REPORT = Panel de edición de Reporte, por favor llene las propiedades requeridas.
-TEXT-LOCATION_LABEL_COSTUMER_PANE = Objecto: {0}
 TEXT-DESCRIPTION_LABEL_NEW_PRICE = Panel de creación de nuevo Precios, por favor llene las propiedades requeridas.
 TEXT-DESCRIPTION_LABEL_EDIT_PRICE = Panel de edición de Precios, por favor llene las propiedades requeridas.
-TEXT-HEADER_LABEL_PRICE_PANE = Precio: {0}
+TEXT-HEADER_LABEL_COMPONENT_PANE = Objecto: {0}
+TEXT-HEADER_LABEL_RESOURCE_PANE = Cliente: {0}
 TEXT-HEADER_LABEL_REPORT_PANE = Reporte: {0}
 
 TEXT-PRICE_DIALOG_HEADER = Panel de manejo de precios, puede crear, editar y eliminar precios. \nAsi mismo podrá crear reportes sobre los precios. 
@@ -130,6 +132,7 @@ ERROR-MAIN_CLASS = Un error se ha encontrado en el main class!.
 ERROR-MAIN_ACTIVATE_FXML = Un error se ha encontrado activando una escena.
 
 ERROR-DATA_MODEL_SAVE = A ocurrido un error intentando salvar el objecto {0} : ref. {1}
+ERROR-DATA_MODEL = A ocurrido un error en el data model.
 
 ERROR-LOAD_IMAGE = A ocurrido un error al cargar la imagen deseada: {0}.
 

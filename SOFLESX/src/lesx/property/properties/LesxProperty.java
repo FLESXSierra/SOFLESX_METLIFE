@@ -8,6 +8,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lesx.gui.message.LesxMessage;
+import lesx.utils.LesxMisc;
 
 public class LesxProperty implements Cloneable {
 
@@ -101,6 +102,46 @@ public class LesxProperty implements Cloneable {
 
   public void setVisible(boolean visible) {
     this.visible = visible;
+  }
+
+  public boolean propertyEquals(LesxProperty property) {
+    if (!LesxMisc.equals(this.name, property.getName())) {
+      return false;
+    }
+    if (this.type != property.getType()) {
+      return false;
+    }
+    if (this.mandatory != property.isMandatory()) {
+      return false;
+    }
+    if (this.readOnly != property.isReadOnly()) {
+      return false;
+    }
+    if (this.isValid() != property.isValid()) {
+      return false;
+    }
+    if (this.unique != property.isUnique()) {
+      return false;
+    }
+    if (this.visible != property.isVisible()) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj != null && obj instanceof LesxProperty) {
+      final LesxProperty temp = (LesxProperty) obj;
+      if (!propertyEquals(temp)) {
+        return false;
+      }
+      if (!LesxMisc.equals(this.value.get(), temp.getValue())) {
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 
   @Override

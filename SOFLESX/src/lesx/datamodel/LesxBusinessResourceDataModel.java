@@ -15,6 +15,7 @@ import javafx.scene.control.TreeItem;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.LesxBusiness;
+import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResource;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.utils.LesxPair;
@@ -27,6 +28,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<Le
   private Map<Long, LesxResource> resourceMap;
   private Map<Long, LesxBusiness> businessMap;
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
+  private LesxPair<LesxResource, LesxBusiness> selectedItem;
 
   @Override
   public Map<Long, LesxPair<LesxResource, LesxBusiness>> getMap() {
@@ -92,6 +94,22 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<Le
       }
     }
     return monthLeaf;
+  }
+
+  @Override
+  public LesxPair<LesxResource, LesxBusiness> getComponentSelected() {
+    return selectedItem;
+  }
+
+  @Override
+  public void setComponentSelected(LesxPair<LesxResource, LesxBusiness> component) {
+    selectedItem = component;
+  }
+
+  @Override
+  public boolean isUniqueProperty(LesxProperty property, Long keyComponent, boolean isCreate) {
+    //Nothing
+    return true;
   }
 
 }

@@ -8,7 +8,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.utils.LesxString;
 import lesx.xml.property.LesxBusinessXMLParser;
 
-public class LesxBusiness extends LesxComponent {
+public class LesxBusiness extends LesxComponent implements Cloneable {
 
   private final static Logger LOGGER = Logger.getLogger(LesxResource.class.getName());
 
@@ -73,6 +73,7 @@ public class LesxBusiness extends LesxComponent {
     resource_id.setUnique(true);
     resource_id.setVisible(false);
     setPropertyValues(Arrays.asList(id, resource_id, producto, prima, nbs));
+    setKey(ELesxPropertyKeys.BUSINESS);
   }
 
   public Long getId() {
@@ -117,6 +118,11 @@ public class LesxBusiness extends LesxComponent {
 
   public void setResource_id(Long resource_id) {
     this.resource_id.setValue(resource_id);
+  }
+
+  @Override
+  public LesxBusiness clone() {
+    return (LesxBusiness) super.clone();
   }
 
 }
