@@ -1,9 +1,13 @@
 package lesx.db;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +25,8 @@ public class LesxDBProperties {
   private final static Logger LOGGER = Logger.getLogger(LesxDBProperties.class.getName());
 
   private static Map<Long, Map<Long, ? extends LesxComponent>> dataMap;
+  private static final String NOW = LocalDate.now()
+      .format(DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH));
 
   public LesxDBProperties() {
     dataMap = new HashMap<>();
@@ -108,6 +114,23 @@ public class LesxDBProperties {
     saveThread.start();
     saveThread.setOnSucceeded(obs -> run.run());
     saveThread.setOnFailed(obs -> run.run());
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<String> getBirthdayNames() {
+    LOGGER.log(Level.INFO, "getBirthdayNames");
+    final Map<Long, LesxResource> map = (Map<Long, LesxResource>) dataMap.get(ELesxPropertyKeys.RESOURCE.getValue());
+    final List<String> names = new ArrayList<>();
+    if (!LesxMisc.isEmpty(map)) {
+      for (Entry<Long, LesxResource> entry : map.entrySet()) {
+        if (NOW.equals(entry.getValue()
+            .getBirthday())) {
+          names.add(entry.getValue()
+              .getName());
+        }
+      }
+    }
+    return names;
   }
 
 }

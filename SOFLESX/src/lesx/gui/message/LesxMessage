@@ -129,7 +129,9 @@ ERROR-CAST_XML_DATA_SAVE = ¡Error! La clase '{0}' no es soportada por el caso de
 ERROR-MAIN_CLASS = Un error se ha encontrado en el main class!.
 ERROR-MAIN_ACTIVATE_FXML = Un error se ha encontrado activando una escena.
 
-ERROR-DATA_MODEL_SAVE = A ocurredo un error intentando salvar el objecto {0} : ref. {1}
+ERROR-DATA_MODEL_SAVE = A ocurrido un error intentando salvar el objecto {0} : ref. {1}
+
+ERROR-LOAD_IMAGE = A ocurrido un error al cargar la imagen deseada: {0}.
 
 ERROR-PROPERTY_UTILS_PARSING = Error al convertir {0} el objecto con valor '{1}'.
 ERROR-PROPERTY_NOT_CLONNABLE = Error al tratar de clonar la property '{0}'.

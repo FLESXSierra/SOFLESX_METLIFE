@@ -8,8 +8,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
@@ -20,13 +18,11 @@ import lesx.datamodel.LesxBusinessResourceDataModel;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
-import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxResource;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxTreeTableViewPane;
 import lesx.ui.soflesx.LesxMain;
-import lesx.utils.LesxPair;
 
 public class LesxMainPaneController extends LesxController {
 
@@ -53,7 +49,6 @@ public class LesxMainPaneController extends LesxController {
   private Map<Long, LesxResource> dataResource;
   private LesxResourcesDataModel dataModelResource = new LesxResourcesDataModel();
   private LesxBusinessResourceDataModel dataModel = new LesxBusinessResourceDataModel();
-  private ObservableList<LesxPair<LesxResource, LesxBusiness>> currentList = FXCollections.observableArrayList();
   private IntegerProperty year = new SimpleIntegerProperty();
 
   @FXML

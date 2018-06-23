@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -23,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import lesx.gui.message.LesxMessage;
 import lesx.scene.controller.LesxController;
+import lesx.ui.components.LesxBirthdayButton;
 import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxString;
 
@@ -56,7 +56,7 @@ public class LesxMainPageController extends LesxController {
   @FXML
   MenuBar menu;
   @FXML
-  Button bButton;
+  LesxBirthdayButton bButton;
   @FXML
   AnchorPane mainPane;
   @FXML
@@ -112,6 +112,9 @@ public class LesxMainPageController extends LesxController {
     exportXML.setOnAction(obs -> exportXML());
     main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
     resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
+    bButton.setNames(LesxMain.getInstance()
+        .getDbProperty()
+        .getBirthdayNames());
   }
 
   /**

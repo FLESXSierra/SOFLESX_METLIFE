@@ -5,6 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import lesx.ui.components.LesxBirthdayButton?>
 
 <AnchorPane prefHeight="680.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lesx.ui.mainpage.LesxMainPageController">
    <children>
@@ -38,7 +39,7 @@
                         </Menu>
                      </menus>
                   </MenuBar>
-                  <Button fx:id="bButton" mnemonicParsing="false" text="icon" />
+                  <LesxBirthdayButton fx:id="bButton" mnemonicParsing="false" />
                </children>
             </HBox>
          </top>

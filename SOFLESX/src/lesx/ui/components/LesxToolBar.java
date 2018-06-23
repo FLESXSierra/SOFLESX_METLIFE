@@ -29,6 +29,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import lesx.gui.message.LesxMessage;
+import lesx.icon.utils.LesxIcon;
 import lesx.property.properties.ELesxActions;
 import lesx.property.properties.ELesxUseCase;
 import lesx.utils.LesxMisc;
@@ -49,6 +50,14 @@ public class LesxToolBar extends ToolBar {
   private EventHandler<ActionEvent> addAction;
   private EventHandler<ActionEvent> childrenAction;
 
+  private enum buttonType {
+    DESELECT,
+    EDIT,
+    DELETE,
+    ADD,
+    CHILDREN
+  };
+
   private BooleanProperty selectedItem = new SimpleBooleanProperty(this, "selectedItem", false);
   private BooleanProperty selectedFilterTable = new SimpleBooleanProperty(this, "selectedFilterTable", true);
 
@@ -57,15 +66,39 @@ public class LesxToolBar extends ToolBar {
   public LesxToolBar(ELesxUseCase useCase) {
     actions = new HashMap<>();
     deselect = new Button();
-    deselect.setText(LesxMessage.getMessage("TEXT-DESELECT_BUTTON"));
+    deselect.setGraphic(LesxIcon.getImage(LesxIcon.ERASE));
+    deselect.setText(null);
+    deselect.setTooltip(generateToolTip(buttonType.DESELECT));
     deselect.disableProperty()
         .bind(Bindings.not(selectedItem));
     buildButtons(useCase);
   }
 
-  private Tooltip createTooltip(String message) {
+  private Tooltip generateToolTip(buttonType type) {
     Tooltip tool = new Tooltip();
-    tool.setText(message);
+    StringBuilder text = new StringBuilder();
+    switch (type) {
+      case DESELECT:
+        text.append(LesxMessage.getMessage("TEXT-DESELECT_BUTTON"));
+        break;
+      case ADD:
+        text.append(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
+        break;
+      case CHILDREN:
+        text.append(LesxMessage.getMessage("TEXT-SELECT_CHILDREN_BUTTON"));
+        text.append("\n");
+        text.append(LesxMessage.getMessage("TEXT-TOOLTIP_SELECT_CHILDREN"));
+        break;
+      case DELETE:
+        text.append(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
+        break;
+      case EDIT:
+        text.append(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
+        break;
+      default:
+        break;
+    }
+    tool.setText(text.toString());
     tool.setWrapText(true);
     tool.setMaxWidth(400);
     return tool;
@@ -140,27 +173,15 @@ public class LesxToolBar extends ToolBar {
     actions.put(ACTIONS_DESELECT, deselectAction);
     switch (useCase) {
       case UC_TREE:
-        children = new ToggleButton();
-        children.setText(LesxMessage.getMessage("TEXT-SELECT_CHILDREN_BUTTON"));
-        children.setTooltip(createTooltip(LesxMessage.getMessage("TEXT-TOOLTIP_SELECT_CHILDREN")));
-        children.setSelected(true);
+        buildChildrenButton();
         buttons = Arrays.asList(deselect, children);
         actions.put(ACTIONS_CHILDREN, childrenAction);
         break;
       case UC_TREE_MODIFY:
       case UC_TABLE:
-        delete = new Button();
-        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
-        delete.disableProperty()
-            .bind(Bindings.not(selectedItem));
-        add = new Button();
-        add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
-        add.disableProperty()
-            .bind(Bindings.not(selectedFilterTable));
-        edit = new Button();
-        edit.setText(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
-        edit.disableProperty()
-            .bind(Bindings.not(selectedItem));
+        buildDeleteButton();
+        buildAddButton();
+        buildEditButton();
         buttons = Arrays.asList(deselect, add, edit, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
         actions.put(ACTIONS_ADD, addAction);
@@ -170,40 +191,22 @@ public class LesxToolBar extends ToolBar {
         buttons = Arrays.asList(deselect);
         break;
       case UC_ADD_REMOVE_ONLY:
-        delete = new Button();
-        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
-        delete.disableProperty()
-            .bind(Bindings.not(selectedItem));
-        add = new Button();
-        add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
-        add.disableProperty()
-            .bind(Bindings.not(selectedFilterTable));
+        buildDeleteButton();
+        buildAddButton();
         buttons = Arrays.asList(deselect, add, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
         actions.put(ACTIONS_ADD, addAction);
         break;
       case UC_DELETE_ONLY:
-        delete = new Button();
-        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
-        delete.disableProperty()
-            .bind(Bindings.not(selectedItem));
+        buildDeleteButton();
         buttons = Arrays.asList(deselect, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
         break;
       case UC_RESOURCES:
-        delete = new Button();
-        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
-        delete.disableProperty()
-            .bind(Bindings.not(selectedItem));
-        add = new Button();
-        add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
-        add.disableProperty()
-            .bind(Bindings.not(selectedFilterTable));
+        buildDeleteButton();
+        buildAddButton();
         //TODO Add new Button for add business
-        edit = new Button();
-        edit.setText(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
-        edit.disableProperty()
-            .bind(Bindings.not(selectedItem));
+        buildEditButton();
         buttons = Arrays.asList(deselect, add, edit, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
         actions.put(ACTIONS_ADD, addAction);
@@ -216,19 +219,10 @@ public class LesxToolBar extends ToolBar {
             .addAll(generateYears());
         year.setValue(LocalDate.now()
             .getYear());
-        delete = new Button();
-        delete.setText(LesxMessage.getMessage("TEXT-DELETE_BUTTON"));
-        delete.disableProperty()
-            .bind(Bindings.not(selectedItem));
-        add = new Button();
-        add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
-        add.disableProperty()
-            .bind(Bindings.not(selectedFilterTable));
+        buildDeleteButton();
+        buildAddButton();
         //TODO Add new Button for add business
-        edit = new Button();
-        edit.setText(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
-        edit.disableProperty()
-            .bind(Bindings.not(selectedItem));
+        buildEditButton();
         buttons = Arrays.asList(deselect, add, edit, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
         actions.put(ACTIONS_ADD, addAction);
@@ -281,6 +275,41 @@ public class LesxToolBar extends ToolBar {
 
   public ObjectProperty<Integer> yearProperty() {
     return year.valueProperty();
+  }
+
+  private void buildAddButton() {
+    add = new Button();
+    add.setText(null);
+    add.setGraphic(LesxIcon.getImage(LesxIcon.ADD));
+    add.setTooltip(generateToolTip(buttonType.ADD));
+    add.disableProperty()
+        .bind(Bindings.not(selectedFilterTable));
+  }
+
+  private void buildChildrenButton() {
+    children = new ToggleButton();
+    children.setText(null);
+    children.setGraphic(LesxIcon.getImage(LesxIcon.CHILDREN));
+    children.setTooltip(generateToolTip(buttonType.CHILDREN));
+    children.setSelected(true);
+  }
+
+  private void buildDeleteButton() {
+    delete = new Button();
+    delete.setText(null);
+    delete.setGraphic(LesxIcon.getImage(LesxIcon.DELETE));
+    delete.setTooltip(generateToolTip(buttonType.DELETE));
+    delete.disableProperty()
+        .bind(Bindings.not(selectedItem));
+  }
+
+  private void buildEditButton() {
+    edit = new Button();
+    edit.setText(null);
+    edit.setGraphic(LesxIcon.getImage(LesxIcon.EDIT));
+    edit.setTooltip(generateToolTip(buttonType.EDIT));
+    edit.disableProperty()
+        .bind(Bindings.not(selectedItem));
   }
 
 }
