@@ -3,12 +3,12 @@ package lesx.scene.controller;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lesx.gui.message.LesxMessage;
+import lesx.utils.LesxAlertBuilder;
 
 public class LesxController {
   private String title;
@@ -73,11 +73,12 @@ public class LesxController {
       public void handle(WindowEvent event) {
         onCloseWindow();
         if (showAlert) {
-          Alert alert = new Alert(AlertType.CONFIRMATION);
-          alert.setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_ON_EXIT_STAGE"));
-          alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_ON_EXIT_STAGE"));
-          alert.initOwner(primaryStage);
-          ButtonType result = alert.showAndWait()
+          ButtonType result = LesxAlertBuilder.create()
+              .setType(AlertType.CONFIRMATION)
+              .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_ON_EXIT_STAGE"))
+              .setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_ON_EXIT_STAGE"))
+              .setOwner(primaryStage)
+              .showAndWait()
               .orElse(null);
           if (result == ButtonType.CANCEL) {
             event.consume();

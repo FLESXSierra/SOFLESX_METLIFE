@@ -15,16 +15,10 @@ public enum ELesxPropertyKeys {
       return LesxString.ELEMENT_XML_PRICE;
     }
   },
-  REPORT_TREE(2L) {
+  RESOURCE_BUSINESS(2L) {
     @Override
     public String toString() {
-      return LesxString.ELEMENT_XML_REPORT_TREE;
-    }
-  },
-  REPORT_ELEMENT(3L) {
-    @Override
-    public String toString() {
-      return LesxString.ELEMENT_XML_REPORT_ELEMENT;
+      return "Cliente-Negocio";
     }
   };
 

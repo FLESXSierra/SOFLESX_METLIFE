@@ -5,7 +5,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -18,6 +17,8 @@ import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxProperty;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxPropertySheet;
+import lesx.utils.LesxAlertBuilder;
+import lesx.utils.LesxButtonType;
 
 public class LesxEditComponentDialog extends LesxController {
 
@@ -115,16 +116,14 @@ public class LesxEditComponentDialog extends LesxController {
         header.append(LesxMessage.getMessage("TEXT-ALERT_DIALOG_HEADER_ERROR"));
         header.append("\n");
         header.append(LesxMessage.getMessage("TEXT-ALERT_DIALOG_CONTEXT_ERROR"));
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.initOwner(getWindow());
-        alert.setTitle(LesxMessage.getMessage("TEXT-ALERT_DIALOG_TITLE_ERROR"));
-        alert.setHeaderText(header.toString());
-        alert.setContentText(issues.toString());
-        alert.getButtonTypes()
-            .clear();
-        alert.getButtonTypes()
-            .addAll(ButtonType.OK);
-        alert.showAndWait();
+        LesxAlertBuilder.create()
+            .setOwner(getWindow())
+            .setType(AlertType.ERROR)
+            .setTitle(LesxMessage.getMessage("TEXT-ALERT_DIALOG_TITLE_ERROR"))
+            .setHeaderText(header.toString())
+            .setContentText(issues.toString())
+            .setButtons(ButtonType.OK)
+            .showAndWait();
       }
       else {
         saveValues();
@@ -137,25 +136,20 @@ public class LesxEditComponentDialog extends LesxController {
 
   private void closeDialog() {
     if (pendingChanges.get()) {
-      ButtonType save = new ButtonType(LesxMessage.getMessage("TEXT-SAVE_BUTTON"));
-      ButtonType dontSave = new ButtonType(LesxMessage.getMessage("TEXT-NO_SAVE_BUTTON"));
-      ButtonType cancel = new ButtonType(LesxMessage.getMessage("TEXT-CANCEL_BUTTON"));
       String name = getComponentName();
-      Alert alert = new Alert(AlertType.WARNING);
-      alert.initOwner(getWindow());
-      alert.setTitle(LesxMessage.getMessage("TEXT-ALERT_DIALOG_TITLE_PENDING_SAVES"));
-      alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_DIALOG_HEADER_PENDING_SAVES"));
-      alert.setContentText(LesxMessage.getMessage("TEXT-ALERT_DIALOG_CONTEXT_PENDING_SAVES", name));
-      alert.getButtonTypes()
-          .clear();
-      alert.getButtonTypes()
-          .addAll(save, dontSave, cancel);
-      ButtonType result = alert.showAndWait()
+      ButtonType result = LesxAlertBuilder.create()
+          .setOwner(getWindow())
+          .setType(AlertType.WARNING)
+          .setTitle(LesxMessage.getMessage("TEXT-ALERT_DIALOG_TITLE_PENDING_SAVES"))
+          .setHeaderText(LesxMessage.getMessage("TEXT-ALERT_DIALOG_HEADER_PENDING_SAVES"))
+          .setContentText(LesxMessage.getMessage("TEXT-ALERT_DIALOG_CONTEXT_PENDING_SAVES", name))
+          .setButtons(LesxButtonType.SAVE, LesxButtonType.DONT_SAVE, LesxButtonType.CANCEL)
+          .showAndWait()
           .orElse(null);
-      if (save.equals(result)) {
+      if (LesxButtonType.SAVE.equals(result)) {
         save();
       }
-      else if (dontSave.equals(result)) {
+      else if (LesxButtonType.DONT_SAVE.equals(result)) {
         closeProperty.set(true);
       }
     }

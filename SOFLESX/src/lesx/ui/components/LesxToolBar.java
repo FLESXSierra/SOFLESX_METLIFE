@@ -1,10 +1,12 @@
 package lesx.ui.components;
 
 import static lesx.property.properties.ELesxActions.ACTIONS_ADD;
+import static lesx.property.properties.ELesxActions.ACTIONS_ADD_SELL;
 import static lesx.property.properties.ELesxActions.ACTIONS_CHILDREN;
 import static lesx.property.properties.ELesxActions.ACTIONS_DELETE;
 import static lesx.property.properties.ELesxActions.ACTIONS_DESELECT;
 import static lesx.property.properties.ELesxActions.ACTIONS_EDIT;
+import static lesx.property.properties.ELesxActions.ACTIONS_EDIT_SELL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class LesxToolBar extends ToolBar {
   private Button delete;
   private Button add;
   private Button edit;
+  private Button sell;
+  private Button editSell;
   private ToggleButton children;
   private ComboBox<Integer> year;
 
@@ -49,13 +53,17 @@ public class LesxToolBar extends ToolBar {
   private EventHandler<ActionEvent> deleteAction;
   private EventHandler<ActionEvent> addAction;
   private EventHandler<ActionEvent> childrenAction;
+  private EventHandler<ActionEvent> sellAction;
+  private EventHandler<ActionEvent> editSellAction;
 
   private enum buttonType {
     DESELECT,
     EDIT,
     DELETE,
     ADD,
-    CHILDREN
+    CHILDREN,
+    SELL,
+    EDIT_SELL
   };
 
   private BooleanProperty selectedItem = new SimpleBooleanProperty(this, "selectedItem", false);
@@ -94,6 +102,12 @@ public class LesxToolBar extends ToolBar {
         break;
       case EDIT:
         text.append(LesxMessage.getMessage("TEXT-EDIT_BUTTON"));
+        break;
+      case SELL:
+        text.append(LesxMessage.getMessage("TEXT-SELL_BUTTON"));
+        break;
+      case EDIT_SELL:
+        text.append(LesxMessage.getMessage("TEXT-EDIT_SELL_BUTTON"));
         break;
       default:
         break;
@@ -154,6 +168,12 @@ public class LesxToolBar extends ToolBar {
         case ACTIONS_EDIT:
           edit.setOnAction(entry.getValue());
           break;
+        case ACTIONS_ADD_SELL:
+          sell.setOnAction(entry.getValue());
+          break;
+        case ACTIONS_EDIT_SELL:
+          editSell.setOnAction(entry.getValue());
+          break;
       }
     }
   }
@@ -205,7 +225,6 @@ public class LesxToolBar extends ToolBar {
       case UC_RESOURCES:
         buildDeleteButton();
         buildAddButton();
-        //TODO Add new Button for add business
         buildEditButton();
         buttons = Arrays.asList(deselect, add, edit, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
@@ -220,13 +239,12 @@ public class LesxToolBar extends ToolBar {
         year.setValue(LocalDate.now()
             .getYear());
         buildDeleteButton();
-        buildAddButton();
-        //TODO Add new Button for add business
-        buildEditButton();
-        buttons = Arrays.asList(deselect, add, edit, delete);
+        buildSellButton();
+        buildEditSellButton();
+        buttons = Arrays.asList(deselect, sell, editSell, delete);
         actions.put(ACTIONS_DELETE, deleteAction);
-        actions.put(ACTIONS_ADD, addAction);
-        actions.put(ACTIONS_EDIT, editAction);
+        actions.put(ACTIONS_ADD_SELL, sellAction);
+        actions.put(ACTIONS_EDIT_SELL, editSellAction);
         break;
       default:
         break;
@@ -270,6 +288,12 @@ public class LesxToolBar extends ToolBar {
       case ACTIONS_EDIT:
         edit.setOnAction(null);
         break;
+      case ACTIONS_ADD_SELL:
+        sell.setOnAction(null);
+        break;
+      case ACTIONS_EDIT_SELL:
+        editSell.setOnAction(null);
+        break;
     }
   }
 
@@ -309,6 +333,22 @@ public class LesxToolBar extends ToolBar {
     edit.setGraphic(LesxIcon.getImage(LesxIcon.EDIT));
     edit.setTooltip(generateToolTip(buttonType.EDIT));
     edit.disableProperty()
+        .bind(Bindings.not(selectedItem));
+  }
+
+  private void buildSellButton() {
+    sell = new Button();
+    sell.setText(null);
+    sell.setTooltip(generateToolTip(buttonType.SELL));
+    sell.setGraphic(LesxIcon.getImage(LesxIcon.SELL));
+  }
+
+  private void buildEditSellButton() {
+    editSell = new Button();
+    editSell.setText(null);
+    editSell.setTooltip(generateToolTip(buttonType.SELL));
+    editSell.setGraphic(LesxIcon.getImage(LesxIcon.EDIT_SELL));
+    editSell.disableProperty()
         .bind(Bindings.not(selectedItem));
   }
 

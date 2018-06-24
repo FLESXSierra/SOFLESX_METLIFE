@@ -1,6 +1,7 @@
 package lesx.property.properties;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +42,33 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     producto.setValue(ELesxProductType.valueOf(parse.getProducto()));
     prima.setValue(parse.getPrima());
     nbs.setValue(parse.getNbs());
+  }
+
+  /**
+   * Constructor to create property on the property sheet
+   *
+   * @param properties List of edited properties
+   */
+  public LesxBusiness(Collection<LesxProperty> properties) {
+    initializeProperty();
+    for (LesxProperty property : properties) {
+      if (id.propertyEquals(property)) {
+        id.setValue(property.getValue());
+      }
+      if (producto.propertyEquals(property)) {
+        producto.setValue(property.getValue());
+      }
+      if (prima.propertyEquals(property)) {
+        prima.setValue(property.getValue());
+      }
+      if (nbs.propertyEquals(property)) {
+        nbs.setValue(property.getValue());
+      }
+      if (resource_id.propertyEquals(property)) {
+        resource_id.setValue(property.getValue());
+      }
+    }
+    setPropertyValues(Arrays.asList(id, resource_id, producto, prima, nbs));
   }
 
   private void initializeProperty() {

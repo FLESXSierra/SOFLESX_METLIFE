@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxActions;
 import lesx.property.properties.ELesxUseCase;
+import lesx.utils.LesxAlertBuilder;
 
 public class LesxTreeTableViewPane<T> extends VBox {
 
@@ -67,7 +68,7 @@ public class LesxTreeTableViewPane<T> extends VBox {
       mapActions.remove(action);
       EventHandler<ActionEvent> actionHandler;
       switch (action) {
-        case ACTIONS_ADD:
+        case ACTIONS_ADD_SELL:
           actionHandler = s -> addNewItem.accept(true);
           break;
         case ACTIONS_DELETE:
@@ -77,7 +78,7 @@ public class LesxTreeTableViewPane<T> extends VBox {
           actionHandler = s -> table.getSelectionModel()
               .clearSelection();
           break;
-        case ACTIONS_EDIT:
+        case ACTIONS_EDIT_SELL:
           actionHandler = s -> addNewItem.accept(false);
           break;
         default:
@@ -96,15 +97,19 @@ public class LesxTreeTableViewPane<T> extends VBox {
       List<TreeItem<T>> temp = new ArrayList<>(table.getSelectionModel()
           .getSelectedItems());
       if (temp != null && !temp.isEmpty()) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_TITLE"));
+        Alert alert = LesxAlertBuilder.create()
+            .setType(AlertType.CONFIRMATION)
+            .setTitle(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_TITLE"))
+            .getAlert();
         if (useCase == ELesxUseCase.UC_ADD_REMOVE_ONLY || useCase == ELesxUseCase.UC_DELETE_ONLY || temp.size() > 1) {
           alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_DELETE_OBJECTS_HEADER", table.getSelectionModel()
               .getSelectedItems()
               .size()));
         }
         else {
-          alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_DELETE_HEADER", temp.toString()));
+          alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_DELETE_HEADER", temp.get(0)
+              .getValue()
+              .toString()));
         }
         ButtonType result = alert.showAndWait()
             .orElse(null);
@@ -161,6 +166,10 @@ public class LesxTreeTableViewPane<T> extends VBox {
 
   public ObjectProperty<Integer> yearProperty() {
     return toolBar.yearProperty();
+  }
+
+  public boolean isSelectedResourceBusinessItem() {
+    return selectedItemTable.get();
   }
 
 }

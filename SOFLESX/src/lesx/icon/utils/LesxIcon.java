@@ -21,6 +21,9 @@ public class LesxIcon {
   public static String PEOPLE = "/lesx/icon/people.png";
   public static String PRESENT = "/lesx/icon/gift.png";
   public static String PARTY = "/lesx/icon/party.png";
+  public static String SELL = "/lesx/icon/sell.png";
+  public static String EDIT_SELL = "/lesx/icon/editSell.png";
+  public static String MONEY = "/lesx/icon/money.png";
 
   public static ImageView getImage(String path) {
     ImageView imageView = null;

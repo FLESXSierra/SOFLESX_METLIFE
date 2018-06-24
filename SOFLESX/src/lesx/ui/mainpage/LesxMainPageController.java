@@ -11,7 +11,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -24,6 +23,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxBirthdayButton;
 import lesx.ui.soflesx.LesxMain;
+import lesx.utils.LesxAlertBuilder;
 import lesx.utils.LesxString;
 
 public class LesxMainPageController extends LesxController {
@@ -139,9 +139,10 @@ public class LesxMainPageController extends LesxController {
       }
       catch (FileAlreadyExistsException e) {
         LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setHeaderText(LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
-        alert.show();
+        LesxAlertBuilder.create()
+            .setType(AlertType.WARNING)
+            .setHeaderText(LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"))
+            .show();
       }
       catch (IOException ex) {
         LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-EXPORT_XMLS"), ex);

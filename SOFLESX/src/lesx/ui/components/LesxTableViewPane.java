@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxActions;
 import lesx.property.properties.ELesxUseCase;
+import lesx.utils.LesxAlertBuilder;
 
 public class LesxTableViewPane<T> extends VBox {
 
@@ -97,8 +98,10 @@ public class LesxTableViewPane<T> extends VBox {
       List<T> temp = table.getSelectionModel()
           .getSelectedItems();
       if (temp != null && !temp.isEmpty()) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_TITLE"));
+        Alert alert = LesxAlertBuilder.create()
+            .setType(AlertType.CONFIRMATION)
+            .setTitle(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_TITLE"))
+            .getAlert();
         if (useCase == ELesxUseCase.UC_ADD_REMOVE_ONLY || useCase == ELesxUseCase.UC_DELETE_ONLY) {
           alert.setHeaderText(LesxMessage.getMessage("TEXT-ALERT_CONFIRMATION_DELETE_OBJECTS_HEADER", table.getSelectionModel()
               .getSelectedItems()

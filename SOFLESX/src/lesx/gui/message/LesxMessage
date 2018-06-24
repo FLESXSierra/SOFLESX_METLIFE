@@ -12,7 +12,17 @@ TEXT-BUTTON_OK = Ok
 TEXT-BUTTON_APPLY = Aplicar
 TEXT-BUTTON_CANCEL = Cancelar
 TEXT-EDIT_BUTTON = Editar
-TEXT-BUTTON_ADD = Agregar
+TEXT-DESELECT_BUTTON = Deseleccionar
+TEXT-ADD_BUTTON = Agregar
+TEXT-DELETE_BUTTON = Eliminar
+TEXT-SELECT_CHILDREN_BUTTON = Children
+TEXT-SAVE_BUTTON = Guardar
+TEXT-NO_SAVE_BUTTON = No guardar 
+TEXT-CANCEL_BUTTON = Cancelar
+TEXT-SELL_BUTTON = Nueva Venta
+TEXT-EXISTENT_SELL_BUTTON = Venta a cliente existente
+TEXT-NEW_SELL_BUTTON = Venta a nuevo cliente
+TEXT-EDIT_SELL_BUTTON = Editar Venta
 
 TEXT-DESCRIPTION_LABEL_NEW_COMPONENT = Panel de creación de nuevo objeto, por favor llene las propiedades requeridas.
 TEXT-DESCRIPTION_LABEL_EDIT_COMPONENT = Panel de edición de objectos, por favor llene las propiedades requeridas.
@@ -54,13 +64,6 @@ TEXT-COLUMN_NAME_COMISION = Comisión
 TEXT-COLUMN_NAME_MONTH = Mes
 
 TEXT-HEADER_READING_XML = Por favor espere mientras el archivo XML se carga.
-TEXT-DESELECT_BUTTON = Deseleccionar
-TEXT-ADD_BUTTON = Agregar
-TEXT-DELETE_BUTTON = Eliminar
-TEXT-SELECT_CHILDREN_BUTTON = Children
-TEXT-SAVE_BUTTON = Guardar
-TEXT-NO_SAVE_BUTTON = No guardar 
-TEXT-CANCEL_BUTTON = Cancelar
 
 TEXT-MENUITEM_FILE_SAVE = Guardar FLESX
 TEXT-MENUITEM_EXPORT_SAVE = Exportart FLESX
@@ -88,10 +91,10 @@ TEXT-FUNCTION_SUM = Sumatoria.
 TEXT-FUNCTION_PERIOD = Por periodo.
 TEXT-FUNCTION_END_MONTH = Final de mes.
 
+
 TEXT-ALERT_DIALOG_TITLE_PENDING_SAVES = ¡Hay cambios pendiendes por guardar!
 TEXT-ALERT_DIALOG_HEADER_PENDING_SAVES = ¡Hemos encontrado cambios pendientes sin guardar!
 TEXT-ALERT_DIALOG_CONTEXT_PENDING_SAVES = El objecto '{0}' tiene cambios por guardar, ¿está seguro de cerrar esta ventana sin guardar?
-
 TEXT-ALERT_DIALOG_CONTEXT_ERROR = Por favor revise los siguientes problemas:
 TEXT-INVALID_PROPERTY_ISSUE = Hay objectos que no cumplen con los requerimientos necesarios para ser guardados.
 TEXT-DUPLICATE_PROPERTY_ISSUE = El objecto con ID: '{0}', tiene una propiedad duplicada.
@@ -105,6 +108,8 @@ TEXT-ALERT_HEADER_ON_EXIT_STAGE = ¿Esta seguro de cerrar esta ventana?\nLos camb
 TEXT-ALERT_TITLE_ON_EXIT_STAGE = Salir.
 TEXT-ALERT_DIALOG_CONTEXT_REPORT_TREE_SELECT_NULL = No se puede agregar objectos si no se ecuentra seleccionado un reporte en el árbol.
 TEXT-ALERT_DIALOG_CONTEXT_REPORT_FUNCTION_SELECT_NULL = No se puede editar la función si no se ecuentra seleccionada una previamente en la tabla.
+TEXT-ALERT_TITLE_NEW_SALE = Nuevo Cliente o Ya existente.
+TEXT-ALERT_HEADER_NEW_SALE = ¿Desea agregar una nueva venta a un cliente nuevo o ya existente?
 
 TEXT-REPORT_TITLE = Reportes.
 TEXT-REPORT_BUILDER_HEADER = Generador de reportes, agregue o edite reportes.\nUse el árbol de reportes para crear categorias y guardar reportes para usar a futuro.

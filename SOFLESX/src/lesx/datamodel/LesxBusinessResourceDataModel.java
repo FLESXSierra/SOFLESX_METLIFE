@@ -3,71 +3,41 @@ package lesx.datamodel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.control.TreeItem;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
-import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxProperty;
-import lesx.property.properties.LesxResource;
 import lesx.property.properties.LesxResourceBusiness;
-import lesx.utils.LesxPair;
 
-public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<LesxResource, LesxBusiness>> {
+public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourceBusiness> {
 
   private final static Logger LOGGER = Logger.getLogger(LesxBusinessResourceDataModel.class.getName());
 
-  private Map<Long, LesxPair<LesxResource, LesxBusiness>> map = new HashMap<>();
-  private Map<Long, LesxResource> resourceMap;
-  private Map<Long, LesxBusiness> businessMap;
+  private Map<Long, LesxResourceBusiness> map = new HashMap<>();
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
-  private LesxPair<LesxResource, LesxBusiness> selectedItem;
+  private LesxResourceBusiness selectedItem;
 
   @Override
-  public Map<Long, LesxPair<LesxResource, LesxBusiness>> getMap() {
+  public Map<Long, LesxResourceBusiness> getMap() {
     return map;
   }
 
   @Override
-  public void setMap(Map<Long, LesxPair<LesxResource, LesxBusiness>> map) {
+  public void setMap(Map<Long, LesxResourceBusiness> map) {
     this.map = map;
 
   }
 
-  public void setResourceMap(Map<Long, LesxResource> resourceMap) {
-    this.resourceMap = resourceMap;
-  }
-
-  public void setBusinessMap(Map<Long, LesxBusiness> businessMap) {
-    this.businessMap = businessMap;
-  }
-
-  public void buildResourceBusinessPairs() {
-    map.clear();
-    if (resourceMap != null && businessMap != null) {
-      for (Entry<Long, LesxBusiness> entry : businessMap.entrySet()) {
-        if (resourceMap.keySet()
-            .contains(entry.getValue()
-                .getResource_id())) {
-          map.put(entry.getKey(), LesxPair.of(resourceMap.get(entry.getValue()
-              .getResource_id()), entry.getValue()));
-        }
-      }
-    }
-    else {
-      LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_DATAMODEL"));
-    }
-  }
-
-  public List<LesxPair<LesxResource, LesxBusiness>> getPairList() {
-    List<LesxPair<LesxResource, LesxBusiness>> result = new ArrayList<>();
+  public List<LesxResourceBusiness> getResourceBusinessList() {
+    List<LesxResourceBusiness> result = new ArrayList<>();
     if (!map.isEmpty()) {
       result.addAll(map.values());
     }
@@ -81,15 +51,20 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<Le
 
   public TreeItem<LesxResourceBusiness> getTreeItem(ELesxMonth month, Integer year) {
     LesxResourceBusiness monthRes = new LesxResourceBusiness();
+    monthRes.getBusiness()
+        .setNbs(null);
+    monthRes.getBusiness()
+        .setPrima(null);
     monthRes.setMonth(month.toString());
     TreeItem<LesxResourceBusiness> monthLeaf = new TreeItem<>(monthRes);
     if (year != null) {
-      for (LesxPair<LesxResource, LesxBusiness> pair : getPairList()) {
-        LocalDate date = LocalDate.parse(pair.getFirst()
+      for (LesxResourceBusiness pair : getResourceBusinessList()) {
+        LocalDate date = LocalDate.parse(pair.getResource()
             .getRegistration_date(), formatter);
         if ((month.getKey() + 1) == date.getMonthValue() && date.getYear() == year) {
+          pair.setMonth(month.toString());
           monthLeaf.getChildren()
-              .add(new TreeItem<>(LesxResourceBusiness.of(pair.getFirst(), pair.getSecond())));
+              .add(new TreeItem<>(LesxResourceBusiness.of(pair.getResource(), pair.getBusiness())));
         }
       }
     }
@@ -97,19 +72,52 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxPair<Le
   }
 
   @Override
-  public LesxPair<LesxResource, LesxBusiness> getComponentSelected() {
+  public LesxResourceBusiness getComponentSelected() {
     return selectedItem;
   }
 
   @Override
-  public void setComponentSelected(LesxPair<LesxResource, LesxBusiness> component) {
+  public void setComponentSelected(LesxResourceBusiness component) {
     selectedItem = component;
   }
 
+  /**
+   * Only applies for Business map
+   */
   @Override
   public boolean isUniqueProperty(LesxProperty property, Long keyComponent, boolean isCreate) {
     //Nothing
     return true;
+  }
+
+  public void addResourceBusiness(LesxResourceBusiness resourceBusiness) {
+    try {
+      final LesxResourceBusiness temp = resourceBusiness.clone();
+      map.remove(temp.getBusiness()
+          .getId());
+      map.put(temp.getBusiness()
+          .getId(), temp);
+      LOGGER.log(Level.INFO, LesxMessage.getMessage("INFO-OBJECT_ADDED", 1));
+    }
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-DATA_MODEL_SAVE", resourceBusiness.getResource()
+          .getName(), resourceBusiness));
+      e.printStackTrace();
+    }
+  }
+
+  public Long createNewKeyForBusinessIdProperty() {
+    return (Collections.max(map.keySet()) + 1);
+  }
+
+  public boolean isDuplicate(LesxResourceBusiness resourceBusiness, boolean isCreate) {
+    return isCreate && map.values()
+        .contains(resourceBusiness);
+  }
+
+  public void deleteSelectedCostumer() {
+    // TODO Auto-generated method stub
+
   }
 
 }

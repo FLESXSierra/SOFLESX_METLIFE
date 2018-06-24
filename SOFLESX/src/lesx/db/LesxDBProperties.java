@@ -17,6 +17,7 @@ import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxResource;
+import lesx.property.properties.LesxResourceBusiness;
 import lesx.utils.LesxMisc;
 import lesx.xml.thread.LesxXMLSaveData;
 
@@ -24,22 +25,27 @@ public class LesxDBProperties {
 
   private final static Logger LOGGER = Logger.getLogger(LesxDBProperties.class.getName());
 
-  private static Map<Long, Map<Long, ? extends LesxComponent>> dataMap;
+  private Map<Long, Map<Long, ? extends LesxComponent>> dataMap;
+  private Map<Long, LesxResourceBusiness> mapRB;
+  private boolean businessResourceMapBuild;
   private static final String NOW = LocalDate.now()
       .format(DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH));
 
   public LesxDBProperties() {
     dataMap = new HashMap<>();
+    mapRB = new HashMap<>();
   }
 
   public void setDataMap(Map<Long, Map<Long, ? extends LesxComponent>> map) {
     dataMap.clear();
     dataMap.putAll(map);
+    businessResourceMapBuild = false;
   }
 
   public void addDataMap(Map<Long, Map<Long, ? extends LesxComponent>> map) {
     if (!LesxMisc.isEmpty(map)) {
       dataMap.putAll(map);
+      businessResourceMapBuild = false;
     }
   }
 
@@ -51,11 +57,13 @@ public class LesxDBProperties {
   public void setResourceMap(Map<Long, LesxResource> data) {
     dataMap.remove(ELesxPropertyKeys.RESOURCE.getValue());
     dataMap.put(ELesxPropertyKeys.RESOURCE.getValue(), data);
+    businessResourceMapBuild = false;
   }
 
   public void setBusinessMap(Map<Long, LesxBusiness> priceMap) {
     dataMap.remove(ELesxPropertyKeys.BUSINESS.getValue());
     dataMap.put(ELesxPropertyKeys.BUSINESS.getValue(), priceMap);
+    businessResourceMapBuild = false;
   }
 
   @SuppressWarnings("unchecked")
@@ -108,7 +116,7 @@ public class LesxDBProperties {
   }
 
   public void saveBusinessXML(Map<Long, LesxBusiness> businessMap, Runnable run) {
-    LOGGER.log(Level.INFO, "saveBusinessXML");
+    LOGGER.log(Level.INFO, "Called saveBusinessXML");
     setBusinessMap(businessMap);
     LesxXMLSaveData saveThread = new LesxXMLSaveData(businessMap.values(), ELesxUseCase.UC_XML_BUSINESS);
     saveThread.start();
@@ -118,7 +126,7 @@ public class LesxDBProperties {
 
   @SuppressWarnings("unchecked")
   public List<String> getBirthdayNames() {
-    LOGGER.log(Level.INFO, "getBirthdayNames");
+    LOGGER.log(Level.INFO, "Called getBirthdayNames");
     final Map<Long, LesxResource> map = (Map<Long, LesxResource>) dataMap.get(ELesxPropertyKeys.RESOURCE.getValue());
     final List<String> names = new ArrayList<>();
     if (!LesxMisc.isEmpty(map)) {
@@ -131,6 +139,45 @@ public class LesxDBProperties {
       }
     }
     return names;
+  }
+
+  public void buildBusinessResourceMap() {
+    LOGGER.log(Level.INFO, "Called buildBusinessResourceMap");
+    mapRB.clear();
+    if (getResourceMap() != null && getBusinessMap() != null) {
+      for (Entry<Long, LesxBusiness> entry : getBusinessMap().entrySet()) {
+        if (getResourceMap().keySet()
+            .contains(entry.getValue()
+                .getResource_id())) {
+          mapRB.put(entry.getKey(), LesxResourceBusiness.of(getResourceMap().get(entry.getValue()
+              .getResource_id()), entry.getValue()));
+        }
+      }
+      businessResourceMapBuild = true;
+    }
+    else {
+      businessResourceMapBuild = false;
+      LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_DATAMODEL"));
+    }
+  }
+
+  public Map<Long, LesxResourceBusiness> getBusinessResourceMap() {
+    LOGGER.log(Level.INFO, "Called getBusinessResourceMap");
+    if (!businessResourceMapBuild) {
+      buildBusinessResourceMap();
+    }
+    return mapRB;
+  }
+
+  public void setBusinessResourceMap(Map<Long, LesxResourceBusiness> mapRB) {
+    LOGGER.log(Level.INFO, "Called setBusinessResourceMap");
+    this.mapRB = mapRB;
+    businessResourceMapBuild = true;
+  }
+
+  public boolean isBusinessResourceMapBuild() {
+    LOGGER.log(Level.INFO, "Called isBusinessResourceMapBuild");
+    return businessResourceMapBuild;
   }
 
 }

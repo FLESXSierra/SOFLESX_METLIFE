@@ -3,7 +3,6 @@ package lesx.ui.components.skin;
 import com.sun.javafx.scene.control.skin.ButtonSkin;
 
 import javafx.collections.ListChangeListener;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
@@ -11,6 +10,7 @@ import javafx.stage.StageStyle;
 import lesx.icon.utils.LesxIcon;
 import lesx.ui.components.LesxBirthdayButton;
 import lesx.ui.soflesx.LesxMain;
+import lesx.utils.LesxAlertBuilder;
 
 public class LesxBirthdayButtonSkin extends ButtonSkin {
 
@@ -29,18 +29,16 @@ public class LesxBirthdayButtonSkin extends ButtonSkin {
   }
 
   private void showAlert() {
-    Alert alert = new Alert(AlertType.CONFIRMATION);
-    alert.initStyle(StageStyle.UTILITY);
-    alert.setTitle("¡Cumpleaños!");
-    alert.setHeaderText(buildNamesString());
-    alert.setGraphic(LesxIcon.getImage(LesxIcon.PARTY));
-    alert.initOwner(LesxMain.getInstance()
-        .getStage());
-    alert.getButtonTypes()
-        .clear();
-    alert.getButtonTypes()
-        .add(ButtonType.OK);
-    alert.show();
+    LesxAlertBuilder.create()
+        .setType(AlertType.CONFIRMATION)
+        .setStyle(StageStyle.UTILITY)
+        .setTitle("¡Cumpleaños!")
+        .setHeaderText(buildNamesString())
+        .setGraphic(LesxIcon.getImage(LesxIcon.PARTY))
+        .setOwner(LesxMain.getInstance()
+            .getStage())
+        .setButtons(ButtonType.OK)
+        .show();
   }
 
   private String buildNamesString() {
