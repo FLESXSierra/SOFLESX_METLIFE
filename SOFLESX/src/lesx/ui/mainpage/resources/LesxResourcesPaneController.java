@@ -23,6 +23,7 @@ import javafx.util.Callback;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxResource;
 import lesx.scene.controller.LesxController;
 import lesx.scene.controller.LesxSceneController;
@@ -56,7 +57,7 @@ public class LesxResourcesPaneController extends LesxController {
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
   //Runnables
   private Runnable onDelete;
-  private Consumer<Boolean> onAdd;
+  private Consumer<ELesxUseCase> onAdd;
 
   @FXML
   public void initialize() {
@@ -253,7 +254,7 @@ public class LesxResourcesPaneController extends LesxController {
       fillDataOnTree();
     };
     tablePane.setOnDelete(onDelete);
-    onAdd = (isCreate) -> addNewResource(isCreate);
+    onAdd = (ELesxUseCase) -> addNewResource(ELesxUseCase);
     tablePane.setOnAddNewItem(onAdd);
   }
 
@@ -269,7 +270,7 @@ public class LesxResourcesPaneController extends LesxController {
     }
   }
 
-  private void addNewResource(boolean isCreate) {
+  private void addNewResource(ELesxUseCase isCreate) {
     LesxSceneController.showResourceEditDialog(this, isCreate, dataModel, () -> {
       pendingChanges.set(true);
       filterTable();

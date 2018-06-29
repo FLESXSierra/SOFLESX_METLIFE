@@ -1,10 +1,13 @@
 package lesx.ui.components.dialogs;
 
+import static lesx.property.properties.ELesxUseCase.EDIT;
+
 import javafx.fxml.FXML;
 import lesx.datamodel.ILesxDataModel;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxPropertyKeys;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxResource;
 
@@ -21,9 +24,8 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
 
   @Override
   protected void reInitialize() {
-    setIsCreate(false);
-    dataModel.setResourceSelected(resource);
-    init(dataModel, false);
+    setIsCreate(EDIT);
+    init(dataModel, EDIT);
   }
 
   @Override
@@ -32,19 +34,19 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected String getDescriptionText(boolean isCreate) {
-    return isCreate ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_RESOURCE") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE");
+  protected String getDescriptionText(ELesxUseCase useCase) {
+    return useCase == EDIT ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_RESOURCE");
   }
 
   @Override
-  protected String getHeader(boolean isCreate) {
+  protected String getHeader(ELesxUseCase useCase) {
     StringBuilder string;
     string = new StringBuilder(128);
-    if (isCreate) {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", "Nuevo"));
+    if (useCase == EDIT) {
+      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", resource.getName()));
     }
     else {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", resource.getName()));
+      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", "Nuevo"));
     }
     string.append(".");
     return string.toString();
@@ -54,6 +56,7 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
   protected void saveValues() {
     resource = new LesxResource(((LesxResource) getPropertySheet().getComponent()).getPropertyValues());
     dataModel.addResource(resource);
+    dataModel.setComponentSelected(resource);
   }
 
   @Override
@@ -62,8 +65,8 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected boolean isDuplicate(boolean isCreate) {
-    return dataModel.isDuplicate(resource, isCreate);
+  protected boolean isDuplicate(ELesxUseCase useCase) {
+    return dataModel.isDuplicate(resource, useCase);
   }
 
   @Override
@@ -72,15 +75,15 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected void setComponent(boolean isCreate) {
-    if (isCreate) {
+  protected void setComponent(ELesxUseCase useCase) {
+    if (useCase == EDIT) {
+      resource = dataModel.getComponentSelected()
+          .clone();
+    }
+    else {
       resource = new LesxResource();
       resource.setId(dataModel.createNewKeyForIdProperty());
       resource.setKey(ELesxPropertyKeys.RESOURCE);
-    }
-    else {
-      resource = dataModel.getComponentSelected()
-          .clone();
     }
   }
 

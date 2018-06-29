@@ -1,5 +1,7 @@
 package lesx.ui.mainpage.main;
 
+import static lesx.property.properties.ELesxUseCase.EDIT;
+
 import java.util.function.Consumer;
 
 import javafx.beans.property.BooleanProperty;
@@ -21,8 +23,10 @@ import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.icon.utils.LesxIcon;
 import lesx.property.properties.ELesxMonth;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.scene.controller.LesxController;
+import lesx.scene.controller.LesxSceneController;
 import lesx.ui.components.LesxTreeTableViewPane;
 import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxAlertBuilder;
@@ -56,7 +60,7 @@ public class LesxMainPaneController extends LesxController {
   private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
   //Runnables
   private Runnable onDelete;
-  private Consumer<Boolean> onAdd;
+  private Consumer<ELesxUseCase> onAdd;
 
   @FXML
   public void initialize() {
@@ -337,41 +341,61 @@ public class LesxMainPaneController extends LesxController {
 
   private void createRunnables() {
     onDelete = () -> {
-      dataModel.deleteSelectedCostumer();
+      dataModel.deleteSelectedBusiness();
       pendingChanges.set(true);
       updateTreeTableData();
     };
     mainPane.setOnDelete(onDelete);
-    onAdd = (isCreate) -> addNewResource(isCreate);
+    onAdd = (isCreate) -> addNewBusiness(isCreate);
     mainPane.setOnAddNewItem(onAdd);
   }
 
-  private void addNewResource(Boolean isCreate) {
-    if (isCreate) {
+  private void addNewBusiness(ELesxUseCase useCase) {
+    if (useCase != EDIT) {
       if (mainPane.isSelectedResourceBusinessItem()) {
-        // Opens the dialog with an empty LesxBisness
+        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+          LesxResourceBusiness temp = dataModel.getComponentSelected();
+          pendingChanges.set(true);
+          updateTreeTableData();
+          mainPane.selectItem(temp);
+        });
       }
       else {
-        ButtonType result = LesxAlertBuilder.create()
-            .setType(AlertType.CONFIRMATION)
-            .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_NEW_SALE"))
-            .setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_NEW_SALE"))
-            .setOwner(LesxMain.getInstance()
-                .getStage())
-            .setGraphic(LesxIcon.getImage(LesxIcon.MONEY))
-            .setButtons(LesxButtonType.NEW_RESOURCE, LesxButtonType.NO_NEW_RESOURCE, LesxButtonType.CANCEL)
-            .showAndWait()
-            .orElse(null);
+        ButtonType result = null;
+        if (dataModelResource.getComponentSelected() == null) {
+          result = LesxAlertBuilder.create()
+              .setType(AlertType.CONFIRMATION)
+              .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_NEW_SALE"))
+              .setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_NEW_SALE"))
+              .setOwner(LesxMain.getInstance()
+                  .getStage())
+              .setGraphic(LesxIcon.getImage(LesxIcon.MONEY))
+              .setButtons(LesxButtonType.NEW_RESOURCE, LesxButtonType.NO_NEW_RESOURCE, LesxButtonType.CANCEL)
+              .showAndWait()
+              .orElse(null);
+        }
+        else {
+          result = LesxButtonType.NO_NEW_RESOURCE;
+        }
         if (LesxButtonType.NEW_RESOURCE.equals(result)) {
-          // Add new Resource, then add new Business
+          LesxSceneController.showResourceEditDialog(this, ELesxUseCase.ADD_ONLY, dataModelResource, () -> {
+            dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
+            addNewBusiness(useCase);
+          });
         }
         else if (LesxButtonType.NO_NEW_RESOURCE.equals(result)) {
-          // Searches for resource, then add new Business
+          LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+            pendingChanges.set(true);
+            updateTreeTableData();
+          });
         }
       }
     }
     else {
-      // Opens the dialog with the selected
+      LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+        pendingChanges.set(true);
+        updateTreeTableData();
+      });
     }
   }
 

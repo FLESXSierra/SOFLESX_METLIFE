@@ -57,6 +57,10 @@ public class LesxPropertySheet {
     init();
     validate();
     propertyNamePane.getChildren()
+        .clear();
+    propertyEditorPane.getChildren()
+        .clear();
+    propertyNamePane.getChildren()
         .add(wrapperName);
     propertyEditorPane.getChildren()
         .add(wrapperEditor);
@@ -149,6 +153,14 @@ public class LesxPropertySheet {
               .bind(dateEditor.validProperty());
           wrapperEditor.getChildren()
               .add(dateEditor);
+          break;
+        case PRODUCT:
+          final LesxTextEditor productEditor = new LesxTextEditor(fxProperty); // TODO add new Editor
+          nombre.getValidProperty()
+              .bind(productEditor.validProperty());
+          wrapperEditor.getChildren()
+              .add(productEditor);
+          break;
         default:
           break;
       }

@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxActions;
 import lesx.property.properties.ELesxUseCase;
+import lesx.property.properties.LesxResourceBusiness;
 import lesx.utils.LesxAlertBuilder;
 
 public class LesxTreeTableViewPane<T> extends VBox {
@@ -28,7 +29,7 @@ public class LesxTreeTableViewPane<T> extends VBox {
   private LesxToolBar toolBar;
   private TreeTableView<T> table;
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
-  private Consumer<Boolean> addNewItem;
+  private Consumer<ELesxUseCase> addNewItem;
   private Runnable onDeleteItem;
   private ELesxUseCase useCase;
 
@@ -69,7 +70,8 @@ public class LesxTreeTableViewPane<T> extends VBox {
       EventHandler<ActionEvent> actionHandler;
       switch (action) {
         case ACTIONS_ADD_SELL:
-          actionHandler = s -> addNewItem.accept(true);
+        case ACTIONS_ADD:
+          actionHandler = s -> addNewItem.accept(ELesxUseCase.ADD);
           break;
         case ACTIONS_DELETE:
           actionHandler = s -> deleteItem();
@@ -79,7 +81,8 @@ public class LesxTreeTableViewPane<T> extends VBox {
               .clearSelection();
           break;
         case ACTIONS_EDIT_SELL:
-          actionHandler = s -> addNewItem.accept(false);
+        case ACTIONS_EDIT:
+          actionHandler = s -> addNewItem.accept(ELesxUseCase.EDIT);
           break;
         default:
           actionHandler = null;
@@ -149,7 +152,7 @@ public class LesxTreeTableViewPane<T> extends VBox {
             .getValue() != null);
   }
 
-  public void setOnAddNewItem(Consumer<Boolean> consumer) {
+  public void setOnAddNewItem(Consumer<ELesxUseCase> consumer) {
     addNewItem = consumer;
     installToolBarActions();
   }
@@ -170,6 +173,10 @@ public class LesxTreeTableViewPane<T> extends VBox {
 
   public boolean isSelectedResourceBusinessItem() {
     return selectedItemTable.get();
+  }
+
+  public void selectItem(LesxResourceBusiness item) {
+    // TODO Select Item
   }
 
 }

@@ -2,6 +2,7 @@ package lesx.datamodel;
 
 import java.util.Map;
 
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
 
 public interface ILesxDataModel<T> {
@@ -42,6 +43,6 @@ public interface ILesxDataModel<T> {
   /**
    * Search for the property uniqueness by name
    */
-  public abstract boolean isUniqueProperty(LesxProperty property, Long keyComponent, boolean isCreate);
+  public abstract boolean isUniqueProperty(LesxProperty property, Long keyComponent, ELesxUseCase isCreate);
 
 }

@@ -1,10 +1,13 @@
 package lesx.ui.components.dialogs;
 
+import static lesx.property.properties.ELesxUseCase.EDIT;
+
 import javafx.fxml.FXML;
 import lesx.datamodel.ILesxDataModel;
 import lesx.datamodel.LesxBusinessResourceDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxPropertyKeys;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxBusiness;
 import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxResourceBusiness;
@@ -23,9 +26,8 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
 
   @Override
   protected void reInitialize() {
-    setIsCreate(false);
-    dataModel.setComponentSelected(resourceBusiness);
-    init(dataModel, false);
+    setIsCreate(EDIT);
+    init(dataModel, EDIT);
   }
 
   @Override
@@ -34,20 +36,20 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected String getDescriptionText(boolean isCreate) {
-    return isCreate ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_RESOURCE") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE");
+  protected String getDescriptionText(ELesxUseCase isCreate) {
+    return isCreate == EDIT ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_RESOURCE");
   }
 
   @Override
-  protected String getHeader(boolean isCreate) {
+  protected String getHeader(ELesxUseCase isCreate) {
     StringBuilder string;
     string = new StringBuilder(128);
-    if (isCreate) {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", "Nuevo"));
-    }
-    else {
+    if (isCreate == EDIT) {
       string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", resourceBusiness.getResource()
           .getName()));
+    }
+    else {
+      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", "Nuevo"));
     }
     string.append(".");
     return string.toString();
@@ -58,6 +60,7 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
     resourceBusiness = LesxResourceBusiness
         .of(resourceBusiness.getResource(), new LesxBusiness(((LesxBusiness) getPropertySheet().getComponent()).getPropertyValues()));
     dataModel.addResourceBusiness(resourceBusiness);
+    dataModel.setComponentSelected(resourceBusiness);
   }
 
   @Override
@@ -66,27 +69,29 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected boolean isDuplicate(boolean isCreate) {
+  protected boolean isDuplicate(ELesxUseCase isCreate) {
     return dataModel.isDuplicate(resourceBusiness, isCreate);
   }
 
   @Override
   protected String getComponentName() {
-    return resourceBusiness.getResource() == null ? "*No Name*" : resourceBusiness.getResource()
+    return (resourceBusiness == null || resourceBusiness.getResource() == null) ? "*No Name*" : resourceBusiness.getResource()
         .getName();
   }
 
   @Override
-  protected void setComponent(boolean isCreate) {
-    if (isCreate) {
-      business = new LesxBusiness();
-      business.setId(dataModel.createNewKeyForBusinessIdProperty());
-      business.setKey(ELesxPropertyKeys.RESOURCE);
-    }
-    else {
+  protected void setComponent(ELesxUseCase isCreate) {
+    if (isCreate == EDIT) {
       business = dataModel.getComponentSelected()
           .getBusiness()
           .clone();
+      resourceBusiness = dataModel.getComponentSelected()
+          .clone();
+    }
+    else {
+      business = new LesxBusiness();
+      business.setId(dataModel.createNewKeyForBusinessIdProperty());
+      business.setKey(ELesxPropertyKeys.RESOURCE);
     }
   }
 

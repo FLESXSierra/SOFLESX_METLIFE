@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javafx.scene.control.TreeItem;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResourceBusiness;
 
@@ -85,7 +86,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
    * Only applies for Business map
    */
   @Override
-  public boolean isUniqueProperty(LesxProperty property, Long keyComponent, boolean isCreate) {
+  public boolean isUniqueProperty(LesxProperty property, Long keyComponent, ELesxUseCase isCreate) {
     //Nothing
     return true;
   }
@@ -110,13 +111,13 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
     return (Collections.max(map.keySet()) + 1);
   }
 
-  public boolean isDuplicate(LesxResourceBusiness resourceBusiness, boolean isCreate) {
-    return isCreate && map.values()
+  public boolean isDuplicate(LesxResourceBusiness resourceBusiness, ELesxUseCase isCreate) {
+    return isCreate != ELesxUseCase.EDIT && map.values()
         .contains(resourceBusiness);
   }
 
-  public void deleteSelectedCostumer() {
-    // TODO Auto-generated method stub
+  public void deleteSelectedBusiness() {
+    // TODO Delete Selected
 
   }
 

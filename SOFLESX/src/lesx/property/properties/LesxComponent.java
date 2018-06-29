@@ -45,12 +45,15 @@ public class LesxComponent implements Cloneable {
         .orElse(null);
   }
 
+  @Override
   public LesxComponent clone() {
     try {
       LesxComponent newComponent = (LesxComponent) super.clone();
-      newComponent.setPropertyValues(new ArrayList<>(getPropertyValues().stream()
-          .map(prop -> prop.clone())
-          .collect(Collectors.toList())));
+      if (getPropertyValues() != null) {
+        newComponent.setPropertyValues(new ArrayList<>(getPropertyValues().stream()
+            .map(prop -> prop.clone())
+            .collect(Collectors.toList())));
+      }
       return newComponent;
     }
     catch (CloneNotSupportedException e) {

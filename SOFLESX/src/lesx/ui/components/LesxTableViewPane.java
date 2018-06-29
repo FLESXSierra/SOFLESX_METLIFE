@@ -27,7 +27,7 @@ public class LesxTableViewPane<T> extends VBox {
   private TableView<T> table;
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
   private BooleanProperty selectedFilterTable = new SimpleBooleanProperty(this, "selectedFilterTable", true);
-  private Consumer<Boolean> addNewItem;
+  private Consumer<ELesxUseCase> addNewItem;
   private Runnable onDeleteItem;
   private ELesxUseCase useCase;
 
@@ -69,8 +69,9 @@ public class LesxTableViewPane<T> extends VBox {
       mapActions.remove(action);
       EventHandler<ActionEvent> actionHandler;
       switch (action) {
+        case ACTIONS_ADD_SELL:
         case ACTIONS_ADD:
-          actionHandler = s -> addNewItem.accept(true);
+          actionHandler = s -> addNewItem.accept(ELesxUseCase.ADD);
           break;
         case ACTIONS_DELETE:
           actionHandler = s -> deleteItem();
@@ -79,8 +80,9 @@ public class LesxTableViewPane<T> extends VBox {
           actionHandler = s -> table.getSelectionModel()
               .clearSelection();
           break;
+        case ACTIONS_EDIT_SELL:
         case ACTIONS_EDIT:
-          actionHandler = s -> addNewItem.accept(false);
+          actionHandler = s -> addNewItem.accept(ELesxUseCase.EDIT);
           break;
         default:
           actionHandler = null;
@@ -134,7 +136,7 @@ public class LesxTableViewPane<T> extends VBox {
         .getSelectedItem() != null);
   }
 
-  public void setOnAddNewItem(Consumer<Boolean> consumer) {
+  public void setOnAddNewItem(Consumer<ELesxUseCase> consumer) {
     addNewItem = consumer;
     installToolBarActions();
   }

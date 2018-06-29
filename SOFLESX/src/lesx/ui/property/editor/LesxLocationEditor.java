@@ -54,7 +54,7 @@ public class LesxLocationEditor extends ComboBox<String> {
     text = getEditor().getText();
     filterList();
     Long temp = ELesxLocations.getLocationKeyByName(getEditor().getText());
-    if (isValid() && !LesxMisc.equals(temp, -1L)) {// TODO Is not triggering value listener
+    if (isValid() && !LesxMisc.equals(temp, -1L)) {
       LesxPropertyUtils.copyValueToTypeProperty(type, temp, value);
     }
     else {

@@ -1,5 +1,9 @@
 package lesx.ui.components.dialogs;
 
+import static lesx.property.properties.ELesxUseCase.ADD;
+import static lesx.property.properties.ELesxUseCase.ADD_ONLY;
+import static lesx.property.properties.ELesxUseCase.EDIT;
+
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -13,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Window;
 import lesx.datamodel.ILesxDataModel;
 import lesx.gui.message.LesxMessage;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxProperty;
 import lesx.scene.controller.LesxController;
@@ -49,7 +54,7 @@ public class LesxEditComponentDialog extends LesxController {
   private ILesxDataModel<? extends LesxComponent> dataModel;
   private LesxComponent component;
   private boolean canClose = true;
-  private boolean isCreate;
+  private ELesxUseCase useCase;
   //Stage
   private Window window;
 
@@ -63,18 +68,18 @@ public class LesxEditComponentDialog extends LesxController {
     cancel.setOnAction(obs -> closeDialog());
   }
 
-  public void init(ILesxDataModel<? extends LesxComponent> dataModel, boolean isCreate) {
+  public void init(ILesxDataModel<? extends LesxComponent> dataModel, ELesxUseCase useCase) {
     setTitle(LesxMessage.getMessage("TEXT-TITLE_COMPONENT_DIALOG_CREATE"));
     setDataModel(dataModel);
-    setComponent(isCreate);
-    descriptionLabel.setText(getDescriptionText(isCreate));
-    defaultName.setText(getHeader(isCreate));
-    setIsCreate(isCreate);
+    setComponent(useCase);
+    descriptionLabel.setText(getDescriptionText(useCase));
+    defaultName.setText(getHeader(useCase));
+    setIsCreate(useCase);
     propertySheet = new LesxPropertySheet(getPropertiesPane(), getEditorsPane(), getComponent(),
-        (Long newKey, LesxProperty property) -> dataModel.isUniqueProperty(property, newKey, this.isCreate));
+        (Long newKey, LesxProperty property) -> dataModel.isUniqueProperty(property, newKey, this.useCase));
     pendingChanges.bind(propertySheet.getPendingChangesProperty());
-    installButtonsBinding();
-    if (!isCreate) {
+    installButtonsBinding(useCase);
+    if (useCase == EDIT) {
       Platform.runLater(() -> setPendingChanges(false));
     }
   }
@@ -82,10 +87,10 @@ public class LesxEditComponentDialog extends LesxController {
   /**
    * Sets isCreate
    *
-   * @param isCreate
+   * @param useCase ELesxUseCase
    */
-  protected void setIsCreate(boolean isCreate) {
-    this.isCreate = isCreate;
+  protected void setIsCreate(ELesxUseCase useCase) {
+    this.useCase = useCase;
   }
 
   private void applyChanges() {
@@ -94,13 +99,13 @@ public class LesxEditComponentDialog extends LesxController {
     afterSaveProperty.set(!afterSaveProperty.get());
     canClose = true;
     reInitialize();
-    getPropertySheet().setPendingChanges(false);
+    Platform.runLater(() -> setPendingChanges(false));
   }
 
   private void save() {
     if (pendingChanges.get()) {
       boolean isValid = getPropertySheet().isValid();
-      boolean duplicateId = isDuplicate(isCreate);
+      boolean duplicateId = isDuplicate(useCase);
       boolean showIssues = !isValid || duplicateId;
       if (showIssues) {
         StringBuilder issues = new StringBuilder(1024);
@@ -160,38 +165,45 @@ public class LesxEditComponentDialog extends LesxController {
 
   /**
    * Install the bindings of OK and Apply Buttons
+   *
+   * @param useCase ELesxUseCase
    */
-  protected void installButtonsBinding() {
+  protected void installButtonsBinding(ELesxUseCase useCase) {
     ok.disableProperty()
         .bind(Bindings.or(Bindings.not(getPropertySheet().validProperty()), Bindings.not(getPendingChanges())));
-    apply.disableProperty()
-        .bind(Bindings.or(Bindings.not(getPropertySheet().validProperty()), Bindings.not(getPendingChanges())));
+    if (useCase == ADD_ONLY) {
+      apply.setDisable(true);
+    }
+    else {
+      apply.disableProperty()
+          .bind(Bindings.or(Bindings.not(getPropertySheet().validProperty()), Bindings.not(getPendingChanges())));
+    }
   }
 
   /**
    * Gets the text of descriptionLabel like "Panel de creación de nuevo objeto ... "
    *
-   * @param isCreate {@code true} if this dialog is use to create components
+   * @param useCase {@code true} if this dialog is use to create components
    * @return text
    */
-  protected String getDescriptionText(boolean isCreate) {
-    return isCreate ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_COMPONENT") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_COMPONENT");
+  protected String getDescriptionText(ELesxUseCase useCase) {
+    return useCase == EDIT ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_COMPONENT") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_COMPONENT");
   }
 
   /**
    * Creates the header String
    *
-   * @param isCreate boolean
+   * @param useCase boolean
    * @return a string
    */
-  protected String getHeader(boolean isCreate) {
+  protected String getHeader(ELesxUseCase useCase) {
     StringBuilder string;
     string = new StringBuilder(128);
-    if (isCreate) {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_COMPONENT_PANE", "Nuevo"));
+    if (useCase == EDIT) {
+      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_COMPONENT_PANE", component.toString()));
     }
     else {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_COMPONENT_PANE", component.toString()));
+      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_COMPONENT_PANE", "Nuevo"));
     }
     string.append(".");
     return string.toString();
@@ -200,10 +212,10 @@ public class LesxEditComponentDialog extends LesxController {
   /**
    * Creates a new component or edit a component
    *
-   * @param isCreate {@code true} if is required a new component, otherwise the data model will get the component
+   * @param useCase {@code true} if is required a new component, otherwise the data model will get the component
    */
-  protected void setComponent(boolean isCreate) {
-    component = isCreate ? new LesxComponent() : (LesxComponent) dataModel.getComponentSelected();
+  protected void setComponent(ELesxUseCase useCase) {
+    component = useCase == ADD ? new LesxComponent() : (LesxComponent) dataModel.getComponentSelected();
   }
 
   /**
@@ -228,8 +240,8 @@ public class LesxEditComponentDialog extends LesxController {
    * ReInitialize the dialog
    */
   protected void reInitialize() {
-    isCreate = false;
-    init(dataModel, isCreate);
+    useCase = EDIT;
+    init(dataModel, useCase);
   }
 
   /**
@@ -244,11 +256,11 @@ public class LesxEditComponentDialog extends LesxController {
   /**
    * Override this method in order to search for the right component duplicate
    *
-   * @param isCreate
+   * @param useCase
    *
    * @return search for duplicates.
    */
-  protected boolean isDuplicate(boolean isCreate) {
+  protected boolean isDuplicate(ELesxUseCase useCase) {
     return false;
   }
 

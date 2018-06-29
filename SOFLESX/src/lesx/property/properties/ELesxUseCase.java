@@ -72,7 +72,10 @@ public enum ELesxUseCase {
     public String toString() {
       return "Inicio";
     }
-  };
+  },
+  EDIT(12),
+  ADD_ONLY(13),
+  ADD(14);
 
   int key;
 

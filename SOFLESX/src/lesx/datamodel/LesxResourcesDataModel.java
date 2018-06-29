@@ -12,11 +12,10 @@ import java.util.logging.Logger;
 
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
-import lesx.property.properties.LesxBusiness;
+import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResource;
 import lesx.utils.LesxMisc;
-import lesx.utils.LesxPair;
 import lesx.utils.LesxString;
 
 public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
@@ -134,10 +133,6 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
     }
   }
 
-  public LesxPair<LesxResource, LesxBusiness> createResourceBusinessPair() {
-    return null;// TODO LesxPair
-  }
-
   @Override
   public LesxResource getComponentSelected() {
     return resourceSelected;
@@ -149,14 +144,14 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
   }
 
   @Override
-  public boolean isUniqueProperty(LesxProperty property, Long keyComponent, boolean isCreate) {
+  public boolean isUniqueProperty(LesxProperty property, Long keyComponent, ELesxUseCase useCase) {
     String name = property.getName();
     Object newKey = property.getValue();
     for (Entry<Long, LesxResource> entry : map.entrySet()) {
       if (LesxMisc.equals(entry.getValue()
           .getPropertyByName(name)
           .getValue(), newKey)) {
-        if (isCreate || !entry.getKey()
+        if ((ELesxUseCase.EDIT != useCase) || !entry.getKey()
             .equals(keyComponent)) {
           return false;
         }
@@ -169,9 +164,9 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
     return (Collections.max(map.keySet()) + 1);
   }
 
-  public boolean isDuplicate(LesxResource resource, boolean isCreate) {
-    return isCreate ? map.keySet()
-        .contains(resource.getId()) : false;
+  public boolean isDuplicate(LesxResource resource, ELesxUseCase useCase) {
+    return ELesxUseCase.EDIT != useCase && map.keySet()
+        .contains(resource.getId());
   }
 
   public void addResource(LesxResource resource) {

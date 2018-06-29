@@ -90,7 +90,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     prima.setMandatory(true);
     nbs = new LesxProperty();
     nbs.setType(ELesxPropertyType.LONG);
-    nbs.setName(LesxString.PROPERTY_PRIMA);
+    nbs.setName(LesxString.PROPERTY_NBS);
     nbs.setReadOnly(true);
     nbs.setValue(0L);
     resource_id = new LesxProperty();
