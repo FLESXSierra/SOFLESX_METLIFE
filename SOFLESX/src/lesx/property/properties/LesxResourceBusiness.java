@@ -41,7 +41,7 @@ public class LesxResourceBusiness extends LesxComponent implements Cloneable {
 
   @Override
   public String toString() {
-    if (!LesxMisc.isEmpty(resource.getName())) {
+    if (!LesxMisc.isEmptyString(resource.getName())) {
       return resource.getName();
     }
     return super.toString();

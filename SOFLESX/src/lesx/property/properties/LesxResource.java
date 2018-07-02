@@ -2,7 +2,6 @@ package lesx.property.properties;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -59,7 +58,7 @@ public class LesxResource extends LesxComponent implements Cloneable {
         registration_date.setValue(property.getValue());
       }
     }
-    setPropertyValues(Arrays.asList(id, solicitud, name, cc, location, birthday, registration_date));
+    getPropertyValues().addAll(id, solicitud, name, cc, location, birthday, registration_date);
   }
 
   public LesxResource(LesxResourceXMLParser parse) {
@@ -123,7 +122,7 @@ public class LesxResource extends LesxComponent implements Cloneable {
         .format(formatter)
         .toString());
     registration_date.setMandatory(true);
-    setPropertyValues(Arrays.asList(id, solicitud, name, cc, location, birthday, registration_date));
+    getPropertyValues().addAll(id, solicitud, name, cc, location, birthday, registration_date);
     setKey(ELesxPropertyKeys.RESOURCE);
   }
 

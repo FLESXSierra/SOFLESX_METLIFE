@@ -40,7 +40,7 @@ public class LesxLogger extends Handler {
     }
     log.append(record.getLoggerName() + " : ");
     log.append(record.getMessage());
-    if (record.getThrown() != null && !LesxMisc.isEmpty(record.getThrown()
+    if (record.getThrown() != null && !LesxMisc.isEmptyString(record.getThrown()
         .getMessage())) {
       log.append("\n");
       log.append(record.getThrown()

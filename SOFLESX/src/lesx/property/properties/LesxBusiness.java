@@ -1,6 +1,5 @@
 package lesx.property.properties;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +38,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     else {
       resource_id.setValue(parse.getResource_id());
     }
-    producto.setValue(ELesxProductType.valueOf(parse.getProducto()));
+    producto.setValue(new LesxProductType(parse.getProducto()));
     prima.setValue(parse.getPrima());
     nbs.setValue(parse.getNbs());
   }
@@ -68,7 +67,6 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
         resource_id.setValue(property.getValue());
       }
     }
-    setPropertyValues(Arrays.asList(id, resource_id, producto, prima, nbs));
   }
 
   private void initializeProperty() {
@@ -80,8 +78,8 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     id.setUnique(true);
     id.setVisible(false);
     producto = new LesxProperty();
-    producto.setType(ELesxPropertyType.PRODUCT);
-    producto.setName(LesxString.PROPERTY_PRODUCT);
+    producto.setType(ELesxPropertyType.PRODUCT_TYPE);
+    producto.setName(LesxString.PROPERTY_PRODUCT_TYPE);
     producto.setMandatory(true);
     prima = new LesxProperty();
     prima.setType(ELesxPropertyType.LONG);
@@ -100,7 +98,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     resource_id.setReadOnly(true);
     resource_id.setUnique(true);
     resource_id.setVisible(false);
-    setPropertyValues(Arrays.asList(id, resource_id, producto, prima, nbs));
+    getPropertyValues().addAll(id, resource_id, producto, prima, nbs);
     setKey(ELesxPropertyKeys.BUSINESS);
   }
 
@@ -112,16 +110,12 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     this.id.setValue(id);
   }
 
-  public ELesxProductType getProduct() {
-    return (ELesxProductType) producto.getValue();
+  public LesxProductType getProduct() {
+    return (LesxProductType) producto.getValue();
   }
 
-  public void setProduct(ELesxProductType producto) {
+  public void setProduct(LesxProductType producto) {
     this.producto.setValue(producto);
-  }
-
-  public void setProduct(Integer producto) {
-    this.producto.setValue(ELesxProductType.valueOf(producto));
   }
 
   public Long getPrima() {

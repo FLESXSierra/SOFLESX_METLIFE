@@ -22,6 +22,7 @@ import lesx.ui.property.editor.LesxLocationEditor;
 import lesx.ui.property.editor.LesxLongEditor;
 import lesx.ui.property.editor.LesxPeriodDatePicker;
 import lesx.ui.property.editor.LesxPriceTypeEditor;
+import lesx.ui.property.editor.LesxProductEditor;
 import lesx.ui.property.editor.LesxTextEditor;
 import lesx.ui.property.label.LesxPropertyLabel;
 import lesx.utils.LesxMisc;
@@ -154,8 +155,8 @@ public class LesxPropertySheet {
           wrapperEditor.getChildren()
               .add(dateEditor);
           break;
-        case PRODUCT:
-          final LesxTextEditor productEditor = new LesxTextEditor(fxProperty); // TODO add new Editor
+        case PRODUCT_TYPE:
+          final LesxProductEditor productEditor = new LesxProductEditor(fxProperty);
           nombre.getValidProperty()
               .bind(productEditor.validProperty());
           wrapperEditor.getChildren()

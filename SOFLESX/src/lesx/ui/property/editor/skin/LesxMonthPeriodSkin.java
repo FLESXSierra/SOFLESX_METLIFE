@@ -136,8 +136,8 @@ public class LesxMonthPeriodSkin extends TextFieldSkin {
 
   private void addFocusedValue() {
     if (editor.isFocused()) {
-      if (LesxMisc.isEmpty(editor.getValue())) {
-        if (LesxMisc.isEmpty(showingText.get())) {
+      if (LesxMisc.isEmptyString(editor.getValue())) {
+        if (LesxMisc.isEmptyString(showingText.get())) {
           showingText.set(PROMPT_TEXT);
         }
       }
@@ -154,7 +154,7 @@ public class LesxMonthPeriodSkin extends TextFieldSkin {
    * end date can't come first than initial one.
    */
   private void validate() {
-    if (LesxMisc.isEmpty(showingText.get())) {
+    if (LesxMisc.isEmptyString(showingText.get())) {
       editor.setValid(false);
       editor.setStyle(INVALID_STYLE);
     }

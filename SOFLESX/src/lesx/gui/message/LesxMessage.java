@@ -19,7 +19,7 @@ public class LesxMessage {
       File file = new File("src\\" + LesxMessage.class.getName()
           .replace('.', '\\'));
       String filename = file.getAbsolutePath();
-      if (LesxMisc.isEmpty(filename)) {
+      if (LesxMisc.isEmptyString(filename)) {
         LOGGER.severe("No se encuentra el archivo 'LesxMessage', por favor comuniquese con el admin.");
         return "";
       }

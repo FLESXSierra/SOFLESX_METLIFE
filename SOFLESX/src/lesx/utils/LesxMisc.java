@@ -8,7 +8,6 @@ public class LesxMisc {
   /**
    * Evaluates if an object given is empty or {@code null}. Instances supported:
    * <ul>
-   * <li>String</li>
    * <li>Collection<?></li>
    * <li>Map</li>
    * </ul>
@@ -33,6 +32,16 @@ public class LesxMisc {
   }
 
   /**
+   * Evaluates if a given String is empty or {@code null}. Instances supported:
+   *
+   * @param object Given object to be evaluated.
+   * @return {@code true} if is empty or null, {@code false} otherwise.
+   */
+  public static boolean isEmptyString(String string) {
+    return string == null || string.isEmpty();
+  }
+
+  /**
    * Compare if two objects of the same instance are the same, equals(a , b) follows this rules
    * <ul>
    * <li>if a = null and b = null, returns true</li>
@@ -40,17 +49,14 @@ public class LesxMisc {
    * <li>if instance a != instance b returns false</li>
    * <li>whatever returns a.equals(b)</li>
    * <ul>
-   * 
+   *
    * @param Object a
    * @param Object b
    * @return boolean of the result of the equals operation
    */
   public static boolean equals(Object a, Object b) {
     if (a == null || b == null) {
-      if (a == null && b == null) {
-        return true;
-      }
-      return false;
+      return a == null && b == null;
     }
     if (a.getClass() != b.getClass()) {
       return false;

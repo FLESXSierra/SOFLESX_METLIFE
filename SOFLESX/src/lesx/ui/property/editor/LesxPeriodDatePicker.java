@@ -48,7 +48,7 @@ public class LesxPeriodDatePicker extends DatePicker {
   }
 
   private void valueChanged() {
-    if (!LesxMisc.isEmpty(getValue().toString())) {
+    if (!LesxMisc.isEmptyString(getValue().toString())) {
       try {
         period.set(getValue().format(formatter)
             .toString());

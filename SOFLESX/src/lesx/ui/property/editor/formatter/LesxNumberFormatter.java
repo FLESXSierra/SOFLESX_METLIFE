@@ -30,7 +30,7 @@ public class LesxNumberFormatter {
 
     @Override
     public Integer fromString(String string) {
-      if (LesxMisc.equals("null", string) || LesxMisc.isEmpty(string)) {
+      if (LesxMisc.equals("null", string) || LesxMisc.isEmptyString(string)) {
         return null;
       }
       return Integer.parseInt(string);

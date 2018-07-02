@@ -30,7 +30,7 @@ public class LesxLongFormatter {
 
     @Override
     public Long fromString(String string) {
-      if (LesxMisc.equals("null", string) || LesxMisc.isEmpty(string)) {
+      if (LesxMisc.equals("null", string) || LesxMisc.isEmptyString(string)) {
         return null;
       }
       return Long.parseLong(string);

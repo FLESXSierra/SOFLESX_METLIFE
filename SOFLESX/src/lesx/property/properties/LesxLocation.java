@@ -1,14 +1,10 @@
 package lesx.property.properties;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class LesxLocation extends LesxComponent {
 
   private LesxProperty id;
   private LesxProperty name;
   private LesxProperty parent_id;
-  private List<LesxProperty> propertyValues;
 
   public LesxLocation() {
     id = new LesxProperty();
@@ -18,8 +14,7 @@ public class LesxLocation extends LesxComponent {
     parent_id = new LesxProperty();
     parent_id.setType(ELesxPropertyType.INTEGER);
     parent_id.setVisible(false);
-    propertyValues = Arrays.asList(id, name, parent_id);
-    setPropertyValues(propertyValues);
+    getPropertyValues().addAll(id, name, parent_id);
   }
 
   protected void setId(Long id) {

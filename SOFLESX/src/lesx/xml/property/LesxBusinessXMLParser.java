@@ -13,8 +13,8 @@ public class LesxBusinessXMLParser {
 
   @XmlAttribute(name = LesxString.ATTR_XML_ID)
   private Long id;
-  @XmlElement(name = LesxString.ATTR_XML_PRODUCT)
-  private Integer producto;
+  @XmlElement(name = LesxString.ATTR_XML_PRODUCT_TYPE)
+  private LesxProductTypeXMLParser producto;
   @XmlElement(name = LesxString.ATTR_XML_PRICE)
   private Long prima;
   @XmlElement(name = LesxString.ATTR_XML_NBS)
@@ -23,13 +23,12 @@ public class LesxBusinessXMLParser {
   private Long resource_id;
 
   public LesxBusinessXMLParser() {
-
+    //Nothing
   }
 
   public LesxBusinessXMLParser(LesxBusiness business) {
     this.id = business.getId();
-    this.producto = business.getProduct()
-        .getKey();
+    this.producto = new LesxProductTypeXMLParser(business.getProduct());
     this.prima = business.getPrima();
     this.nbs = business.getNbs();
     this.resource_id = business.getResource_id();
@@ -43,11 +42,11 @@ public class LesxBusinessXMLParser {
     this.id = id;
   }
 
-  public Integer getProducto() {
+  public LesxProductTypeXMLParser getProducto() {
     return producto;
   }
 
-  public void setProducto(Integer producto) {
+  public void setProducto(LesxProductTypeXMLParser producto) {
     this.producto = producto;
   }
 

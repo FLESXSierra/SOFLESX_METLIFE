@@ -1,5 +1,8 @@
 package lesx.property.properties;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import lesx.utils.LesxString;
 
 public enum ELesxPropertyType {
@@ -50,9 +53,22 @@ public enum ELesxPropertyType {
     public String toString() {
       return LesxString.PROPERTY_PRODUCT;
     }
+  },
+  PRODUCT_TYPE(8) {
+    @Override
+    public String toString() {
+      return LesxString.PROPERTY_PRODUCT_TYPE;
+    }
   };
 
   private int key;
+  private static Map<Integer, ELesxPropertyType> mapValues = new HashMap<>();
+
+  static {
+    for (ELesxPropertyType product : ELesxPropertyType.values()) {
+      mapValues.put(product.getValue(), product);
+    }
+  }
 
   ELesxPropertyType(int key) {
     this.key = key;
@@ -61,4 +77,9 @@ public enum ELesxPropertyType {
   public int getValue() {
     return key;
   }
+
+  public static ELesxPropertyType valueOf(Integer key) {
+    return mapValues.get(key);
+  }
+
 }

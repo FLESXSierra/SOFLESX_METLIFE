@@ -1,0 +1,26 @@
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
+{
+    -fx-background: white;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover 
+{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.check-box
+{
+    -fx-text-fill: black;
+}
+
+.label
+{
+	-fx-text-fill: black;
+}
+
+.combo-box-base:disabled {
+    -fx-opacity: .4;
+}

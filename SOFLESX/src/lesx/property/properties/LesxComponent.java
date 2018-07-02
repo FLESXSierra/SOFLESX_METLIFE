@@ -1,11 +1,10 @@
 package lesx.property.properties;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lesx.gui.message.LesxMessage;
 import lesx.utils.LesxMisc;
 
@@ -13,7 +12,7 @@ public class LesxComponent implements Cloneable {
 
   private final static Logger LOGGER = Logger.getLogger(LesxComponent.class.getName());
 
-  private Collection<LesxProperty> propertyValues;
+  private ObservableList<LesxProperty> propertyValues = FXCollections.observableArrayList();
   private ELesxPropertyKeys key;
 
   public ELesxPropertyKeys getKey() {
@@ -24,12 +23,8 @@ public class LesxComponent implements Cloneable {
     this.key = key;
   }
 
-  public Collection<LesxProperty> getPropertyValues() {
+  public ObservableList<LesxProperty> getPropertyValues() {
     return propertyValues;
-  }
-
-  public void setPropertyValues(Collection<LesxProperty> propertyValues) {
-    this.propertyValues = propertyValues;
   }
 
   /**
@@ -49,11 +44,6 @@ public class LesxComponent implements Cloneable {
   public LesxComponent clone() {
     try {
       LesxComponent newComponent = (LesxComponent) super.clone();
-      if (getPropertyValues() != null) {
-        newComponent.setPropertyValues(new ArrayList<>(getPropertyValues().stream()
-            .map(prop -> prop.clone())
-            .collect(Collectors.toList())));
-      }
       return newComponent;
     }
     catch (CloneNotSupportedException e) {

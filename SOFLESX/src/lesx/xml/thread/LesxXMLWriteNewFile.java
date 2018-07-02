@@ -27,6 +27,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.util.Pair;
 import lesx.gui.message.LesxMessage;
+import lesx.property.properties.ELesxProductType;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxComponent;
 import lesx.utils.LesxPropertyUtils;
@@ -34,6 +35,7 @@ import lesx.utils.LesxString;
 import lesx.xml.property.LesxBusinessXMLParser;
 import lesx.xml.property.LesxListBusinessXMLParser;
 import lesx.xml.property.LesxListResourceXMLParser;
+import lesx.xml.property.LesxProductTypeXMLParser;
 import lesx.xml.property.LesxResourceXMLParser;
 
 public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Long, ? extends LesxComponent>>>> {
@@ -143,7 +145,10 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         businessDemo.setId(0L);
         businessDemo.setPrima(200000L);
         businessDemo.setNbs(12 * businessDemo.getPrima());
-        businessDemo.setProducto(0);
+        LesxProductTypeXMLParser productType = new LesxProductTypeXMLParser();
+        productType.setTypeAP(ELesxProductType.AP_SALUD.getKey());
+        productType.setPrimaAP(300000L);
+        businessDemo.setProducto(productType);
         businessDemo.setResource_id(0L);
         LesxListBusinessXMLParser listBusiness = new LesxListBusinessXMLParser();
         listBusiness.setBusiness(Arrays.asList(businessDemo));

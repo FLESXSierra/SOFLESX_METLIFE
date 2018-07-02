@@ -58,6 +58,8 @@ public class LesxMainPaneController extends LesxController {
   private LesxBusinessResourceDataModel dataModel = new LesxBusinessResourceDataModel();
   private IntegerProperty year = new SimpleIntegerProperty();
   private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
+  //flag
+  private boolean ignoreListener = false;
   //Runnables
   private Runnable onDelete;
   private Consumer<ELesxUseCase> onAdd;
@@ -141,12 +143,18 @@ public class LesxMainPaneController extends LesxController {
             .getValue()
             .getBusiness()
             .getProduct() != null
-                ? param.getValue()
-                    .getValue()
-                    .getBusiness()
-                    .getProduct()
-                    .toString()
-                : "");
+            && param.getValue()
+                .getValue()
+                .getBusiness()
+                .getProduct()
+                .getTypeVida() != null
+                    ? param.getValue()
+                        .getValue()
+                        .getBusiness()
+                        .getProduct()
+                        .getTypeVida()
+                        .toString()
+                    : "");
       }
     });
     tipoAP = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_AP"));
@@ -158,12 +166,18 @@ public class LesxMainPaneController extends LesxController {
             .getValue()
             .getBusiness()
             .getProduct() != null
-                ? param.getValue()
-                    .getValue()
-                    .getBusiness()
-                    .getProduct()
-                    .toString()
-                : "");
+            && param.getValue()
+                .getValue()
+                .getBusiness()
+                .getProduct()
+                .getTypeAP() != null
+                    ? param.getValue()
+                        .getValue()
+                        .getBusiness()
+                        .getProduct()
+                        .getTypeAP()
+                        .toString()
+                    : "");
       }
     });
     tipo.getColumns()
@@ -177,12 +191,18 @@ public class LesxMainPaneController extends LesxController {
             .getValue()
             .getBusiness()
             .getProduct() != null
-                ? param.getValue()
-                    .getValue()
-                    .getBusiness()
-                    .getProduct()
-                    .toString()
-                : "");
+            && param.getValue()
+                .getValue()
+                .getBusiness()
+                .getProduct()
+                .getPrimaVida() != null
+                    ? param.getValue()
+                        .getValue()
+                        .getBusiness()
+                        .getProduct()
+                        .getPrimaVida()
+                        .toString()
+                    : "");
       }
     });
     primaAP = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_AP"));
@@ -193,12 +213,18 @@ public class LesxMainPaneController extends LesxController {
             .getValue()
             .getBusiness()
             .getProduct() != null
-                ? param.getValue()
-                    .getValue()
-                    .getBusiness()
-                    .getProduct()
-                    .toString()
-                : "");
+            && param.getValue()
+                .getValue()
+                .getBusiness()
+                .getProduct()
+                .getPrimaAP() != null
+                    ? param.getValue()
+                        .getValue()
+                        .getBusiness()
+                        .getProduct()
+                        .getPrimaAP()
+                        .toString()
+                    : "");
       }
     });
     prima.getColumns()
@@ -309,12 +335,14 @@ public class LesxMainPaneController extends LesxController {
   }
 
   private void updateTreeTableData() {
+    ignoreListener = true;
     final TreeItem<LesxResourceBusiness> root = new TreeItem<>();
     for (ELesxMonth month : ELesxMonth.values()) {
       root.getChildren()
           .add(dataModel.getTreeItem(month, year.getValue()));
     }
     table.setRoot(root);
+    ignoreListener = false;
   }
 
   @Override
@@ -326,14 +354,16 @@ public class LesxMainPaneController extends LesxController {
     table.getSelectionModel()
         .selectedItemProperty()
         .addListener(obs -> {
-          if (mainPane.isSelectedResourceBusinessItem()) {
-            dataModel.setComponentSelected(table.getSelectionModel()
-                .selectedItemProperty()
-                .getValue()
-                .getValue());
-          }
-          else {
-            dataModel.setComponentSelected(null);
+          if (!ignoreListener) {
+            if (mainPane.isSelectedResourceBusinessItem()) {
+              dataModel.setComponentSelected(table.getSelectionModel()
+                  .selectedItemProperty()
+                  .getValue()
+                  .getValue());
+            }
+            else {
+              dataModel.setComponentSelected(null);
+            }
           }
         });
     createRunnables();

@@ -21,7 +21,7 @@ public class LesxMonthPeriodEditor extends TextField {
   }
 
   public LesxMonthPeriodEditor(String initialPeriod) {
-    if (!LesxMisc.isEmpty(initialPeriod)) {
+    if (!LesxMisc.isEmptyString(initialPeriod)) {
       period.setValue(initialPeriod);
     }
   }
