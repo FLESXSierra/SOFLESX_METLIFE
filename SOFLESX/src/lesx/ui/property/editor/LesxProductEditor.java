@@ -2,11 +2,11 @@ package lesx.ui.property.editor;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 
+import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -38,8 +38,12 @@ public class LesxProductEditor extends ComboBox<String> {
   private LesxListEditor productsAPCombo = new LesxListEditor();
   private CheckBox ap = new CheckBox();
   private TextField editorAP = new TextField();
+  private VBox graphicCombo;
   //flags
   private boolean ignoreListener = false;
+  private boolean listenerInstaled = false;
+  //Listener
+  private InvalidationListener build;
 
   public LesxProductEditor(LesxProperty fxProperty) {
     if (fxProperty.getValue() != null) {
@@ -48,6 +52,7 @@ public class LesxProductEditor extends ComboBox<String> {
     else {
       product = new LesxProductType();
     }
+    installDropdownContent();
     initializeCombo();
     productsVidaCombo.validProperty()
         .bindBidirectional(fxProperty.validProperty());
@@ -61,7 +66,7 @@ public class LesxProductEditor extends ComboBox<String> {
             setGraphic(null);
             setText(null);
             if (item != null || !empty) {
-              setGraphic(getDropdownContent());
+              setGraphic(graphicCombo);
             }
           }
         };
@@ -76,14 +81,27 @@ public class LesxProductEditor extends ComboBox<String> {
 
       @Override
       public void hide() {
-        fxProperty.setValue(product);
+        removeListenerToPopup();
+        fxProperty.setValue(product.clone()); // Triggers value changed
         super.hide();
       }
+
+      @Override
+      public void show() {
+        addListenersToPopup();
+        super.show();
+      }
+
     });
     getStylesheets().add(LesxString.STYLE_PRODUCT_COMBO);
   }
 
   private void initializeCombo() {
+    //initialize Listener
+    build = obs -> {
+      System.out.println(obs);
+      buildValue();
+    };
     //Adds data
     productsVidaCombo.setListValues(ELesxProductType.stringList());
     productsAPCombo.setListValues(ELesxProductType.stringList());
@@ -103,25 +121,54 @@ public class LesxProductEditor extends ComboBox<String> {
     if (product != null && (product.getTypeVida() != null || product.getTypeAP() != null)) {
       reBuildValue();
     }
-    //Create Listeners
-    productsAPCombo.getSelectionModel()
-        .selectedItemProperty()
-        .addListener(obs -> buildValue());
-    productsVidaCombo.getSelectionModel()
-        .selectedItemProperty()
-        .addListener(obs -> buildValue());
-    vida.selectedProperty()
-        .addListener(obs -> buildValue());
-    ap.selectedProperty()
-        .addListener(obs -> buildValue());
-    editorVida.textProperty()
-        .addListener(obs -> buildValue());
-    editorAP.textProperty()
-        .addListener(obs -> buildValue());
+    addListenersToPopup();
+  }
+
+  private void removeListenerToPopup() {
+    if (listenerInstaled) {
+      try {
+        productsAPCombo.valueListProperty()
+            .removeListener(build);
+        productsVidaCombo.valueListProperty()
+            .removeListener(build);
+        vida.selectedProperty()
+            .removeListener(build);
+        ap.selectedProperty()
+            .removeListener(build);
+        editorVida.textProperty()
+            .removeListener(build);
+        editorAP.textProperty()
+            .removeListener(build);
+      }
+      finally {
+        listenerInstaled = false;
+      }
+    }
+  }
+
+  /**
+   * Create Listeners
+   */
+  private void addListenersToPopup() {
+    if (!listenerInstaled) {
+      listenerInstaled = true;
+      productsAPCombo.valueListProperty()
+          .addListener(build);
+      productsVidaCombo.valueListProperty()
+          .addListener(build);
+      vida.selectedProperty()
+          .addListener(build);
+      ap.selectedProperty()
+          .addListener(build);
+      editorVida.textProperty()
+          .addListener(build);
+      editorAP.textProperty()
+          .addListener(build);
+    }
   }
 
   private void buildValue() {
-    if (!ignoreListener) {
+    if (!ignoreListener && isShowing()) {
       ignoreListener = true;
       try {
         if (!LesxMisc.isEmptyString(productsVidaCombo.getSelectionModel()
@@ -136,9 +183,11 @@ public class LesxProductEditor extends ComboBox<String> {
             .getSelectedItem())) {
           product.setTypeAP(ELesxProductType.get(productsAPCombo.getSelectionModel()
               .getSelectedItem()));
+          //          System.out.println(product.getTypeAP());
         }
         else {
           product.setTypeAP(null);
+          //          System.out.println(product.getTypeAP());
         }
         if (vida.isSelected()) {
           product.setPrimaVida(Long.valueOf(LesxMisc.isEmptyString(editorVida.getText()) ? "0" : editorVida.getText()));
@@ -182,9 +231,9 @@ public class LesxProductEditor extends ComboBox<String> {
     }
   }
 
-  private Node getDropdownContent() {
-    VBox wrapper = new VBox();
-    wrapper.setSpacing(5);
+  private void installDropdownContent() {
+    graphicCombo = new VBox();
+    graphicCombo.setSpacing(5);
     Label titleVida = new Label();
     titleVida.setText(LesxMessage.getMessage("TEXT-CHECKBOX_VIDA"));
     HBox wrapperCheckBoxVida = new HBox();
@@ -197,9 +246,8 @@ public class LesxProductEditor extends ComboBox<String> {
     wrapperCheckBoxAP.setSpacing(5);
     wrapperCheckBoxAP.getChildren()
         .addAll(ap, editorAP);
-    wrapper.getChildren()
+    graphicCombo.getChildren()
         .addAll(titleVida, productsVidaCombo, wrapperCheckBoxVida, new Separator(Orientation.HORIZONTAL), titleAP, productsAPCombo, wrapperCheckBoxAP);
-    return wrapper;
   }
 
   public LesxProductType productTypeProperty() {

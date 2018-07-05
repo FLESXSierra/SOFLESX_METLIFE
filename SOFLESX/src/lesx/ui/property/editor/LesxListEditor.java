@@ -4,30 +4,26 @@ import java.util.Collection;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
-import lesx.property.properties.ELesxPropertyType;
 import lesx.utils.LesxMisc;
-import lesx.utils.LesxPropertyUtils;
 
 public class LesxListEditor extends ComboBox<String> {
 
   private ObservableList<String> values = FXCollections.observableArrayList();
   private FilteredList<String> filteredValues;
   private BooleanProperty valid = new SimpleBooleanProperty(this, "valid", true);
-  private ELesxPropertyType type;
-  private ObjectProperty<Object> value = new SimpleObjectProperty<>(this, "value");
+  private StringProperty value = new SimpleStringProperty(this, "value");
   private boolean mandatory = true;
   private String text;
 
   public LesxListEditor() {
     setEditable(true);
-    type = ELesxPropertyType.TEXT;
     getEditor().textProperty()
         .addListener(obs -> valueChanged());
     filteredValues = new FilteredList<String>(values, p -> true);
@@ -40,10 +36,10 @@ public class LesxListEditor extends ComboBox<String> {
     text = getEditor().getText();
     filterList();
     if (isValid()) {
-      LesxPropertyUtils.copyValueToTypeProperty(type, text, value);
+      value.set(text);
     }
     else {
-      LesxPropertyUtils.copyValueToTypeProperty(type, text, value);
+      value.set(null);
     }
   }
 
@@ -76,6 +72,10 @@ public class LesxListEditor extends ComboBox<String> {
     }
   }
 
+  public StringProperty valueListProperty() {
+    return value;
+  }
+
   public void setValid(boolean valid) {
     this.valid.set(valid);
   }
@@ -94,10 +94,6 @@ public class LesxListEditor extends ComboBox<String> {
 
   public void setListValues(Collection<String> values) {
     this.values.setAll(values);
-  }
-
-  public void setType(ELesxPropertyType type) {
-    this.type = type;
   }
 
 }
