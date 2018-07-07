@@ -14,8 +14,6 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
 
   private LesxProperty id;
   private LesxProperty producto;
-  private LesxProperty prima;
-  private LesxProperty nbs;
   private LesxProperty resource_id;
 
   public LesxBusiness() {
@@ -39,8 +37,6 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
       resource_id.setValue(parse.getResource_id());
     }
     producto.setValue(new LesxProductType(parse.getProducto()));
-    prima.setValue(parse.getPrima());
-    nbs.setValue(parse.getNbs());
   }
 
   /**
@@ -56,12 +52,6 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
       }
       if (producto.propertyEquals(property)) {
         producto.setValue(property.getValue());
-      }
-      if (prima.propertyEquals(property)) {
-        prima.setValue(property.getValue());
-      }
-      if (nbs.propertyEquals(property)) {
-        nbs.setValue(property.getValue());
       }
       if (resource_id.propertyEquals(property)) {
         resource_id.setValue(property.getValue());
@@ -81,16 +71,6 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     producto.setType(ELesxPropertyType.PRODUCT_TYPE);
     producto.setName(LesxString.PROPERTY_PRODUCT_TYPE);
     producto.setMandatory(true);
-    prima = new LesxProperty();
-    prima.setType(ELesxPropertyType.LONG);
-    prima.setName(LesxString.PROPERTY_PRIMA);
-    prima.setValue(0L);
-    prima.setMandatory(true);
-    nbs = new LesxProperty();
-    nbs.setType(ELesxPropertyType.LONG);
-    nbs.setName(LesxString.PROPERTY_NBS);
-    nbs.setReadOnly(true);
-    nbs.setValue(0L);
     resource_id = new LesxProperty();
     resource_id.setType(ELesxPropertyType.LONG);
     resource_id.setName(LesxString.PROPERTY_RESOURCE_ID);
@@ -98,7 +78,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     resource_id.setReadOnly(true);
     resource_id.setUnique(true);
     resource_id.setVisible(false);
-    getPropertyValues().addAll(id, resource_id, producto, prima, nbs);
+    getPropertyValues().addAll(id, resource_id, producto);
     setKey(ELesxPropertyKeys.BUSINESS);
   }
 
@@ -118,20 +98,17 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     this.producto.setValue(producto);
   }
 
-  public Long getPrima() {
-    return (Long) prima.getValue();
-  }
-
-  public void setPrima(Long prima) {
-    this.prima.setValue(prima);
-  }
-
   public Long getNbs() {
-    return (Long) nbs.getValue();
-  }
-
-  public void setNbs(Long nbs) {
-    this.nbs.setValue(nbs);
+    Long nbs = null;
+    if (getProduct() != null) {
+      if (getProduct().getPrimaAP() != null) {
+        nbs = getProduct().getPrimaAP() * 12;
+      }
+      if (getProduct().getPrimaVida() != null) {
+        nbs = nbs != null ? (nbs + getProduct().getPrimaVida() * 12) : getProduct().getPrimaVida() * 12;
+      }
+    }
+    return nbs;
   }
 
   public Long getResource_id() {

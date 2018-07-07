@@ -1,8 +1,10 @@
 package lesx.utils;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,7 @@ import lesx.xml.property.LesxResourceXMLParser;
 
 public class LesxPropertyUtils {
 
+  public final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
   private final static Logger LOGGER = Logger.getLogger(LesxPropertyUtils.class.getName());
 
   /**

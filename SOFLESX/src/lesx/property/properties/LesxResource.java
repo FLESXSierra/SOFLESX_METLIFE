@@ -1,13 +1,12 @@
 package lesx.property.properties;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lesx.gui.message.LesxMessage;
+import lesx.utils.LesxPropertyUtils;
 import lesx.utils.LesxString;
 import lesx.xml.property.LesxResourceXMLParser;
 
@@ -22,7 +21,6 @@ public class LesxResource extends LesxComponent implements Cloneable {
   private LesxProperty birthday;
   private LesxProperty location;
   private LesxProperty registration_date;
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
 
   public LesxResource() {
     initializeProperty();
@@ -119,7 +117,7 @@ public class LesxResource extends LesxComponent implements Cloneable {
     registration_date.setType(ELesxPropertyType.DATE);
     registration_date.setName(LesxString.PROPERTY_REGISTER_DATE);
     registration_date.setValue(LocalDate.now()
-        .format(formatter)
+        .format(LesxPropertyUtils.FORMATTER)
         .toString());
     registration_date.setMandatory(true);
     getPropertyValues().addAll(id, solicitud, name, cc, location, birthday, registration_date);

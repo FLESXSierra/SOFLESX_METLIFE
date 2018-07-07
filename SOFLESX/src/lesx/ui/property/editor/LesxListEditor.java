@@ -76,6 +76,10 @@ public class LesxListEditor extends ComboBox<String> {
     return value;
   }
 
+  public String getValueList() {
+    return value.get();
+  }
+
   public void setValid(boolean valid) {
     this.valid.set(valid);
   }

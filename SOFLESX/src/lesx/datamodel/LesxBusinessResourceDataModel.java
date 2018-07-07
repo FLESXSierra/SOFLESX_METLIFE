@@ -1,12 +1,10 @@
 package lesx.datamodel;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,13 +15,13 @@ import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResourceBusiness;
+import lesx.utils.LesxPropertyUtils;
 
 public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourceBusiness> {
 
   private final static Logger LOGGER = Logger.getLogger(LesxBusinessResourceDataModel.class.getName());
 
   private Map<Long, LesxResourceBusiness> map = new HashMap<>();
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
   private LesxResourceBusiness selectedItem;
 
   @Override
@@ -52,16 +50,12 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   public TreeItem<LesxResourceBusiness> getTreeItem(ELesxMonth month, Integer year) {
     LesxResourceBusiness monthRes = new LesxResourceBusiness();
-    monthRes.getBusiness()
-        .setNbs(null);
-    monthRes.getBusiness()
-        .setPrima(null);
     monthRes.setMonth(month.toString());
     TreeItem<LesxResourceBusiness> monthLeaf = new TreeItem<>(monthRes);
     if (year != null) {
       for (LesxResourceBusiness pair : getResourceBusinessList()) {
         LocalDate date = LocalDate.parse(pair.getResource()
-            .getRegistration_date(), formatter);
+            .getRegistration_date(), LesxPropertyUtils.FORMATTER);
         if ((month.getKey() + 1) == date.getMonthValue() && date.getYear() == year) {
           pair.setMonth(month.toString());
           monthLeaf.getChildren()

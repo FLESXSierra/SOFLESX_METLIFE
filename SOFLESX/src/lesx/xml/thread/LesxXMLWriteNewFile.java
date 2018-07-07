@@ -2,10 +2,8 @@ package lesx.xml.thread;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +43,6 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
   private String path;
   private Boolean available;
   private ELesxUseCase useCase;
-  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
 
   public LesxXMLWriteNewFile(ELesxUseCase useCase) {
     this.useCase = useCase;
@@ -127,10 +124,10 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         resourceDemo.setLocation(0L);
         resourceDemo.setSolicitud(0L);
         resourceDemo.setBirthday(LocalDate.now()
-            .format(formatter)
+            .format(LesxPropertyUtils.FORMATTER)
             .toString());
         resourceDemo.setRegistration_date(LocalDate.now()
-            .format(formatter)
+            .format(LesxPropertyUtils.FORMATTER)
             .toString());
         LesxListResourceXMLParser list = new LesxListResourceXMLParser();
         list.setResources(Arrays.asList(resourceDemo));
@@ -143,8 +140,6 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         LesxBusinessXMLParser businessDemo = new LesxBusinessXMLParser();
         businessDemo.setId(0L);
-        businessDemo.setPrima(200000L);
-        businessDemo.setNbs(12 * businessDemo.getPrima());
         LesxProductTypeXMLParser productType = new LesxProductTypeXMLParser();
         productType.setTypeAP(ELesxProductType.AP_SALUD.getKey());
         productType.setPrimaAP(300000L);

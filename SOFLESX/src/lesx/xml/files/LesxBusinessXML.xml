@@ -5,8 +5,6 @@
             <PRIMA_AP>300000</PRIMA_AP>
             <TIPO_AP>1</TIPO_AP>
         </TIPO_PRODUCTO>
-        <PRECIO>200000</PRECIO>
-        <NBS>2400000</NBS>
         <RESOURCE_ID>0</RESOURCE_ID>
     </BUSINESS>
 </PROPERTIES>

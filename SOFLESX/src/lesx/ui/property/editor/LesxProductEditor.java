@@ -98,10 +98,7 @@ public class LesxProductEditor extends ComboBox<String> {
 
   private void initializeCombo() {
     //initialize Listener
-    build = obs -> {
-      System.out.println(obs);
-      buildValue();
-    };
+    build = obs -> buildValue();
     //Adds data
     productsVidaCombo.setListValues(ELesxProductType.stringList());
     productsAPCombo.setListValues(ELesxProductType.stringList());
@@ -171,23 +168,17 @@ public class LesxProductEditor extends ComboBox<String> {
     if (!ignoreListener && isShowing()) {
       ignoreListener = true;
       try {
-        if (!LesxMisc.isEmptyString(productsVidaCombo.getSelectionModel()
-            .getSelectedItem())) {
-          product.setTypeVida(ELesxProductType.get(productsVidaCombo.getSelectionModel()
-              .getSelectedItem()));
+        if (!LesxMisc.isEmptyString(productsVidaCombo.getValueList())) {
+          product.setTypeVida(ELesxProductType.get(productsVidaCombo.getValueList()));
         }
         else {
           product.setTypeVida(null);
         }
-        if (!LesxMisc.isEmptyString(productsAPCombo.getSelectionModel()
-            .getSelectedItem())) {
-          product.setTypeAP(ELesxProductType.get(productsAPCombo.getSelectionModel()
-              .getSelectedItem()));
-          //          System.out.println(product.getTypeAP());
+        if (!LesxMisc.isEmptyString(productsAPCombo.getValueList())) {
+          product.setTypeAP(ELesxProductType.get(productsAPCombo.getValueList()));
         }
         else {
           product.setTypeAP(null);
-          //          System.out.println(product.getTypeAP());
         }
         if (vida.isSelected()) {
           product.setPrimaVida(Long.valueOf(LesxMisc.isEmptyString(editorVida.getText()) ? "0" : editorVida.getText()));

@@ -251,14 +251,12 @@ public class LesxMainPaneController extends LesxController {
       public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
         return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
-            .getBusiness()
-            .getPrima() != null
+            .getComision() != null
                 ? param.getValue()
                     .getValue()
-                    .getBusiness()
-                    .getPrima()
+                    .getComision()
                     .toString()
-                : ""); // TODO Calculate Comision
+                : "");
       }
     });
 
@@ -292,28 +290,28 @@ public class LesxMainPaneController extends LesxController {
             .multiply(0.1));
     tipoAP.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.07));
+            .multiply(0.09));
     tipoVida.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.07));
+            .multiply(0.09));
     tipo.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.14));
+            .multiply(0.18));
     primaAP.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.07));
+            .multiply(0.09));
     primaVida.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.07));
+            .multiply(0.09));
     prima.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.14));
+            .multiply(0.18));
     nbs.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.14));
+            .multiply(0.1));
     comision.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.14));
+            .multiply(0.1));
 
     table.setShowRoot(false);
     updateTreeTableData();

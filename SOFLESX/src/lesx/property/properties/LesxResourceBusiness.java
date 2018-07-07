@@ -1,6 +1,9 @@
 package lesx.property.properties;
 
+import java.time.LocalDate;
+
 import lesx.utils.LesxMisc;
+import lesx.utils.LesxPropertyUtils;
 
 public class LesxResourceBusiness extends LesxComponent implements Cloneable {
 
@@ -37,6 +40,33 @@ public class LesxResourceBusiness extends LesxComponent implements Cloneable {
 
   public void setMonth(String month) {
     this.month = month;
+  }
+
+  public Long getComision() {
+    Long comision = null;
+    if (getResource() != null && getBusiness() != null && getBusiness().getNbs() != null) {
+      int month = LocalDate.now()
+          .getMonthValue()
+          - LocalDate.parse(getResource().getRegistration_date(), LesxPropertyUtils.FORMATTER)
+              .getMonthValue();
+      switch (month) {
+        case 0:
+          comision = getBusiness().getNbs() / 24;
+          break;
+        case 1:
+          comision = (getBusiness().getNbs() / 60);
+          break;
+        case 2:
+          comision = (getBusiness().getNbs() / 60);
+          break;
+        case 3:
+          comision = (getBusiness().getNbs() / 120);
+          break;
+        default:
+          break;
+      }
+    }
+    return comision;
   }
 
   @Override

@@ -1,9 +1,7 @@
 package lesx.ui.property.editor;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,13 +9,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.DatePicker;
 import javafx.util.StringConverter;
-import lesx.gui.message.LesxMessage;
 import lesx.property.properties.LesxProperty;
 import lesx.utils.LesxMisc;
+import lesx.utils.LesxPropertyUtils;
 
 public class LesxPeriodDatePicker extends DatePicker {
 
-  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH);
   private BooleanProperty valid = new SimpleBooleanProperty(this, "valid", true);
   private StringProperty period = new SimpleStringProperty(this, "period", "");
   private boolean mandatory;
@@ -27,8 +24,8 @@ public class LesxPeriodDatePicker extends DatePicker {
     if (fxProperty.getValue() != null) {
       try {
         LocalDate date = LocalDate.parse(fxProperty.getValue()
-            .toString(), formatter);
-        date.format(formatter);
+            .toString(), LesxPropertyUtils.FORMATTER);
+        date.format(LesxPropertyUtils.FORMATTER);
         setValue(date);
         valueChanged();
       }
@@ -50,7 +47,7 @@ public class LesxPeriodDatePicker extends DatePicker {
   private void valueChanged() {
     if (!LesxMisc.isEmptyString(getValue().toString())) {
       try {
-        period.set(getValue().format(formatter)
+        period.set(getValue().format(LesxPropertyUtils.FORMATTER)
             .toString());
         valid.set(true);
       }
@@ -77,7 +74,7 @@ public class LesxPeriodDatePicker extends DatePicker {
   private class PeriodDateConverter extends StringConverter<LocalDate> {
     @Override
     public LocalDate fromString(String date) {
-      return LocalDate.parse(date, formatter);
+      return LocalDate.parse(date, LesxPropertyUtils.FORMATTER);
     }
 
     @Override
@@ -85,7 +82,7 @@ public class LesxPeriodDatePicker extends DatePicker {
       if (date == null) {
         return "";
       }
-      return date.format(formatter);
+      return date.format(LesxPropertyUtils.FORMATTER);
     }
   }
 
