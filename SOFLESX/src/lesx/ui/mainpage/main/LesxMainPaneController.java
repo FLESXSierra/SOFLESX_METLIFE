@@ -407,8 +407,10 @@ public class LesxMainPaneController extends LesxController {
         }
         if (LesxButtonType.NEW_RESOURCE.equals(result)) {
           LesxSceneController.showResourceEditDialog(this, ELesxUseCase.ADD_ONLY, dataModelResource, () -> {
-            dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
-            addNewBusiness(useCase);
+            if (dataModelResource.getComponentSelected() != null) {
+              dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
+              addNewBusiness(useCase);
+            }
           });
         }
         else if (LesxButtonType.NO_NEW_RESOURCE.equals(result)) {

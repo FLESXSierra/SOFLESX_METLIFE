@@ -96,7 +96,7 @@ public class LesxSceneController {
     }
   }
 
-  public static void showBusinessEditDialog(LesxController controller, ELesxUseCase isCreate, LesxBusinessResourceDataModel dataModel, Runnable runnable) {
+  public static void showBusinessEditDialog(LesxController controller, ELesxUseCase useCase, LesxBusinessResourceDataModel dataModel, Runnable runnable) {
 
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(controller.getClass()
@@ -105,7 +105,7 @@ public class LesxSceneController {
       LesxEditBusinessDialog controllerResource = new LesxEditBusinessDialog();
       fxmlLoader.setController(controllerResource);
       Pane root = fxmlLoader.load();
-      controllerResource.init(dataModel, isCreate);
+      controllerResource.init(dataModel, useCase);
       controllerResource.setWindow(stage);
       stage.setTitle(controllerResource.getTitle());
       stage.setScene(new Scene(root));

@@ -170,15 +170,21 @@ public class LesxProductEditor extends ComboBox<String> {
       try {
         if (!LesxMisc.isEmptyString(productsVidaCombo.getValueList())) {
           product.setTypeVida(ELesxProductType.get(productsVidaCombo.getValueList()));
+          vida.setDisable(false);
         }
         else {
           product.setTypeVida(null);
+          vida.setDisable(true);
+          vida.setSelected(false);
         }
         if (!LesxMisc.isEmptyString(productsAPCombo.getValueList())) {
           product.setTypeAP(ELesxProductType.get(productsAPCombo.getValueList()));
+          ap.setDisable(false);
         }
         else {
           product.setTypeAP(null);
+          ap.setDisable(true);
+          ap.setSelected(false);
         }
         if (vida.isSelected()) {
           product.setPrimaVida(Long.valueOf(LesxMisc.isEmptyString(editorVida.getText()) ? "0" : editorVida.getText()));
@@ -191,7 +197,7 @@ public class LesxProductEditor extends ComboBox<String> {
           product.setPrimaAP(Long.valueOf(LesxMisc.isEmptyString(editorAP.getText()) ? "0" : editorAP.getText()));
         }
         else {
-          product.setPrimaVida(null);
+          product.setPrimaAP(null);
           editorAP.setText("");
         }
       }

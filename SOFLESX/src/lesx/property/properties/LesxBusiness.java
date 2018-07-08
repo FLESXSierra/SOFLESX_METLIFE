@@ -1,10 +1,12 @@
 package lesx.property.properties;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lesx.gui.message.LesxMessage;
+import lesx.utils.LesxPropertyUtils;
 import lesx.utils.LesxString;
 import lesx.xml.property.LesxBusinessXMLParser;
 
@@ -14,6 +16,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
 
   private LesxProperty id;
   private LesxProperty producto;
+  private LesxProperty date;
   private LesxProperty resource_id;
 
   public LesxBusiness() {
@@ -37,6 +40,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
       resource_id.setValue(parse.getResource_id());
     }
     producto.setValue(new LesxProductType(parse.getProducto()));
+    date.setValue(parse.getDate());
   }
 
   /**
@@ -56,6 +60,9 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
       if (resource_id.propertyEquals(property)) {
         resource_id.setValue(property.getValue());
       }
+      if (date.propertyEquals(property)) {
+        date.setValue(property.getValue());
+      }
     }
   }
 
@@ -71,6 +78,13 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     producto.setType(ELesxPropertyType.PRODUCT_TYPE);
     producto.setName(LesxString.PROPERTY_PRODUCT_TYPE);
     producto.setMandatory(true);
+    date = new LesxProperty();
+    date.setType(ELesxPropertyType.DATE);
+    date.setValue(LocalDate.now()
+        .format(LesxPropertyUtils.FORMATTER)
+        .toString());
+    date.setName(LesxString.PROPERTY_BUSINESS_DATE);
+    date.setMandatory(true);
     resource_id = new LesxProperty();
     resource_id.setType(ELesxPropertyType.LONG);
     resource_id.setName(LesxString.PROPERTY_RESOURCE_ID);
@@ -78,7 +92,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     resource_id.setReadOnly(true);
     resource_id.setUnique(true);
     resource_id.setVisible(false);
-    getPropertyValues().addAll(id, resource_id, producto);
+    getPropertyValues().addAll(id, resource_id, producto, date);
     setKey(ELesxPropertyKeys.BUSINESS);
   }
 
@@ -117,6 +131,14 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
 
   public void setResource_id(Long resource_id) {
     this.resource_id.setValue(resource_id);
+  }
+
+  public String getDate() {
+    return (String) date.getValue();
+  }
+
+  public void setDate(String date) {
+    this.date.setValue(date);
   }
 
   @Override

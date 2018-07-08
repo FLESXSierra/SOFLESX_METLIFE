@@ -140,6 +140,9 @@ public class LesxXMLWriteNewFile extends Service<Pair<Boolean, Map<Long, Map<Lon
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         LesxBusinessXMLParser businessDemo = new LesxBusinessXMLParser();
         businessDemo.setId(0L);
+        businessDemo.setDate(LocalDate.now()
+            .format(LesxPropertyUtils.FORMATTER)
+            .toString());
         LesxProductTypeXMLParser productType = new LesxProductTypeXMLParser();
         productType.setTypeAP(ELesxProductType.AP_SALUD.getKey());
         productType.setPrimaAP(300000L);

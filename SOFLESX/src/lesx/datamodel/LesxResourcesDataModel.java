@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxLocations;
@@ -184,6 +185,12 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
 
   public List<LesxResource> getResources() {
     return (List<LesxResource>) map.values();
+  }
+
+  public List<LesxResource> getResource(List<Long> selectedCostumers) {
+    return getResources().stream()
+        .filter(resource -> selectedCostumers.contains(resource.getId()))
+        .collect(Collectors.toList());
   }
 
 }

@@ -14,7 +14,6 @@ public class LesxString {
   public static final String ROOT_ELEMENT_XML = "PROPERTIES";
   public static final String ROOT_REPORT_TREE_XML = "TREE";
   public static final String ELEMENT_XML_COSTUMER = "COSTUMER";
-  public static final String ELEMENT_XML_PRICE = "PRICE";
   public static final String ELEMENT_XML_BUSINESS = "BUSINESS";
   public static final String ATTR_XML_NAME = "NAME";
   public static final String ATTR_XML_ID = "ID";
@@ -36,6 +35,7 @@ public class LesxString {
   public static final String ATTR_XML_PRIMA_AP = "PRIMA_AP";
   public static final String ATTR_XML_TYPE_VIDA = "TIPO_VIDA";
   public static final String ATTR_XML_TYPE_AP = "TIPO_AP";
+  public static final String ATTR_XML_DATE = "DATE";
 
   /**
    * Scene Controller
@@ -83,5 +83,6 @@ public class LesxString {
   public static final String PROPERTY_VIDA = "Vida";
   public static final String PROPERTY_VIDA_C = "VidaC";
   public static final String PROPERTY_AP = "AP";
+  public static final String PROPERTY_BUSINESS_DATE = "Fecha de Venta";
 
 }

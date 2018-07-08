@@ -12,7 +12,7 @@ public enum ELesxPropertyKeys {
   BUSINESS(1L) {
     @Override
     public String toString() {
-      return LesxString.ELEMENT_XML_PRICE;
+      return LesxString.ELEMENT_XML_BUSINESS;
     }
   },
   RESOURCE_BUSINESS(2L) {

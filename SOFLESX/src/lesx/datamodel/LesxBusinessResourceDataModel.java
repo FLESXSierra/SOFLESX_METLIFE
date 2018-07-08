@@ -54,8 +54,8 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
     TreeItem<LesxResourceBusiness> monthLeaf = new TreeItem<>(monthRes);
     if (year != null) {
       for (LesxResourceBusiness pair : getResourceBusinessList()) {
-        LocalDate date = LocalDate.parse(pair.getResource()
-            .getRegistration_date(), LesxPropertyUtils.FORMATTER);
+        LocalDate date = LocalDate.parse(pair.getBusiness()
+            .getDate(), LesxPropertyUtils.FORMATTER);
         if ((month.getKey() + 1) == date.getMonthValue() && date.getYear() == year) {
           pair.setMonth(month.toString());
           monthLeaf.getChildren()
@@ -111,8 +111,10 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   }
 
   public void deleteSelectedBusiness() {
-    // TODO Delete Selected
-
+    if (selectedItem != null && selectedItem.getBusiness() != null) {
+      map.remove(selectedItem.getBusiness()
+          .getId());
+    }
   }
 
 }

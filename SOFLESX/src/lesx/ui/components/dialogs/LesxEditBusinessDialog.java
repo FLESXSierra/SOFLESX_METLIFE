@@ -2,6 +2,9 @@ package lesx.ui.components.dialogs;
 
 import static lesx.property.properties.ELesxUseCase.EDIT;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import lesx.datamodel.ILesxDataModel;
 import lesx.datamodel.LesxBusinessResourceDataModel;
@@ -13,6 +16,8 @@ import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxResourceBusiness;
 
 public class LesxEditBusinessDialog extends LesxEditComponentDialog {
+
+  private final static Logger LOGGER = Logger.getLogger(LesxEditBusinessDialog.class.getName());
 
   private LesxBusinessResourceDataModel dataModel;
   private LesxResourceBusiness resourceBusiness;
@@ -69,8 +74,8 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected boolean isDuplicate(ELesxUseCase isCreate) {
-    return dataModel.isDuplicate(resourceBusiness, isCreate);
+  protected boolean isDuplicate(ELesxUseCase useCase) {
+    return dataModel.isDuplicate(resourceBusiness, useCase);
   }
 
   @Override
@@ -80,8 +85,8 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
   }
 
   @Override
-  protected void setComponent(ELesxUseCase isCreate) {
-    if (isCreate == EDIT) {
+  protected void setComponent(ELesxUseCase useCase) {
+    if (useCase == EDIT) {
       business = dataModel.getComponentSelected()
           .getBusiness()
           .clone();
@@ -91,7 +96,17 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
     else {
       business = new LesxBusiness();
       business.setId(dataModel.createNewKeyForBusinessIdProperty());
-      business.setKey(ELesxPropertyKeys.RESOURCE);
+      business.setKey(ELesxPropertyKeys.BUSINESS);
+      if (dataModel.getComponentSelected() != null) {
+        resourceBusiness = dataModel.getComponentSelected()
+            .clone();
+        business.setResource_id(resourceBusiness.getResource()
+            .getId());
+        resourceBusiness.setBusiness(business);
+      }
+      else {
+        LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-NO_NULL_VALUE", resourceBusiness));
+      }
     }
   }
 

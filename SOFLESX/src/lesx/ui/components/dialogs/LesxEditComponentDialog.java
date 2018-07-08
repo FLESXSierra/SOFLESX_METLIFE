@@ -114,7 +114,7 @@ public class LesxEditComponentDialog extends LesxController {
           issues.append(LesxMessage.getMessage("TEXT-INVALID_PROPERTY_ISSUE"));
           issues.append("\n");
         }
-        if (!duplicateId) {
+        if (duplicateId) {
           issues.append(LesxMessage.getMessage("TEXT-DUPLICATE_ID_PROPERTY_ISSUE", getComponentName().toString()));
           issues.append("\n");
         }
