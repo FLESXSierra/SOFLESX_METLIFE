@@ -15,6 +15,7 @@ import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxUseCase;
 import lesx.ui.components.dialogs.LesxEditBusinessDialog;
 import lesx.ui.components.dialogs.LesxEditResourceDialog;
+import lesx.ui.components.dialogs.LesxSelectCostumerDialogController;
 import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxString;
 
@@ -97,7 +98,6 @@ public class LesxSceneController {
   }
 
   public static void showBusinessEditDialog(LesxController controller, ELesxUseCase useCase, LesxBusinessResourceDataModel dataModel, Runnable runnable) {
-
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(controller.getClass()
           .getResource(LesxString.EDIT_COMPONENT_DIALOG_PATH));
@@ -118,6 +118,42 @@ public class LesxSceneController {
       stage.show();
       controllerResource.afterSaveProperty()
           .addListener(obs -> runnable.run());
+      controllerResource.closeProperty()
+          .addListener((obs, oldV, newV) -> {
+            if (newV) {
+              runnable.run();
+              stage.close();
+            }
+          });
+    }
+    catch (IOException e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+      e.printStackTrace();
+    }
+    catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+      ex.printStackTrace();
+    }
+  }
+
+  public static void showSelectResourceDialog(LesxController controller, LesxResourcesDataModel dataModel, Runnable runnable) {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader(controller.getClass()
+          .getResource(LesxString.SELECT_RESOURCE_DIALOG_PATH));
+      Stage stage = new Stage();
+      LesxSelectCostumerDialogController controllerResource = new LesxSelectCostumerDialogController();
+      fxmlLoader.setController(controllerResource);
+      Pane root = fxmlLoader.load();
+      controllerResource.init(dataModel);
+      stage.setTitle(controllerResource.getTitle());
+      stage.setScene(new Scene(root));
+      stage.initOwner(LesxMain.getInstance()
+          .getStage());
+      stage.initModality(Modality.APPLICATION_MODAL);
+      stage.setMinHeight(480);
+      stage.setMinWidth(465);
+      stage.sizeToScene();
+      stage.show();
       controllerResource.closeProperty()
           .addListener((obs, oldV, newV) -> {
             if (newV) {

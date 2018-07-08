@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -43,6 +44,7 @@ public class LesxSelectCostumerDialogController extends LesxController {
   private LesxResourcesDataModel dataModelResources;
   //Data
   private BooleanProperty closeProperty = new SimpleBooleanProperty(this, "closeProperty");
+  private BooleanProperty selectedProperty = new SimpleBooleanProperty(this, "selectedProperty");
   private List<Long> selectedCostumers = new ArrayList<>();
   private SelectionMode mode = SelectionMode.SINGLE;
 
@@ -54,7 +56,7 @@ public class LesxSelectCostumerDialogController extends LesxController {
     tableCostumer.getSelectionModel()
         .selectedItemProperty()
         .addListener(obs -> selectedCostumers());
-    add.setText(LesxMessage.getMessage("TEXT-BUTTON_ADD"));
+    add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
     cancel.setText(LesxMessage.getMessage("TEXT-BUTTON_CANCEL"));
   }
 
@@ -62,6 +64,7 @@ public class LesxSelectCostumerDialogController extends LesxController {
     selectedCostumers.clear();
     if (tableCostumer.getSelectionModel()
         .getSelectedItems() != null) {
+      selectedProperty.setValue(true);
       selectedCostumers.addAll(tableCostumer.getSelectionModel()
           .getSelectedItems()
           .stream()
@@ -69,15 +72,26 @@ public class LesxSelectCostumerDialogController extends LesxController {
           .map(costumer -> costumer.getId())
           .collect(Collectors.toList()));
     }
+    else {
+      selectedProperty.setValue(false);
+    }
+  }
+
+  public void init(LesxResourcesDataModel dataModelResources) {
+    init(dataModelResources, null);
   }
 
   public void init(LesxResourcesDataModel dataModelResources, SelectionMode mode) {
-    this.mode = mode;
+    if (mode != null) {
+      this.mode = mode;
+    }
     this.dataModelResources = dataModelResources;
     cancel.setOnAction(obs -> close());
     add.setOnAction(obs -> saveCostumers());
+    add.disableProperty()
+        .bind(Bindings.not(selectedProperty));
     tableCostumer.getSelectionModel()
-        .setSelectionMode(mode);
+        .setSelectionMode(this.mode);
     fillDataCostumerTable();
   }
 
@@ -103,10 +117,10 @@ public class LesxSelectCostumerDialogController extends LesxController {
     });
     nameColumn.prefWidthProperty()
         .bind(tableCostumer.widthProperty()
-            .divide(5));
+            .divide(2));
     cc.prefWidthProperty()
         .bind(tableCostumer.widthProperty()
-            .divide(5));
+            .divide(2));
     tableCostumer.getColumns()
         .addAll(nameColumn, cc);
     tableCostumer.getItems()

@@ -115,7 +115,7 @@ public class LesxProductEditor extends ComboBox<String> {
     editorVida.setTextFormatter(formatter.getFormat());
     formatter = new LesxNumberFormatter();
     editorAP.setTextFormatter(formatter.getFormat());
-    if (product != null && (product.getTypeVida() != null || product.getTypeAP() != null)) {
+    if (product != null) {
       reBuildValue();
     }
     addListenersToPopup();
@@ -213,10 +213,18 @@ public class LesxProductEditor extends ComboBox<String> {
           .select(product.getTypeVida()
               .toString());
     }
+    else {
+      vida.setDisable(true);
+      vida.setSelected(false);
+    }
     if (product.getTypeAP() != null) {
       productsAPCombo.getSelectionModel()
           .select(product.getTypeAP()
               .toString());
+    }
+    else {
+      ap.setDisable(true);
+      ap.setSelected(false);
     }
     if (product.getPrimaAP() != null) {
       ap.setSelected(true);

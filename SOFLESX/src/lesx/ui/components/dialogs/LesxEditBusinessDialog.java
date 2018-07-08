@@ -37,25 +37,20 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
 
   @Override
   public String getTitle() {
-    return LesxMessage.getMessage("TEXT-TITLE_RESOURCE_DIALOG_CREATE");
+    return getUseCase() == EDIT ? LesxMessage.getMessage("TEXT-TITLE_SALE_DIALOG_EDIT") : LesxMessage.getMessage("TEXT-TITLE_SALE_DIALOG_CREATE");
   }
 
   @Override
   protected String getDescriptionText(ELesxUseCase isCreate) {
-    return isCreate == EDIT ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_RESOURCE");
+    return isCreate == EDIT ? LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_EDIT_SALE") : LesxMessage.getMessage("TEXT-DESCRIPTION_LABEL_NEW_SALE");
   }
 
   @Override
   protected String getHeader(ELesxUseCase isCreate) {
     StringBuilder string;
     string = new StringBuilder(128);
-    if (isCreate == EDIT) {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", resourceBusiness.getResource()
-          .getName()));
-    }
-    else {
-      string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", "Nuevo"));
-    }
+    string.append(LesxMessage.getMessage("TEXT-HEADER_LABEL_RESOURCE_PANE", resourceBusiness.getResource()
+        .getName()));
     string.append(".");
     return string.toString();
   }
@@ -105,7 +100,7 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
         resourceBusiness.setBusiness(business);
       }
       else {
-        LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-NO_NULL_VALUE", resourceBusiness));
+        LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-NO_NULL_VALUE", "'resourceBusiness'"));
       }
     }
   }

@@ -374,13 +374,13 @@ public class LesxMainPaneController extends LesxController {
       updateTreeTableData();
     };
     mainPane.setOnDelete(onDelete);
-    onAdd = (isCreate) -> addNewBusiness(isCreate);
+    onAdd = (isCreate) -> addNewBusiness(isCreate, false);
     mainPane.setOnAddNewItem(onAdd);
   }
 
-  private void addNewBusiness(ELesxUseCase useCase) {
+  private void addNewBusiness(ELesxUseCase useCase, boolean isCreated) {
     if (useCase != EDIT) {
-      if (mainPane.isSelectedResourceBusinessItem()) {
+      if (mainPane.isSelectedResourceBusinessItem() || isCreated) {
         LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
           LesxResourceBusiness temp = dataModel.getComponentSelected();
           pendingChanges.set(true);
@@ -409,14 +409,16 @@ public class LesxMainPaneController extends LesxController {
           LesxSceneController.showResourceEditDialog(this, ELesxUseCase.ADD_ONLY, dataModelResource, () -> {
             if (dataModelResource.getComponentSelected() != null) {
               dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
-              addNewBusiness(useCase);
+              addNewBusiness(useCase, true);
             }
           });
         }
         else if (LesxButtonType.NO_NEW_RESOURCE.equals(result)) {
-          LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
-            pendingChanges.set(true);
-            updateTreeTableData();
+          LesxSceneController.showSelectResourceDialog(this, dataModelResource, () -> {
+            if (dataModelResource.getComponentSelected() != null) {
+              dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
+              addNewBusiness(useCase, true);
+            }
           });
         }
       }

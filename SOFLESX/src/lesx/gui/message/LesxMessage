@@ -5,6 +5,9 @@ TEXT-TITLE_MAINPAGE = FLESX.
 TEXT-TITLE_MAINPAGE_MAIN = FLESX.
 TEXT-TITLE_COMPONENT_DIALOG_CREATE = Crear nuevo Objeto.
 TEXT-TITLE_RESOURCE_DIALOG_CREATE = Crear nuevo Cliente.
+TEXT-TITLE_RESOURCE_DIALOG_EDIT = Editar Cliente.
+TEXT-TITLE_SALE_DIALOG_CREATE = Crear nueva venta.
+TEXT-TITLE_SALE_DIALOG_EDIT = Editar venta.
 TEXT-TITLE_SELECT_COSTUMER_DIALOG = Selección de Objectos.
 TEXT-TITLE_REPORT_DIALOG_CREATE = Crear nuevo Reporte.
 
@@ -28,13 +31,10 @@ TEXT-DESCRIPTION_LABEL_NEW_COMPONENT = Panel de creación de nuevo objeto, por fa
 TEXT-DESCRIPTION_LABEL_EDIT_COMPONENT = Panel de edición de objectos, por favor llene las propiedades requeridas.
 TEXT-DESCRIPTION_LABEL_NEW_RESOURCE = Panel de creación de nuevo Cliente, por favor llene las propiedades requeridas.
 TEXT-DESCRIPTION_LABEL_EDIT_RESOURCE = Panel de edición de Cliente, por favor llene las propiedades requeridas.
-TEXT-DESCRIPTION_LABEL_NEW_REPORT = Panel de creación de Reporte, por favor llene las propiedades requeridas.
-TEXT-DESCRIPTION_LABEL_EDIT_REPORT = Panel de edición de Reporte, por favor llene las propiedades requeridas.
-TEXT-DESCRIPTION_LABEL_NEW_PRICE = Panel de creación de nuevo Precios, por favor llene las propiedades requeridas.
-TEXT-DESCRIPTION_LABEL_EDIT_PRICE = Panel de edición de Precios, por favor llene las propiedades requeridas.
+TEXT-DESCRIPTION_LABEL_NEW_SALE = Panel de creación de Ventas, por favor llene las propiedades requeridas.
+TEXT-DESCRIPTION_LABEL_EDIT_SALE = Panel de edición de Ventas, por favor llene las propiedades requeridas.
 TEXT-HEADER_LABEL_COMPONENT_PANE = Objecto: {0}
 TEXT-HEADER_LABEL_RESOURCE_PANE = Cliente: {0}
-TEXT-HEADER_LABEL_REPORT_PANE = Reporte: {0}
 
 TEXT-PRICE_DIALOG_HEADER = Panel de manejo de precios, puede crear, editar y eliminar precios. \nAsi mismo podrá crear reportes sobre los precios. 
 

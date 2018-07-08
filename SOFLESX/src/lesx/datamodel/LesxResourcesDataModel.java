@@ -184,7 +184,7 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
   }
 
   public List<LesxResource> getResources() {
-    return (List<LesxResource>) map.values();
+    return new ArrayList<>(map.values());
   }
 
   public List<LesxResource> getResource(List<Long> selectedCostumers) {

@@ -30,7 +30,7 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
 
   @Override
   public String getTitle() {
-    return LesxMessage.getMessage("TEXT-TITLE_RESOURCE_DIALOG_CREATE");
+    return getUseCase() == EDIT ? LesxMessage.getMessage("TEXT-TITLE_RESOURCE_DIALOG_EDIT") : LesxMessage.getMessage("TEXT-TITLE_RESOURCE_DIALOG_CREATE");
   }
 
   @Override

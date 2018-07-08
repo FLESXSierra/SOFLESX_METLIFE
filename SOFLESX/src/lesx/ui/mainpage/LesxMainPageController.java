@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -19,11 +20,18 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import lesx.datamodel.LesxBusinessResourceDataModel;
+import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
+import lesx.icon.utils.LesxIcon;
+import lesx.property.properties.ELesxUseCase;
+import lesx.property.properties.LesxResourceBusiness;
 import lesx.scene.controller.LesxController;
+import lesx.scene.controller.LesxSceneController;
 import lesx.ui.components.LesxBirthdayButton;
 import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxAlertBuilder;
+import lesx.utils.LesxButtonType;
 import lesx.utils.LesxString;
 
 public class LesxMainPageController extends LesxController {
@@ -112,9 +120,52 @@ public class LesxMainPageController extends LesxController {
     exportXML.setOnAction(obs -> exportXML());
     main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
     resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
+    newSell.setOnAction(obs -> addNewSell());
     bButton.setNames(LesxMain.getInstance()
         .getDbProperty()
         .getBirthdayNames());
+  }
+
+  private void addNewSell() {
+    LesxResourcesDataModel dataModelResource = new LesxResourcesDataModel();
+    LesxBusinessResourceDataModel dataModel = new LesxBusinessResourceDataModel();
+    //Load Data Base
+    dataModelResource.setMap(LesxMain.getInstance()
+        .getDbProperty()
+        .getResourceMap());
+    dataModel.setMap(LesxMain.getInstance()
+        .getDbProperty()
+        .getBusinessResourceMap());
+    ButtonType result = LesxAlertBuilder.create()
+        .setType(AlertType.CONFIRMATION)
+        .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_NEW_SALE"))
+        .setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_NEW_SALE"))
+        .setOwner(LesxMain.getInstance()
+            .getStage())
+        .setGraphic(LesxIcon.getImage(LesxIcon.MONEY))
+        .setButtons(LesxButtonType.NEW_RESOURCE, LesxButtonType.NO_NEW_RESOURCE, LesxButtonType.CANCEL)
+        .showAndWait()
+        .orElse(null);
+    if (LesxButtonType.NEW_RESOURCE.equals(result)) {
+      LesxSceneController.showResourceEditDialog(this, ELesxUseCase.ADD_ONLY, dataModelResource, () -> {
+        if (dataModelResource.getComponentSelected() != null) {
+          dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
+          LesxSceneController.showBusinessEditDialog(this, ELesxUseCase.ADD, dataModel, () -> {
+            //Triggers Listener to update
+          });
+        }
+      });
+    }
+    else if (LesxButtonType.NO_NEW_RESOURCE.equals(result)) {
+      LesxSceneController.showSelectResourceDialog(this, dataModelResource, () -> {
+        if (dataModelResource.getComponentSelected() != null) {
+          dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
+          LesxSceneController.showBusinessEditDialog(this, ELesxUseCase.ADD, dataModel, () -> {
+            //Triggers Listener to update
+          });
+        }
+      });
+    }
   }
 
   /**

@@ -345,6 +345,10 @@ public class LesxEditComponentDialog extends LesxController {
     this.window = window;
   }
 
+  public ELesxUseCase getUseCase() {
+    return useCase;
+  }
+
   @Override
   protected boolean showAlert() {
     return false;
