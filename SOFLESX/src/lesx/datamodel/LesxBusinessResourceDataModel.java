@@ -15,6 +15,7 @@ import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResourceBusiness;
+import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxPropertyUtils;
 
 public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourceBusiness> {
@@ -31,7 +32,8 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   @Override
   public void setMap(Map<Long, LesxResourceBusiness> map) {
-    this.map = map;
+    this.map.clear();
+    this.map.putAll(map);
 
   }
 
@@ -44,8 +46,13 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   }
 
   @Override
-  public void persist(Runnable run) {
-    // No persist here
+  public void persist() {
+    LesxMain.getInstance()
+        .getDbProperty()
+        .setBusinessResourceMap(map);
+    LesxMain.getInstance()
+        .getDbProperty()
+        .buildBusinessResourceMap();
   }
 
   public TreeItem<LesxResourceBusiness> getTreeItem(ELesxMonth month, Integer year) {

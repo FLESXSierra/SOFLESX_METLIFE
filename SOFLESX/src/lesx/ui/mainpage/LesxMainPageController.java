@@ -24,6 +24,7 @@ import lesx.datamodel.LesxBusinessResourceDataModel;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.icon.utils.LesxIcon;
+import lesx.property.properties.ELesxListenerType;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.scene.controller.LesxController;
@@ -121,6 +122,13 @@ public class LesxMainPageController extends LesxController {
     main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
     resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
     newSell.setOnAction(obs -> addNewSell());
+    LesxMain.getInstance()
+        .getDbProperty()
+        .setListener(ELesxListenerType.UPDATE, () -> updateBirthDayButtonNames());
+    updateBirthDayButtonNames();
+  }
+
+  private void updateBirthDayButtonNames() {
     bButton.setNames(LesxMain.getInstance()
         .getDbProperty()
         .getBirthdayNames());

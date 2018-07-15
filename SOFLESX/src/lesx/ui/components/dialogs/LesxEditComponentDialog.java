@@ -231,9 +231,7 @@ public class LesxEditComponentDialog extends LesxController {
    * Override this method in order to save the values into the data model
    */
   protected void saveValues() {
-    dataModel.persist(() -> {
-      // Nothing
-    });
+    dataModel.persist();
   }
 
   /**

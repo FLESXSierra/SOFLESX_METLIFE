@@ -58,6 +58,7 @@ public class LesxSelectCostumerDialogController extends LesxController {
         .addListener(obs -> selectedCostumers());
     add.setText(LesxMessage.getMessage("TEXT-ADD_BUTTON"));
     cancel.setText(LesxMessage.getMessage("TEXT-BUTTON_CANCEL"));
+    header.setText(LesxMessage.getMessage("TEXT-HEADER_SELECT_COSTUMER_DIALOG"));
   }
 
   private void selectedCostumers() {

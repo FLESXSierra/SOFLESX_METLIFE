@@ -26,7 +26,7 @@ public interface ILesxDataModel<T> {
    *
    * @param run after persist.
    */
-  public abstract void persist(Runnable run);
+  public abstract void persist();
 
   /**
    * Gets the component Selected

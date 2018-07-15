@@ -16,6 +16,7 @@ import lesx.property.properties.ELesxLocations;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxResource;
+import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxMisc;
 import lesx.utils.LesxString;
 
@@ -38,9 +39,10 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
   }
 
   @Override
-  public void persist(Runnable run) {
-    // TODO Persist
-
+  public void persist() {
+    LesxMain.getInstance()
+        .getDbProperty()
+        .setResourceMap(map);
   }
 
   /**

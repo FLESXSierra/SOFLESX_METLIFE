@@ -35,8 +35,7 @@ TEXT-DESCRIPTION_LABEL_NEW_SALE = Panel de creación de Ventas, por favor llene l
 TEXT-DESCRIPTION_LABEL_EDIT_SALE = Panel de edición de Ventas, por favor llene las propiedades requeridas.
 TEXT-HEADER_LABEL_COMPONENT_PANE = Objecto: {0}
 TEXT-HEADER_LABEL_RESOURCE_PANE = Cliente: {0}
-
-TEXT-PRICE_DIALOG_HEADER = Panel de manejo de precios, puede crear, editar y eliminar precios. \nAsi mismo podrá crear reportes sobre los precios. 
+TEXT-HEADER_SELECT_COSTUMER_DIALOG = Panel de selección.
 
 TEXT-LOADING_TITLE = Cargando.
 TEXT-LOADING_ERROR_TITLE = ¡Un error se ha generado!.
@@ -85,13 +84,6 @@ TEXT-TOOLTIP_MANDATORY_PROPERTY = Esta propiedad es de tipo mandatoria, se requi
 TEXT-TOOLTIP_UNIQUE_PROPERTY = Esta propiedad es de tipo unica, no se permiten valores iguales.
 TEXT-TOOLTIP_TYPE_PROPERTY = Propiedad de tipo {0}.
 
-TEXT-FUNCTION_LABEL = Funciones:
-TEXT-REPORT_FUNCTION_HEADER = Seleccione una función que desea agregar en la tabla de reportes, una vez seleccionada presione el botón de agregar para incluirla al reporte.
-TEXT-FUNCTION_SUM = Sumatoria.
-TEXT-FUNCTION_PERIOD = Por periodo.
-TEXT-FUNCTION_END_MONTH = Final de mes.
-
-
 TEXT-ALERT_DIALOG_TITLE_PENDING_SAVES = ¡Hay cambios pendiendes por guardar!
 TEXT-ALERT_DIALOG_HEADER_PENDING_SAVES = ¡Hemos encontrado cambios pendientes sin guardar!
 TEXT-ALERT_DIALOG_CONTEXT_PENDING_SAVES = El objecto '{0}' tiene cambios por guardar, ¿está seguro de cerrar esta ventana sin guardar?
@@ -110,14 +102,6 @@ TEXT-ALERT_DIALOG_CONTEXT_REPORT_TREE_SELECT_NULL = No se puede agregar objectos
 TEXT-ALERT_DIALOG_CONTEXT_REPORT_FUNCTION_SELECT_NULL = No se puede editar la función si no se ecuentra seleccionada una previamente en la tabla.
 TEXT-ALERT_TITLE_NEW_SALE = Nuevo Cliente o Ya existente.
 TEXT-ALERT_HEADER_NEW_SALE = ¿Desea agregar una nueva venta a un cliente nuevo o ya existente?
-
-TEXT-REPORT_TITLE = Reportes.
-TEXT-REPORT_BUILDER_HEADER = Generador de reportes, agregue o edite reportes.\nUse el árbol de reportes para crear categorias y guardar reportes para usar a futuro.
-TEXT-REPORT_BUILDER_FUNCTION_HEADER = Agregar/Editar las operaciones requeridas en el reporte.
-
-TEXT-PROPERTY_PRICE_EDITOR_NULL = Sin valor.
-TEXT-PROPERTY_PRICE_EDITOR_TRUE = Ganancias.
-TEXT-PROPERTY_PRICE_EDITOR_FALSE = Gastos.
 
 TEXT-CHECKBOX_VIDA = VIDA
 TEXT-CHECKBOX_AP = AP

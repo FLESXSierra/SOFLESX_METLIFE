@@ -22,6 +22,7 @@ import javafx.scene.control.TreeView;
 import javafx.util.Callback;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
+import lesx.property.properties.ELesxListenerType;
 import lesx.property.properties.ELesxLocations;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxResource;
@@ -243,6 +244,9 @@ public class LesxResourcesPaneController extends LesxController {
     table.getSelectionModel()
         .selectedItemProperty()
         .addListener(obs -> selectedItemTable());
+    LesxMain.getInstance()
+        .getDbProperty()
+        .setListener(ELesxListenerType.UPDATE, () -> refreshDataFromCache());
     createRunnables();
   }
 
@@ -276,6 +280,22 @@ public class LesxResourcesPaneController extends LesxController {
       filterTable();
       fillDataOnTree();
     });
+  }
+
+  private void refreshDataFromCache() {
+    //Load Data Base
+    dataModel.setMap(LesxMain.getInstance()
+        .getDbProperty()
+        .getResourceMap());
+    filterTable();
+    fillDataOnTree();
+  }
+
+  @Override
+  public void clearComponent() {
+    LesxMain.getInstance()
+        .getDbProperty()
+        .removeListener(ELesxListenerType.UPDATE, () -> refreshDataFromCache());
   }
 
   @Override

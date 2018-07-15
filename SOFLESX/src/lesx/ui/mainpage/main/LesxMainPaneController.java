@@ -22,6 +22,7 @@ import lesx.datamodel.LesxBusinessResourceDataModel;
 import lesx.datamodel.LesxResourcesDataModel;
 import lesx.gui.message.LesxMessage;
 import lesx.icon.utils.LesxIcon;
+import lesx.property.properties.ELesxListenerType;
 import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxResourceBusiness;
@@ -314,9 +315,9 @@ public class LesxMainPaneController extends LesxController {
             .multiply(0.1));
 
     table.setShowRoot(false);
-    updateTreeTableData();
     table.getColumns()
         .setAll(month, solicitud, nameColumn, cc, tipo, prima, nbs, comision);
+    updateTreeTableData();
   }
 
   protected boolean parameterNotNull(CellDataFeatures<LesxResourceBusiness, String> param, boolean resource) {
@@ -333,6 +334,7 @@ public class LesxMainPaneController extends LesxController {
   }
 
   private void updateTreeTableData() {
+    showProgress.set(true);
     ignoreListener = true;
     final TreeItem<LesxResourceBusiness> root = new TreeItem<>();
     for (ELesxMonth month : ELesxMonth.values()) {
@@ -341,6 +343,7 @@ public class LesxMainPaneController extends LesxController {
     }
     table.setRoot(root);
     ignoreListener = false;
+    showProgress.set(false);
   }
 
   @Override
@@ -364,7 +367,22 @@ public class LesxMainPaneController extends LesxController {
             }
           }
         });
+    year.addListener(obs -> updateTreeTableData());
+    LesxMain.getInstance()
+        .getDbProperty()
+        .setListenerRB(ELesxListenerType.UPDATE, () -> updateeDataFromCache());
     createRunnables();
+  }
+
+  private void updateeDataFromCache() {
+    //Load Data Base
+    dataModelResource.setMap(LesxMain.getInstance()
+        .getDbProperty()
+        .getResourceMap());
+    dataModel.setMap(LesxMain.getInstance()
+        .getDbProperty()
+        .getBusinessResourceMap());
+    updateTreeTableData();
   }
 
   private void createRunnables() {
@@ -429,6 +447,13 @@ public class LesxMainPaneController extends LesxController {
         updateTreeTableData();
       });
     }
+  }
+
+  @Override
+  public void clearComponent() {
+    LesxMain.getInstance()
+        .getDbProperty()
+        .removeListener(ELesxListenerType.UPDATE, () -> updateTreeTableData());
   }
 
   @Override

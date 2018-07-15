@@ -22,6 +22,7 @@ public class LesxSwitcherPane {
 
   private static LesxMainPageController controller;
   private static String actualPage = "";
+  private static LesxController mainPaneController;
 
   public static void setMainController(LesxMainPageController controller) {
     LesxSwitcherPane.controller = controller;
@@ -34,15 +35,18 @@ public class LesxSwitcherPane {
     if (!actualPage.equals(path)) {
       actualPage = path;
       try {
+        if (mainPaneController != null) {
+          mainPaneController.clearComponent();
+        }
         FXMLLoader fxmlLoader = new FXMLLoader();
         Node root = fxmlLoader.load(LesxMain.getInstance()
             .getClass()
             .getResource(path)
             .openStream());
-        LesxController controllerPane = (LesxController) fxmlLoader.getController();
+        mainPaneController = (LesxController) fxmlLoader.getController();
         controller.showProgressProperty()
-            .bind(controllerPane.showProgressProperty());
-        LesxMain.setTitle(controllerPane.getTitle());
+            .bind(mainPaneController.showProgressProperty());
+        LesxMain.setTitle(mainPaneController.getTitle());
         controller.setMainPane(root);
       }
       catch (IOException e) {

@@ -57,6 +57,7 @@ public class LesxEditResourceDialog extends LesxEditComponentDialog {
     resource = new LesxResource(((LesxResource) getPropertySheet().getComponent()).getPropertyValues());
     dataModel.addResource(resource);
     dataModel.setComponentSelected(resource);
+    dataModel.persist();
   }
 
   @Override

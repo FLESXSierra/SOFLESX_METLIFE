@@ -61,6 +61,7 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
         .of(resourceBusiness.getResource(), new LesxBusiness(((LesxBusiness) getPropertySheet().getComponent()).getPropertyValues()));
     dataModel.addResourceBusiness(resourceBusiness);
     dataModel.setComponentSelected(resourceBusiness);
+    dataModel.persist();
   }
 
   @Override

@@ -64,6 +64,13 @@ public class LesxController {
   }
 
   /**
+   * Overrides -- Clears the component
+   */
+  public void clearComponent() {
+    // Nothing
+  }
+
+  /**
    * Sets Exit handler operation
    */
   public void setExitOperation(Stage primaryStage) {
