@@ -279,16 +279,28 @@ public class LesxResourcesPaneController extends LesxController {
 
   private void addNewResource(ELesxUseCase isCreate) {
     LesxSceneController.showResourceEditDialog(this, isCreate, dataModel, () -> {
-      LesxResource temp = dataModel.getComponentSelected();
-      System.out.println(temp);
+      LesxResource temp = currentList.stream()
+          .filter(res -> res.getId()
+              .equals(dataModel.getComponentSelected()
+                  .getId()))
+          .findFirst()
+          .orElse(null);
       pendingChanges.set(true);
       filterTable();
       fillDataOnTree();
+      table.getSelectionModel()
+          .select(temp);
     });
   }
 
   private void refreshDataFromCache() {
     //Load Data Base
+    LesxResource temp = dataModel.getComponentSelected() != null ? currentList.stream()
+        .filter(res -> res.getId()
+            .equals(dataModel.getComponentSelected()
+                .getId()))
+        .findFirst()
+        .orElse(null) : null;
     dataModel.setMap(LesxMain.getInstance()
         .getDbProperty()
         .getResourceMap());
@@ -296,6 +308,8 @@ public class LesxResourcesPaneController extends LesxController {
     filterTable();
     fillDataOnTree();
     ignoreListener = false;
+    table.getSelectionModel()
+        .select(temp);
   }
 
   @Override
