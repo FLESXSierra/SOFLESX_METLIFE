@@ -346,7 +346,7 @@ public class LesxToolBar extends ToolBar {
   private void buildEditSellButton() {
     editSell = new Button();
     editSell.setText(null);
-    editSell.setTooltip(generateToolTip(buttonType.SELL));
+    editSell.setTooltip(generateToolTip(buttonType.EDIT_SELL));
     editSell.setGraphic(LesxIcon.getImage(LesxIcon.EDIT_SELL));
     editSell.disableProperty()
         .bind(Bindings.not(selectedItem));

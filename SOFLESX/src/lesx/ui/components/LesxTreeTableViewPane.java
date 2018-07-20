@@ -176,7 +176,28 @@ public class LesxTreeTableViewPane<T> extends VBox {
   }
 
   public void selectItem(LesxResourceBusiness item) {
-    // TODO Select Item
+    TreeItem<T> tree = searchForItem(table.getRoot(), item);
+    if (tree != null) {
+      tree.getParent()
+          .setExpanded(true);
+    }
+    table.getSelectionModel()
+        .select(tree);
+  }
+
+  private TreeItem<T> searchForItem(TreeItem<T> treeItem, LesxResourceBusiness item) {
+    if (treeItem == null || (treeItem.getValue() != null && treeItem.getValue()
+        .equals(item))) {
+      return treeItem;
+    }
+    TreeItem<T> result = null;
+    for (TreeItem<T> value : treeItem.getChildren()) {
+      result = searchForItem(value, item);
+      if (result != null && result.getValue() != null) {
+        break;
+      }
+    }
+    return result;
   }
 
 }

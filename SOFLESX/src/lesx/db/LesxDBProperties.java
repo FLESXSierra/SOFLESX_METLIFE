@@ -74,6 +74,17 @@ public class LesxDBProperties {
     businessResourceMapBuild = false;
   }
 
+  public void addBusiness(LesxBusiness business) {
+    final LesxBusiness temp = business.clone();
+    getBusinessMap().put(temp.getId(), temp);
+    businessResourceMapBuild = false;
+  }
+
+  public void removeBusiness(LesxBusiness business) {
+    getBusinessMap().remove(business.getId());
+    businessResourceMapBuild = false;
+  }
+
   public void setBusinessMap(Map<Long, LesxBusiness> priceMap) {
     dataMap.remove(ELesxPropertyKeys.BUSINESS.getValue());
     dataMap.put(ELesxPropertyKeys.BUSINESS.getValue(), priceMap);
@@ -187,7 +198,9 @@ public class LesxDBProperties {
 
   public void setBusinessResourceMap(Map<Long, LesxResourceBusiness> mapRB) {
     LOGGER.log(Level.INFO, "Called setBusinessResourceMap");
+    this.mapRB.removeListener(rbListener);
     this.mapRB.clear();
+    this.mapRB.addListener(rbListener);
     this.mapRB.putAll(mapRB);
     businessResourceMapBuild = true;
   }

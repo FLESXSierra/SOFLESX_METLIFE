@@ -77,6 +77,26 @@ public class LesxResourceBusiness extends LesxComponent implements Cloneable {
     return super.toString();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null || this == null) {
+      return this == null && obj == null;
+    }
+    if (obj instanceof LesxResourceBusiness) {
+      if (((LesxResourceBusiness) obj).getBusiness() != null && this.getBusiness() != null) {
+        return LesxMisc.equals(
+            ((LesxResourceBusiness) obj).getBusiness()
+                .getId(),
+            this.getBusiness()
+                .getId());
+      }
+      else {
+        return LesxMisc.equals(((LesxResourceBusiness) obj).getBusiness(), this.getBusiness());
+      }
+    }
+    return false;
+  }
+
   public static LesxResourceBusiness of(LesxResource resource, LesxBusiness business) {
     LesxResourceBusiness temp = new LesxResourceBusiness();
     temp.setKey(ELesxPropertyKeys.RESOURCE_BUSINESS);

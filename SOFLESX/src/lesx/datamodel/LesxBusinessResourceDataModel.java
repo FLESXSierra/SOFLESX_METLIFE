@@ -32,8 +32,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   @Override
   public void setMap(Map<Long, LesxResourceBusiness> map) {
-    this.map.clear();
-    this.map.putAll(map);
+    this.map = new HashMap<>(map);
 
   }
 
@@ -47,6 +46,11 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   @Override
   public void persist() {
+    if (selectedItem != null) {
+      LesxMain.getInstance()
+          .getDbProperty()
+          .addBusiness(selectedItem.getBusiness());
+    }
     LesxMain.getInstance()
         .getDbProperty()
         .setBusinessResourceMap(map);
@@ -113,14 +117,19 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   }
 
   public boolean isDuplicate(LesxResourceBusiness resourceBusiness, ELesxUseCase isCreate) {
-    return isCreate != ELesxUseCase.EDIT && map.values()
-        .contains(resourceBusiness);
+    return isCreate != ELesxUseCase.EDIT && map.get(resourceBusiness.getBusiness()
+        .getId()) != null;
   }
 
   public void deleteSelectedBusiness() {
     if (selectedItem != null && selectedItem.getBusiness() != null) {
       map.remove(selectedItem.getBusiness()
           .getId());
+      LesxMain.getInstance()
+          .getDbProperty()
+          .removeBusiness(selectedItem.getBusiness());
+      selectedItem = null;
+      persist();
     }
   }
 

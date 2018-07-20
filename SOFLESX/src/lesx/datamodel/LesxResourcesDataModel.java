@@ -2,6 +2,7 @@ package lesx.datamodel;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
 
   private final static Logger LOGGER = Logger.getLogger(LesxBusinessResourceDataModel.class.getName());
 
-  private Map<Long, LesxResource> map;
+  private Map<Long, LesxResource> map = new HashMap<>();
   private ELesxLocations locationsSelected;
   private LesxResource resourceSelected;
 
@@ -35,7 +36,9 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
 
   @Override
   public void setMap(Map<Long, LesxResource> map) {
-    this.map = map;
+    if (!LesxMisc.isEmpty(map)) {
+      this.map = new HashMap<>(map);
+    }
   }
 
   @Override
@@ -124,6 +127,7 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
   public void deleteSelectedCostumer() {
     if (resourceSelected != null) {
       map.remove(resourceSelected.getId());
+      persist();
     }
   }
 

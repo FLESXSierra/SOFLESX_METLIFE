@@ -56,6 +56,7 @@ public class LesxResourcesPaneController extends LesxController {
   private LesxResourcesDataModel dataModel = new LesxResourcesDataModel();
   private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
+  private boolean ignoreListener;
   //Runnables
   private Runnable onDelete;
   private Consumer<ELesxUseCase> onAdd;
@@ -263,19 +264,23 @@ public class LesxResourcesPaneController extends LesxController {
   }
 
   private void selectedItemTable() {
-    selectedItemTable.set(table.getSelectionModel()
-        .getSelectedItem() != null);
-    if (table.getSelectionModel() != null) {
-      dataModel.setResourceSelected(table.getSelectionModel()
-          .getSelectedItem());
-    }
-    else {
-      dataModel.setResourceSelected(null);
+    if (!ignoreListener) {
+      selectedItemTable.set(table.getSelectionModel()
+          .getSelectedItem() != null);
+      if (table.getSelectionModel() != null) {
+        dataModel.setResourceSelected(table.getSelectionModel()
+            .getSelectedItem());
+      }
+      else {
+        dataModel.setResourceSelected(null);
+      }
     }
   }
 
   private void addNewResource(ELesxUseCase isCreate) {
     LesxSceneController.showResourceEditDialog(this, isCreate, dataModel, () -> {
+      LesxResource temp = dataModel.getComponentSelected();
+      System.out.println(temp);
       pendingChanges.set(true);
       filterTable();
       fillDataOnTree();
@@ -287,8 +292,10 @@ public class LesxResourcesPaneController extends LesxController {
     dataModel.setMap(LesxMain.getInstance()
         .getDbProperty()
         .getResourceMap());
+    ignoreListener = true;
     filterTable();
     fillDataOnTree();
+    ignoreListener = false;
   }
 
   @Override

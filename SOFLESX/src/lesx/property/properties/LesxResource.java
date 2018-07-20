@@ -56,7 +56,6 @@ public class LesxResource extends LesxComponent implements Cloneable {
         registration_date.setValue(property.getValue());
       }
     }
-    getPropertyValues().addAll(id, solicitud, name, cc, location, birthday, registration_date);
   }
 
   public LesxResource(LesxResourceXMLParser parse) {

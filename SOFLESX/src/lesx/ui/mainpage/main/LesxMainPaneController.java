@@ -320,7 +320,7 @@ public class LesxMainPaneController extends LesxController {
     updateTreeTableData();
   }
 
-  protected boolean parameterNotNull(CellDataFeatures<LesxResourceBusiness, String> param, boolean resource) {
+  private boolean parameterNotNull(CellDataFeatures<LesxResourceBusiness, String> param, boolean resource) {
     final boolean result = (param != null && param.getValue() != null && param.getValue()
         .getValue() != null);
     if (resource) {
@@ -379,10 +379,14 @@ public class LesxMainPaneController extends LesxController {
     dataModelResource.setMap(LesxMain.getInstance()
         .getDbProperty()
         .getResourceMap());
+    final LesxResourceBusiness temp = dataModel.getComponentSelected() != null ? dataModel.getComponentSelected()
+        .clone() : null;
     dataModel.setMap(LesxMain.getInstance()
         .getDbProperty()
         .getBusinessResourceMap());
+    dataModel.setComponentSelected(temp);
     updateTreeTableData();
+    mainPane.selectItem(temp);
   }
 
   private void createRunnables() {
@@ -392,7 +396,7 @@ public class LesxMainPaneController extends LesxController {
       updateTreeTableData();
     };
     mainPane.setOnDelete(onDelete);
-    onAdd = (isCreate) -> addNewBusiness(isCreate, false);
+    onAdd = (useCase) -> addNewBusiness(useCase, false);
     mainPane.setOnAddNewItem(onAdd);
   }
 
@@ -400,10 +404,10 @@ public class LesxMainPaneController extends LesxController {
     if (useCase != EDIT) {
       if (mainPane.isSelectedResourceBusinessItem() || isCreated) {
         LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
-          LesxResourceBusiness temp = dataModel.getComponentSelected();
           pendingChanges.set(true);
           updateTreeTableData();
-          mainPane.selectItem(temp);
+          dataModelResource.setComponentSelected(null);
+          mainPane.selectItem(dataModel.getComponentSelected());
         });
       }
       else {
@@ -443,8 +447,10 @@ public class LesxMainPaneController extends LesxController {
     }
     else {
       LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+        LesxResourceBusiness temp = dataModel.getComponentSelected();
         pendingChanges.set(true);
         updateTreeTableData();
+        mainPane.selectItem(temp);
       });
     }
   }
