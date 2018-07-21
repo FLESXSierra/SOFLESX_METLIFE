@@ -9,8 +9,8 @@ public class LesxString {
   public static final String XML_BUSINESS_PATH = "src\\lesx\\xml\\files\\LesxBusinessXML.xml";
   public static final String XML_REPORT_TREE_PATH = "src\\lesx\\xml\\files\\LesxReportTreeXML.xml";
   public static final String XML_REPORT_ITEMS_PATH = "src\\lesx\\xml\\files\\LesxReportItemsXML.xml";
-  public static final String XML_NAME_RESOURCE = "LesxCostumerXML.xml";
-  public static final String XML_NAME_BUSINESS = "LesxPriceXML.xml";
+  public static final String XML_NAME_RESOURCE = "LesxResourceXML.xml";
+  public static final String XML_NAME_BUSINESS = "LesxBusinessXML.xml";
   public static final String ROOT_ELEMENT_XML = "PROPERTIES";
   public static final String ROOT_REPORT_TREE_XML = "TREE";
   public static final String ELEMENT_XML_COSTUMER = "COSTUMER";

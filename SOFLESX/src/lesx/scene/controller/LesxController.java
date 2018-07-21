@@ -3,18 +3,16 @@ package lesx.scene.controller;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lesx.gui.message.LesxMessage;
-import lesx.utils.LesxAlertBuilder;
 
 public class LesxController {
   private String title;
   private Stage stage;
-  private boolean showAlert = true;
+  private boolean consumeEvent;
+  private boolean forceClose;
   private BooleanProperty showProgress = new SimpleBooleanProperty(this, "showProgress", false);
+  private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges", false);
 
   public LesxController() {
     //Nothing
@@ -26,6 +24,10 @@ public class LesxController {
 
   public BooleanProperty showProgressProperty() {
     return showProgress;
+  }
+
+  public BooleanProperty pendingChangesProperty() {
+    return pendingChanges;
   }
 
   protected void init() {
@@ -44,23 +46,24 @@ public class LesxController {
    * Method called on Exit Operation
    */
   protected void onCloseWindow() {
-    closeWindow();
-  }
-
-  /**
-   * Execute Platform.exit(); and System.exit(0);
-   */
-  protected void closeWindow() {
     //Nothing
   }
 
   /**
-   * Shows the Verification Alert on close Stage.
+   * Force the window to be close
+   */
+  public void closeWindow() {
+    forceClose = true;
+    stage.close();
+  }
+
+  /**
+   * Consumes the close event from stage and close the window manually by using {@link LesxController#closeWindow()}
    *
    * @return showAlert
    */
-  protected boolean showAlert() {
-    return showAlert;
+  protected boolean consumeEvent() {
+    return consumeEvent;
   }
 
   /**
@@ -78,18 +81,12 @@ public class LesxController {
     stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
       @Override
       public void handle(WindowEvent event) {
-        onCloseWindow();
-        if (showAlert) {
-          ButtonType result = LesxAlertBuilder.create()
-              .setType(AlertType.CONFIRMATION)
-              .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_ON_EXIT_STAGE"))
-              .setHeaderText(LesxMessage.getMessage("TEXT-ALERT_HEADER_ON_EXIT_STAGE"))
-              .setOwner(primaryStage)
-              .showAndWait()
-              .orElse(null);
-          if (result == ButtonType.CANCEL) {
+        if (!forceClose) {
+          if (consumeEvent()) {
             event.consume();
+            System.out.println("Consumed!");
           }
+          onCloseWindow();
         }
       }
     });

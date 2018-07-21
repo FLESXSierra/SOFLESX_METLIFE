@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import lesx.datamodel.ILesxDataModel;
 import lesx.gui.message.LesxMessage;
@@ -47,7 +48,6 @@ public class LesxEditComponentDialog extends LesxController {
   // PropertySheet
   private LesxPropertySheet propertySheet;
   //properties
-  private BooleanProperty closeProperty = new SimpleBooleanProperty(this, "closeProperty", false);
   private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
   private BooleanProperty afterSaveProperty = new SimpleBooleanProperty(this, "afterSaveProperty");
   //Data
@@ -132,8 +132,9 @@ public class LesxEditComponentDialog extends LesxController {
       }
       else {
         saveValues();
+        afterSaveProperty.set(!afterSaveProperty.get());
         if (canClose) {
-          closeProperty.set(true);
+          closeWindow();
         }
       }
     }
@@ -155,11 +156,11 @@ public class LesxEditComponentDialog extends LesxController {
         save();
       }
       else if (LesxButtonType.DONT_SAVE.equals(result)) {
-        closeProperty.set(true);
+        closeWindow();
       }
     }
     else {
-      closeProperty.set(true);
+      closeWindow();
     }
   }
 
@@ -263,13 +264,6 @@ public class LesxEditComponentDialog extends LesxController {
   }
 
   /**
-   * @return the closeProperty
-   */
-  public BooleanProperty closeProperty() {
-    return closeProperty;
-  }
-
-  /**
    * @return the afterSaveProperty
    */
   public BooleanProperty afterSaveProperty() {
@@ -341,6 +335,7 @@ public class LesxEditComponentDialog extends LesxController {
    */
   public void setWindow(Window window) {
     this.window = window;
+    setExitOperation((Stage) window);
   }
 
   public ELesxUseCase getUseCase() {
@@ -348,8 +343,12 @@ public class LesxEditComponentDialog extends LesxController {
   }
 
   @Override
-  protected boolean showAlert() {
-    return false;
+  protected void onCloseWindow() {
+    closeDialog();
   }
 
+  @Override
+  protected boolean consumeEvent() {
+    return true;
+  }
 }

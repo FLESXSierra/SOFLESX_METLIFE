@@ -54,7 +54,6 @@ public class LesxResourcesPaneController extends LesxController {
   private final ObservableList<LesxResource> currentList = FXCollections.observableArrayList();
   //Data
   private LesxResourcesDataModel dataModel = new LesxResourcesDataModel();
-  private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
   private boolean ignoreListener;
   //Runnables
@@ -254,7 +253,7 @@ public class LesxResourcesPaneController extends LesxController {
   private void createRunnables() {
     onDelete = () -> {
       dataModel.deleteSelectedCostumer();
-      pendingChanges.set(true);
+      pendingChangesProperty().set(true);
       filterTable();
       fillDataOnTree();
     };
@@ -285,9 +284,11 @@ public class LesxResourcesPaneController extends LesxController {
                   .getId()))
           .findFirst()
           .orElse(null);
-      pendingChanges.set(true);
+      pendingChangesProperty().set(true);
+      ignoreListener = true;
       filterTable();
       fillDataOnTree();
+      ignoreListener = false;
       table.getSelectionModel()
           .select(temp);
     });
@@ -307,9 +308,9 @@ public class LesxResourcesPaneController extends LesxController {
     ignoreListener = true;
     filterTable();
     fillDataOnTree();
-    ignoreListener = false;
     table.getSelectionModel()
         .select(temp);
+    ignoreListener = false;
   }
 
   @Override
@@ -324,8 +325,4 @@ public class LesxResourcesPaneController extends LesxController {
     return showProgress;
   }
 
-  @Override
-  protected boolean showAlert() {
-    return false;
-  }
 }

@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
@@ -38,6 +39,9 @@ public class LesxDBProperties {
   private LesxMapChangeListener<Long, LesxResourceBusiness> rbListener = new LesxMapChangeListener<>(false);
   private ObservableMap<Long, LesxResourceBusiness> mapRB;
   private boolean businessResourceMapBuild;
+  private Runnable postSaved;
+  private boolean resourceSaved;
+  private boolean businessSaved;
   private static final String NOW = LocalDate.now()
       .format(DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH));
 
@@ -51,7 +55,7 @@ public class LesxDBProperties {
   }
 
   public void setDataMap(Map<Long, Map<Long, ? extends LesxComponent>> map) {
-    dataMap.clear();
+    Preconditions.checkNotNull(map, "Map must not be null");
     dataMap.putAll(map);
     businessResourceMapBuild = false;
   }
@@ -69,7 +73,10 @@ public class LesxDBProperties {
    * @param data Map<Long,LesxCostumer>
    */
   public void setResourceMap(Map<Long, LesxResource> data) {
+    Preconditions.checkNotNull(data, "Map must not be null");
+    dataMap.removeListener(resourceListener);
     dataMap.remove(ELesxPropertyKeys.RESOURCE.getValue());
+    dataMap.addListener(resourceListener);
     dataMap.put(ELesxPropertyKeys.RESOURCE.getValue(), data);
     businessResourceMapBuild = false;
   }
@@ -86,7 +93,9 @@ public class LesxDBProperties {
   }
 
   public void setBusinessMap(Map<Long, LesxBusiness> priceMap) {
+    dataMap.removeListener(resourceListener);
     dataMap.remove(ELesxPropertyKeys.BUSINESS.getValue());
+    dataMap.addListener(resourceListener);
     dataMap.put(ELesxPropertyKeys.BUSINESS.getValue(), priceMap);
     businessResourceMapBuild = false;
   }
@@ -263,6 +272,31 @@ public class LesxDBProperties {
           runnables.forEach(run -> run.run());
         }
       }
+    }
+  }
+
+  public void persist(Runnable postSave) {
+    LOGGER.log(Level.INFO, "Called persist");
+    this.postSaved = postSave;
+    LesxXMLSaveData saveResourceThread = new LesxXMLSaveData(getResourceMap().values(), ELesxUseCase.UC_XML_RESOURCE);
+    saveResourceThread.setOnSucceeded(obs -> {
+      resourceSaved = true;
+      isSavedComplete();
+    });
+    LesxXMLSaveData saveBusinessThread = new LesxXMLSaveData(getBusinessMap().values(), ELesxUseCase.UC_XML_BUSINESS);
+    saveBusinessThread.setOnSucceeded(obs -> {
+      businessSaved = true;
+      isSavedComplete();
+    });
+    saveResourceThread.start();
+    saveBusinessThread.start();
+  }
+
+  private void isSavedComplete() {
+    if (resourceSaved && businessSaved) {
+      postSaved.run();
+      resourceSaved = false;
+      businessSaved = false;
     }
   }
 

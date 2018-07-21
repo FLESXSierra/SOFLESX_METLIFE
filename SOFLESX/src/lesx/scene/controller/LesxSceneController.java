@@ -79,13 +79,6 @@ public class LesxSceneController {
       stage.show();
       controllerResource.afterSaveProperty()
           .addListener(obs -> runnable.run());
-      controllerResource.closeProperty()
-          .addListener((obs, oldV, newV) -> {
-            if (newV) {
-              runnable.run();
-              stage.close();
-            }
-          });
     }
     catch (IOException e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
@@ -118,13 +111,6 @@ public class LesxSceneController {
       stage.show();
       controllerResource.afterSaveProperty()
           .addListener(obs -> runnable.run());
-      controllerResource.closeProperty()
-          .addListener((obs, oldV, newV) -> {
-            if (newV) {
-              runnable.run();
-              stage.close();
-            }
-          });
     }
     catch (IOException e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));

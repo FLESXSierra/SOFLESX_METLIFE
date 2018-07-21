@@ -31,51 +31,39 @@ public enum ELesxUseCase {
       return "Precios";
     }
   },
-  UC_XML_REPORT_TREE(5) {
-    @Override
-    public String toString() {
-      return "Árbol de reportes";
-    }
-  },
-  UC_XML_REPORT_ITEMS(6) {
-    @Override
-    public String toString() {
-      return "Report Items";
-    }
-  },
-  UC_TREE_MODIFY(7) {
+  UC_TREE_MODIFY(5) {
     @Override
     public String toString() {
       return "Árbol Modificable";
     }
   },
-  UC_ADD_REMOVE_ONLY(8) {
+  UC_ADD_REMOVE_ONLY(6) {
     @Override
     public String toString() {
       return "Agregar y Remover";
     }
   },
-  UC_DELETE_ONLY(9) {
+  UC_DELETE_ONLY(7) {
     @Override
     public String toString() {
       return "Solo Eliminar";
     }
   },
-  UC_RESOURCES(10) {
+  UC_RESOURCES(8) {
     @Override
     public String toString() {
       return "Recursos";
     }
   },
-  UC_TREE_TABLE_INICIO(11) {
+  UC_TREE_TABLE_INICIO(9) {
     @Override
     public String toString() {
       return "Inicio";
     }
   },
-  EDIT(12),
-  ADD_ONLY(13),
-  ADD(14);
+  EDIT(10),
+  ADD_ONLY(11),
+  ADD(12);
 
   int key;
 

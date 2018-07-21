@@ -24,11 +24,11 @@ public class LesxProductTypeXMLParser {
   }
 
   public LesxProductTypeXMLParser(LesxProductType product) {
-    typeVida = product.getTypeVida()
-        .getKey();
+    typeVida = product.getTypeVida() != null ? product.getTypeVida()
+        .getKey() : null;
     primaVida = product.getPrimaVida();
-    typeAP = product.getTypeAP()
-        .getKey();
+    typeAP = product.getTypeAP() != null ? product.getTypeAP()
+        .getKey() : null;
     primaAP = product.getPrimaAP();
   }
 

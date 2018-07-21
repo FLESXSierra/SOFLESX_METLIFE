@@ -58,7 +58,6 @@ public class LesxMainPaneController extends LesxController {
   private LesxResourcesDataModel dataModelResource = new LesxResourcesDataModel();
   private LesxBusinessResourceDataModel dataModel = new LesxBusinessResourceDataModel();
   private IntegerProperty year = new SimpleIntegerProperty();
-  private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges");
   //flag
   private boolean ignoreListener = false;
   //Runnables
@@ -392,7 +391,7 @@ public class LesxMainPaneController extends LesxController {
   private void createRunnables() {
     onDelete = () -> {
       dataModel.deleteSelectedBusiness();
-      pendingChanges.set(true);
+      pendingChangesProperty().set(true);
       updateTreeTableData();
     };
     mainPane.setOnDelete(onDelete);
@@ -404,7 +403,7 @@ public class LesxMainPaneController extends LesxController {
     if (useCase != EDIT) {
       if (mainPane.isSelectedResourceBusinessItem() || isCreated) {
         LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
-          pendingChanges.set(true);
+          pendingChangesProperty().set(true);
           updateTreeTableData();
           dataModelResource.setComponentSelected(null);
           mainPane.selectItem(dataModel.getComponentSelected());
@@ -448,7 +447,7 @@ public class LesxMainPaneController extends LesxController {
     else {
       LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
         LesxResourceBusiness temp = dataModel.getComponentSelected();
-        pendingChanges.set(true);
+        pendingChangesProperty().set(true);
         updateTreeTableData();
         mainPane.selectItem(temp);
       });
@@ -460,11 +459,6 @@ public class LesxMainPaneController extends LesxController {
     LesxMain.getInstance()
         .getDbProperty()
         .removeListener(ELesxListenerType.UPDATE, () -> updateTreeTableData());
-  }
-
-  @Override
-  protected boolean showAlert() {
-    return false;
   }
 
 }

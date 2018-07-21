@@ -36,6 +36,8 @@ public class LesxSwitcherPane {
       actualPage = path;
       try {
         if (mainPaneController != null) {
+          controller.pendingChangesProperty()
+              .unbindBidirectional(mainPaneController.pendingChangesProperty());
           mainPaneController.clearComponent();
         }
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -44,6 +46,8 @@ public class LesxSwitcherPane {
             .getResource(path)
             .openStream());
         mainPaneController = (LesxController) fxmlLoader.getController();
+        controller.pendingChangesProperty()
+            .bindBidirectional(mainPaneController.pendingChangesProperty());
         controller.showProgressProperty()
             .bind(mainPaneController.showProgressProperty());
         LesxMain.setTitle(mainPaneController.getTitle());

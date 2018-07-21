@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -122,6 +123,7 @@ public class LesxMainPageController extends LesxController {
     main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
     resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
     newSell.setOnAction(obs -> addNewSell());
+    saveFlesx.setOnAction(obs -> saveXMLAction());
     LesxMain.getInstance()
         .getDbProperty()
         .setListener(ELesxListenerType.UPDATE, () -> updateBirthDayButtonNames());
@@ -195,6 +197,11 @@ public class LesxMainPageController extends LesxController {
         final File costumer = new File(LesxString.XML_RESOURCE_PATH);
         Files.copy(costumer.toPath(), destination.toPath());
 
+        path = dest.getPath()
+            .replaceAll(dest.getName(), LesxString.XML_NAME_BUSINESS);
+        destination = new File(path);
+        final File business = new File(LesxString.XML_BUSINESS_PATH);
+        Files.copy(business.toPath(), destination.toPath());
       }
       catch (FileAlreadyExistsException e) {
         LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
@@ -217,6 +224,39 @@ public class LesxMainPageController extends LesxController {
     AnchorPane.setTopAnchor(node, 0.0);
     mainPane.getChildren()
         .setAll(node);
+  }
+
+  private void saveXMLAction() {
+    save(() -> {
+      pendingChangesProperty().set(false);
+      progressBox.setVisible(false);
+      progressBox.visibleProperty()
+          .bind(showProgress);
+    });
+  }
+
+  private void save(Runnable postSave) {
+    if (pendingChangesProperty().get()) {
+      progressBox.visibleProperty()
+          .unbind();
+      progressBox.setVisible(true);
+      LesxMain.getInstance()
+          .getDbProperty()
+          .persist(() -> postSave.run());
+    }
+  }
+
+  @Override
+  protected boolean consumeEvent() {
+    return true;
+  }
+
+  @Override
+  protected void onCloseWindow() {
+    save(() -> {
+      closeWindow();
+      Platform.exit();
+    });
   }
 
   @Override
