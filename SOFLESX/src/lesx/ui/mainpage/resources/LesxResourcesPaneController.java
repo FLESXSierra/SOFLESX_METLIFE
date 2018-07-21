@@ -3,6 +3,7 @@ package lesx.ui.mainpage.resources;
 import static lesx.property.properties.ELesxLocations.COLOMBIA;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -55,6 +56,7 @@ public class LesxResourcesPaneController extends LesxController {
   //Data
   private LesxResourcesDataModel dataModel = new LesxResourcesDataModel();
   private BooleanProperty selectedItemTable = new SimpleBooleanProperty(this, "selectedItemTable");
+  Map<ELesxLocations, TreeItem<ELesxLocations>> mapTree = new HashMap<>();
   private boolean ignoreListener;
   //Runnables
   private Runnable onDelete;
@@ -183,8 +185,8 @@ public class LesxResourcesPaneController extends LesxController {
     tree.setRoot(null);
     TreeItem<ELesxLocations> rootItem = new TreeItem<ELesxLocations>(COLOMBIA);
     Set<ELesxLocations> locations = dataModel.getDataLocations();
-    Map<ELesxLocations, TreeItem<ELesxLocations>> mapTree = new HashMap<>();
-    Set<ELesxLocations> addedLocation = mapTree.keySet();
+    mapTree.clear();
+    Set<ELesxLocations> addedLocation = new HashSet<>();
     mapTree.put(COLOMBIA, rootItem);
     rootItem.setExpanded(true);
     TreeItem<ELesxLocations> leafItem;
@@ -195,7 +197,7 @@ public class LesxResourcesPaneController extends LesxController {
       if (!addedLocation.contains(location)) {
         leafItem = new TreeItem<ELesxLocations>(location);
         mapTree.put(location, leafItem);
-        addMissingParentItem(location, mapTree, leafItem);
+        addMissingParentItem(location, leafItem);
       }
     }
     tree.setRoot(rootItem);
@@ -208,7 +210,7 @@ public class LesxResourcesPaneController extends LesxController {
    * @param mapTree Map of available children with item values
    * @param leafItem Tree item value to add
    */
-  private void addMissingParentItem(ELesxLocations location, Map<ELesxLocations, TreeItem<ELesxLocations>> mapTree, TreeItem<ELesxLocations> leafItem) {
+  private void addMissingParentItem(ELesxLocations location, TreeItem<ELesxLocations> leafItem) {
     if (mapTree.containsKey(ELesxLocations.getParentLocation(location))) {
       mapTree.get(ELesxLocations.getParentLocation(location))
           .getChildren()
@@ -220,7 +222,7 @@ public class LesxResourcesPaneController extends LesxController {
     parentTree.getChildren()
         .add(leafItem);
     mapTree.put(parentMissing, parentTree);
-    addMissingParentItem(parentMissing, mapTree, parentTree);
+    addMissingParentItem(parentMissing, parentTree);
   }
 
   private void installListeners() {
@@ -288,6 +290,8 @@ public class LesxResourcesPaneController extends LesxController {
       ignoreListener = true;
       filterTable();
       fillDataOnTree();
+      tree.getSelectionModel()
+          .select(mapTree.get(ELesxLocations.getLocation(temp.getLocation())));
       ignoreListener = false;
       table.getSelectionModel()
           .select(temp);
@@ -308,6 +312,10 @@ public class LesxResourcesPaneController extends LesxController {
     ignoreListener = true;
     filterTable();
     fillDataOnTree();
+    if (dataModel.getLocationsSelected() != null) {
+      tree.getSelectionModel()
+          .select(mapTree.get(dataModel.getLocationsSelected()));
+    }
     table.getSelectionModel()
         .select(temp);
     ignoreListener = false;
