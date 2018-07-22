@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -234,26 +233,23 @@ public class LesxMainPageController extends LesxController {
   }
 
   private void saveXMLAction() {
-    save(() -> {
-      pendingChangesProperty().set(false);
-      progressBox.setVisible(false);
-      progressBox.visibleProperty()
-          .bind(showProgress);
-    });
+    if (pendingChangesProperty().get()) {
+      save(() -> {
+        pendingChangesProperty().set(false);
+        progressBox.setVisible(false);
+        progressBox.visibleProperty()
+            .bind(showProgress);
+      });
+    }
   }
 
   private void save(Runnable postSave) {
-    if (pendingChangesProperty().get()) {
-      progressBox.visibleProperty()
-          .unbind();
-      progressBox.setVisible(true);
-      LesxMain.getInstance()
-          .getDbProperty()
-          .persist(() -> postSave.run());
-    }
-    else {
-      closeWindow();
-    }
+    progressBox.visibleProperty()
+        .unbind();
+    progressBox.setVisible(true);
+    LesxMain.getInstance()
+        .getDbProperty()
+        .persist(() -> postSave.run());
   }
 
   @Override
@@ -263,10 +259,14 @@ public class LesxMainPageController extends LesxController {
 
   @Override
   protected void onCloseWindow() {
-    save(() -> {
+    if (pendingChangesProperty().get()) {
+      save(() -> {
+        closeWindow();
+      });
+    }
+    else {
       closeWindow();
-      Platform.exit();
-    });
+    }
   }
 
   @Override
