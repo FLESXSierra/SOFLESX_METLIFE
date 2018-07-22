@@ -2,6 +2,7 @@ package lesx.ui.mainpage.main;
 
 import static lesx.property.properties.ELesxUseCase.EDIT;
 
+import java.text.NumberFormat;
 import java.util.function.Consumer;
 
 import javafx.beans.property.BooleanProperty;
@@ -187,6 +188,7 @@ public class LesxMainPaneController extends LesxController {
     primaVida.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
       public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
             .getBusiness()
@@ -196,12 +198,11 @@ public class LesxMainPaneController extends LesxController {
                 .getBusiness()
                 .getProduct()
                 .getPrimaVida() != null
-                    ? param.getValue()
+                    ? formatter.format(param.getValue()
                         .getValue()
                         .getBusiness()
                         .getProduct()
-                        .getPrimaVida()
-                        .toString()
+                        .getPrimaVida())
                     : "");
       }
     });
@@ -209,6 +210,7 @@ public class LesxMainPaneController extends LesxController {
     primaAP.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
       public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
             .getBusiness()
@@ -218,12 +220,11 @@ public class LesxMainPaneController extends LesxController {
                 .getBusiness()
                 .getProduct()
                 .getPrimaAP() != null
-                    ? param.getValue()
+                    ? formatter.format(param.getValue()
                         .getValue()
                         .getBusiness()
                         .getProduct()
-                        .getPrimaAP()
-                        .toString()
+                        .getPrimaAP())
                     : "");
       }
     });
@@ -233,15 +234,15 @@ public class LesxMainPaneController extends LesxController {
     nbs.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
       public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
             .getBusiness()
             .getNbs() != null
-                ? param.getValue()
+                ? formatter.format(param.getValue()
                     .getValue()
                     .getBusiness()
-                    .getNbs()
-                    .toString()
+                    .getNbs())
                 : "");
       }
     });
@@ -249,13 +250,13 @@ public class LesxMainPaneController extends LesxController {
     comision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
       @Override
       public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
             .getValue()
             .getComision() != null
-                ? param.getValue()
+                ? formatter.format(param.getValue()
                     .getValue()
-                    .getComision()
-                    .toString()
+                    .getComision())
                 : "");
       }
     });
