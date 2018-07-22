@@ -25,6 +25,14 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   private Map<Long, LesxResourceBusiness> map = new HashMap<>();
   private LesxResourceBusiness selectedItem;
 
+  public LesxBusinessResourceDataModel() {
+    //Nothing
+  }
+
+  public LesxBusinessResourceDataModel(Map<Long, LesxResourceBusiness> map) {
+    this.map = new HashMap<>(map);
+  }
+
   @Override
   public Map<Long, LesxResourceBusiness> getMap() {
     return map;
@@ -33,7 +41,6 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   @Override
   public void setMap(Map<Long, LesxResourceBusiness> map) {
     this.map = new HashMap<>(map);
-
   }
 
   public List<LesxResourceBusiness> getResourceBusinessList() {

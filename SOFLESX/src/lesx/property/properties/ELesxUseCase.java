@@ -63,7 +63,8 @@ public enum ELesxUseCase {
   },
   EDIT(10),
   ADD_ONLY(11),
-  ADD(12);
+  ADD(12),
+  UC_YEAR_ONLY(13);
 
   int key;
 

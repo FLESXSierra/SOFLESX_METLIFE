@@ -16,6 +16,7 @@ import lesx.property.properties.ELesxUseCase;
 import lesx.ui.components.dialogs.LesxEditBusinessDialog;
 import lesx.ui.components.dialogs.LesxEditResourceDialog;
 import lesx.ui.components.dialogs.LesxSelectCostumerDialogController;
+import lesx.ui.components.dialogs.LesxYearDialogController;
 import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxString;
 
@@ -147,6 +148,36 @@ public class LesxSceneController {
               stage.close();
             }
           });
+    }
+    catch (IOException e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+      e.printStackTrace();
+    }
+    catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+      ex.printStackTrace();
+    }
+  }
+
+  public static void showYearDialog(LesxController controller, LesxBusinessResourceDataModel dataModel) {
+
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader(controller.getClass()
+          .getResource(LesxString.YEAR_DIALOG_PATH));
+      Stage stage = new Stage();
+      LesxYearDialogController controllerResource = new LesxYearDialogController();
+      fxmlLoader.setController(controllerResource);
+      Pane root = fxmlLoader.load();
+      controllerResource.init(dataModel);
+      stage.setTitle(controllerResource.getTitle());
+      stage.setScene(new Scene(root));
+      stage.initOwner(LesxMain.getInstance()
+          .getStage());
+      stage.initModality(Modality.APPLICATION_MODAL);
+      stage.setMinHeight(200);
+      stage.setMinWidth(580);
+      stage.sizeToScene();
+      stage.show();
     }
     catch (IOException e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));

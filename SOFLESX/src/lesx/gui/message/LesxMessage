@@ -10,6 +10,7 @@ TEXT-TITLE_SALE_DIALOG_CREATE = Crear nueva venta.
 TEXT-TITLE_SALE_DIALOG_EDIT = Editar venta.
 TEXT-TITLE_SELECT_COSTUMER_DIALOG = Selección de Objectos.
 TEXT-TITLE_REPORT_DIALOG_CREATE = Crear nuevo Reporte.
+TEXT-TITLE_YEAR_DIALOG = Seguimiento Año a Año.
 
 TEXT-BUTTON_OK = Ok
 TEXT-BUTTON_APPLY = Aplicar
@@ -36,6 +37,7 @@ TEXT-DESCRIPTION_LABEL_EDIT_SALE = Panel de edición de Ventas, por favor llene l
 TEXT-HEADER_LABEL_COMPONENT_PANE = Objecto: {0}
 TEXT-HEADER_LABEL_RESOURCE_PANE = Cliente: {0}
 TEXT-HEADER_SELECT_COSTUMER_DIALOG = Panel de selección.
+TEXT-HEADER_YEAR_DIALOG = En este año muchas metas hemos cumplido, Keep it up!, pero en especial, las siguientes son las destacadas
 
 TEXT-LOADING_TITLE = Cargando.
 TEXT-LOADING_ERROR_TITLE = ¡Un error se ha generado!.
@@ -61,6 +63,9 @@ TEXT-COLUMN_NAME_TYPE_PRIMA = Prima
 TEXT-COLUMN_NAME_NBS = NBS
 TEXT-COLUMN_NAME_COMISION = Comisión
 TEXT-COLUMN_NAME_MONTH = Mes
+
+TEXT-COLUMN_TITLE_YEAR_NBS = Total NBS Año {0}
+TEXT-COLUMN_TITLE_YEAR_SELL = Total Ventas Año {0}
 
 TEXT-HEADER_READING_XML = Por favor espere mientras el archivo XML se carga.
 

@@ -124,10 +124,17 @@ public class LesxMainPageController extends LesxController {
     resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
     newSell.setOnAction(obs -> addNewSell());
     saveFlesx.setOnAction(obs -> saveXMLAction());
+    year.setOnAction(obs -> showYearDialog());
     LesxMain.getInstance()
         .getDbProperty()
         .setListener(ELesxListenerType.UPDATE, () -> updateBirthDayButtonNames());
     updateBirthDayButtonNames();
+  }
+
+  private void showYearDialog() {
+    LesxSceneController.showYearDialog(this, new LesxBusinessResourceDataModel(LesxMain.getInstance()
+        .getDbProperty()
+        .getBusinessResourceMap()));
   }
 
   private void updateBirthDayButtonNames() {
@@ -243,6 +250,9 @@ public class LesxMainPageController extends LesxController {
       LesxMain.getInstance()
           .getDbProperty()
           .persist(() -> postSave.run());
+    }
+    else {
+      closeWindow();
     }
   }
 

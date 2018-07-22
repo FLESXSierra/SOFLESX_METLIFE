@@ -84,7 +84,6 @@ public class LesxController {
         if (!forceClose) {
           if (consumeEvent()) {
             event.consume();
-            System.out.println("Consumed!");
           }
           onCloseWindow();
         }

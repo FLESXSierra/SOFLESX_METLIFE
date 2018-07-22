@@ -73,12 +73,14 @@ public class LesxToolBar extends ToolBar {
 
   public LesxToolBar(ELesxUseCase useCase) {
     actions = new HashMap<>();
-    deselect = new Button();
-    deselect.setGraphic(LesxIcon.getImage(LesxIcon.ERASE));
-    deselect.setText(null);
-    deselect.setTooltip(generateToolTip(buttonType.DESELECT));
-    deselect.disableProperty()
-        .bind(Bindings.not(selectedItem));
+    if (useCase != ELesxUseCase.UC_YEAR_ONLY) {
+      deselect = new Button();
+      deselect.setGraphic(LesxIcon.getImage(LesxIcon.ERASE));
+      deselect.setText(null);
+      deselect.setTooltip(generateToolTip(buttonType.DESELECT));
+      deselect.disableProperty()
+          .bind(Bindings.not(selectedItem));
+    }
     buildButtons(useCase);
   }
 
@@ -126,9 +128,9 @@ public class LesxToolBar extends ToolBar {
         getItems().add((ButtonBase) button);
         getItems().add(sep);
       }
-      if (year != null) {
-        getItems().add(year);
-      }
+    }
+    if (year != null) {
+      getItems().add(year);
     }
   }
 
@@ -245,6 +247,14 @@ public class LesxToolBar extends ToolBar {
         actions.put(ACTIONS_DELETE, deleteAction);
         actions.put(ACTIONS_ADD_SELL, sellAction);
         actions.put(ACTIONS_EDIT_SELL, editSellAction);
+        break;
+      case UC_YEAR_ONLY:
+        year = new ComboBox<>();
+        year.setMaxWidth(100);
+        year.getItems()
+            .addAll(generateYears());
+        year.setValue(LocalDate.now()
+            .getYear());
         break;
       default:
         break;
