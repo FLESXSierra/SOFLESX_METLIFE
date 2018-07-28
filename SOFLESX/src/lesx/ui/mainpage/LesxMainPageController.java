@@ -57,11 +57,17 @@ public class LesxMainPageController extends LesxController {
   @FXML
   MenuItem cYear2;
   @FXML
+  MenuItem reportBug;
+  @FXML
+  MenuItem walkThrough;
+  @FXML
   Menu fileMenu;
   @FXML
   Menu bussiness;
   @FXML
   Menu comisions;
+  @FXML
+  Menu help;
   @FXML
   MenuBar menu;
   @FXML
@@ -100,6 +106,9 @@ public class LesxMainPageController extends LesxController {
     cMonth.setText(LesxMessage.getMessage("TEXT-MENUITEM_MONTH"));
     cYear2.setText(LesxMessage.getMessage("TEXT-MENUITEM_YEAR_2"));
     comisions.setText(LesxMessage.getMessage("TEXT-MENUBAR_COMISIONS"));
+    help.setText(LesxMessage.getMessage("TEXT-MENUBAR_HELP"));
+    reportBug.setText(LesxMessage.getMessage("TEXT-MENUITEM_REPORT_BUG"));
+    walkThrough.setText(LesxMessage.getMessage("TEXT-MENUITEM_WALK_THROUGH"));
   }
 
   @Override
@@ -117,6 +126,7 @@ public class LesxMainPageController extends LesxController {
     capp.setDisable(true);
     cMonth.setDisable(true);
     cYear2.setDisable(true);
+    walkThrough.setDisable(true);
     importXML.setOnAction(obs -> importXML());
     exportXML.setOnAction(obs -> exportXML());
     main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
@@ -124,10 +134,22 @@ public class LesxMainPageController extends LesxController {
     newSell.setOnAction(obs -> addNewSell());
     saveFlesx.setOnAction(obs -> saveXMLAction());
     year.setOnAction(obs -> showYearDialog());
+    reportBug.setOnAction(obs -> showHelpDialog());
     LesxMain.getInstance()
         .getDbProperty()
         .setListener(ELesxListenerType.UPDATE, () -> updateBirthDayButtonNames());
     updateBirthDayButtonNames();
+  }
+
+  private void showHelpDialog() {
+    LesxAlertBuilder.create()
+        .setOwner(mainPane.getScene()
+            .getWindow())
+        .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_REPORT_BUG"))
+        .setContentText(LesxMessage.getMessage("TEXT-ALERT_HEADER_REPORT_BUG"))
+        .setGraphic(LesxIcon.getImage(LesxIcon.HELP))
+        .setButtons(ButtonType.OK)
+        .showAndWait();
   }
 
   private void showYearDialog() {

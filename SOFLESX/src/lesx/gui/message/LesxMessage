@@ -75,8 +75,8 @@ TEXT-COLUMN_TITLE_YEAR_SELL = Total Ventas Año {0}
 TEXT-HEADER_READING_XML = Por favor espere mientras el archivo XML se carga.
 
 TEXT-MENUITEM_FILE_SAVE = Guardar FLESX
-TEXT-MENUITEM_EXPORT_SAVE = Exportart FLESX
-TEXT-MENUITEM_IMPORT_SAVE = Importart FLESX
+TEXT-MENUITEM_EXPORT_SAVE = Exportar FLESX
+TEXT-MENUITEM_IMPORT_SAVE = Importar FLESX
 TEXT-MENUITEM_EDIT_RESOURCES = Clientes
 TEXT-MENUITEM_NEW_SELL = Venta nueva
 TEXT-MENUITEM_YEAR = Año
@@ -88,6 +88,9 @@ TEXT-MENUBAR_FILE = Archivo
 TEXT-MENUBAR_BUSSINESS = Negocios
 TEXT-MENUBAR_COMISIONS = Comisiones
 TEXT-MENUITEM_MAIN = Inicio
+TEXT-MENUBAR_HELP = Ayuda
+TEXT-MENUITEM_REPORT_BUG = Reportar Error
+TEXT-MENUITEM_WALK_THROUGH = Ayuda
 
 TEXT-TOOLTIP_SELECT_CHILDREN = Cuando este botón está activo, permite seleccionar los objectos que están asignados a los hijos del árbol de búsqueda.
 TEXT-TOOLTIP_MANDATORY_PROPERTY = Esta propiedad es de tipo mandatoria, se requiere que se llene de algún tipo de valor.
@@ -116,6 +119,10 @@ TITLE-SUCCESS_IMPORT_ALERT = Exito en la importación.
 TITLE-FAILED_IMPORT_ALERT = Importación fallida.
 TEXT-HEADER_IMPORT_SUCCESS_ALERT = Los datos han sido importados de manera exitosa, este dialogo se cerrará automáticamente.
 TEXT-HEADER_IMPORT_FAILED_ALERT = Has sucedido uno o varios errores durante la exportación, por favor revise la consola para mas info. Contacte al admin.
+TEXT-ALERT_TITLE_REPORT_BUG = ¿Encontraste algún error en el sistema?
+TEXT-ALERT_HEADER_REPORT_BUG = Hola!... Gracias por usar esar este software!\n Si desea informarnos sobre algun problema que tiene, puede enviarnos un correo a led_sierra@hotmail.com, no olvide suministrar cualquier tipo de información extra, es valioso para nosotros\n  - Texto de consola \n  - Imagenes/Videos 
+TEXT-ALERT_TITLE_IMPORT_XML = ¿Está seguro de esta acción?
+TEXT-ALERT_HEADER_IMPORT_XML = Nosotros podemos verificar la veracidad de la información hasta cierto punto, una vez aceptado los cambios, los datos anteriores estarán perdidos.\n¿Está seguro de quere Importar estos archivos?
 
 TEXT-CHECKBOX_VIDA = VIDA
 TEXT-CHECKBOX_AP = AP

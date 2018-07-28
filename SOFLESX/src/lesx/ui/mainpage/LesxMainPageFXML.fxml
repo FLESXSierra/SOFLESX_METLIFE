@@ -37,6 +37,12 @@
                               <MenuItem fx:id="cYear2" mnemonicParsing="false" text="Unspecified Action" />
                            </items>
                         </Menu>
+                        <Menu fx:id="help" mnemonicParsing="false" text="Help">
+                        	<items>
+                        		<MenuItem fx:id="reportBug" mnemonicParsing="false" text="reportBug" />
+                        		<MenuItem fx:id="walkThrough" mnemonicParsing="false" text="walkThrough" />
+                        	</items>
+                        </Menu>
                      </menus>
                   </MenuBar>
                   <LesxBirthdayButton fx:id="bButton" mnemonicParsing="false" />

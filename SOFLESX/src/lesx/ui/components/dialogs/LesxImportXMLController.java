@@ -44,15 +44,27 @@ public class LesxImportXMLController extends LesxController {
       fileChooser.setTitle("Open files");
       fileChooser.setSelectedExtensionFilter(extFilter);
       final List<File> files = fileChooser.showOpenMultipleDialog(window);
-      if (!LesxMisc.isEmpty(files)) {
-        LesxXMLImportData importTask = new LesxXMLImportData(files);
-        loadText.textProperty()
-            .bind(importTask.messageProperty());
-        importTask.setOnFailed(obs -> result(false));
-        importTask.setOnSucceeded(obs -> result(importTask.getValue()));
-        Thread tested = new Thread(importTask);
-        tested.setDaemon(true);
-        tested.start();
+      ButtonType result = LesxAlertBuilder.create()
+          .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_IMPORT_XML"))
+          .setContentText(LesxMessage.getMessage("TEXT-ALERT_HEADER_IMPORT_XML"))
+          .setOwner(window)
+          .setButtons(ButtonType.YES, ButtonType.NO)
+          .showAndWait()
+          .orElse(null);
+      if (ButtonType.YES.equals(result)) {
+        if (!LesxMisc.isEmpty(files)) {
+          LesxXMLImportData importTask = new LesxXMLImportData(files);
+          loadText.textProperty()
+              .bind(importTask.messageProperty());
+          importTask.setOnFailed(obs -> result(false));
+          importTask.setOnSucceeded(obs -> result(importTask.getValue()));
+          Thread tested = new Thread(importTask);
+          tested.setDaemon(true);
+          tested.start();
+        }
+        else {
+          closeWindow();
+        }
       }
       else {
         closeWindow();
