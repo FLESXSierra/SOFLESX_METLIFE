@@ -99,6 +99,20 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </GridPane>
+            <Separator />
+            <TitledPane animated="false" collapsible="false" prefHeight="200.0" text="Detalles" VBox.vgrow="ALWAYS">
+               <content>
+                  <BorderPane>
+                     <center>
+                        <TableView fx:id="detailsTable" BorderPane.alignment="CENTER">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </content>
+            </TitledPane>
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

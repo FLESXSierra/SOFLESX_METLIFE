@@ -1,5 +1,6 @@
 package lesx.ui.soflesx;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import lesx.gui.message.LesxMessage;
 import lesx.scene.controller.LesxController;
+import lesx.ui.security.LesxSecurityTask;
 import lesx.utils.LesxString;
 import lesx.xml.thread.LesxXMLUtils;
 
@@ -46,6 +48,28 @@ public class LesxMainController extends LesxController {
 
   @Override
   protected void init() {
+    File test = new File(LesxString.XML_RESOURCE_PATH);
+    LesxSecurityTask task = new LesxSecurityTask(!test.exists());
+    task.setOnSucceeded(obs -> {
+      if (task.getValue()) {
+        initializeFlesx();
+      }
+      else {
+        initializeBait();
+      }
+    });
+    Thread thread = new Thread(task);
+    thread.setDaemon(true);
+    thread.start();
+  }
+
+  private void initializeBait() {
+    LOGGER.log(Level.INFO, LesxMessage.getMessage("INFO-XML_LOADED_CORRECTLY"));
+    LesxMain.getInstance()
+        .activateScene(LesxString.MAINPAGE_BAIT_PATH);
+  }
+
+  private void initializeFlesx() {
     try {
       LesxXMLUtils.importAllXMLFileToLesxProperty(() -> allLoaded.set(true));
     }

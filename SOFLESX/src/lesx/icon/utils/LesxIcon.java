@@ -11,6 +11,8 @@ public class LesxIcon {
 
   private final static Logger LOGGER = Logger.getLogger(LesxIcon.class.getName());
 
+  public static String BAIT = "/lesx/icon/bait.png";
+  public static String PIRATE = "/lesx/icon/pirate.png";
   public static String ADD = "/lesx/icon/add.png";
   public static String CHART = "/lesx/icon/chart.png";
   public static String CLOCK = "/lesx/icon/clock.png";

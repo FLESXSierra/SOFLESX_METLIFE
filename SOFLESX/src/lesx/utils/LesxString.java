@@ -46,6 +46,7 @@ public class LesxString {
   public static final String SELECT_RESOURCE_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxSelectCostumerDialogFXML.fxml";
   public static final String YEAR_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxYearPaneFXML.fxml";
   public static final String IMPORT_XML_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxImportXMLFXML.fxml";
+  public static final String MAINPAGE_BAIT_PATH = "/lesx/ui/security/LesxBaitFXML.fxml";
 
   /**
    * Style CSS
@@ -84,5 +85,9 @@ public class LesxString {
   public static final String PROPERTY_VIDA_C = "VidaC";
   public static final String PROPERTY_AP = "AP";
   public static final String PROPERTY_BUSINESS_DATE = "Fecha de Venta";
+
+  //Files
+  public static final String FILE_KEY_1 = "-XP";
+  public static final String FILE_KEY_2 = "-Test_Var";
 
 }

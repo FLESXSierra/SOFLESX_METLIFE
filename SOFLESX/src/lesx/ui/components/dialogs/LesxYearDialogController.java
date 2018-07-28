@@ -1,17 +1,25 @@
 package lesx.ui.components.dialogs;
 
 import java.text.NumberFormat;
-import java.time.LocalDate;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 import lesx.datamodel.LesxBusinessResourceDataModel;
 import lesx.gui.message.LesxMessage;
+import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.ELesxUseCase;
+import lesx.property.properties.LesxReportMonthBusiness;
 import lesx.scene.controller.LesxController;
 import lesx.ui.components.LesxToolBar;
-import lesx.utils.LesxPropertyUtils;
 
 public class LesxYearDialogController extends LesxController {
 
@@ -33,9 +41,19 @@ public class LesxYearDialogController extends LesxController {
   Label quantityVida;
   @FXML
   Label quantityAP;
+  @FXML
+  TableView<LesxReportMonthBusiness> detailsTable;
+
+  //Columns
+  private TableColumn<LesxReportMonthBusiness, String> month;
+  private TableColumn<LesxReportMonthBusiness, String> ap;
+  private TableColumn<LesxReportMonthBusiness, String> vida;
+  private TableColumn<LesxReportMonthBusiness, String> comision;
+  private TableColumn<LesxReportMonthBusiness, String> nbs;
 
   private LesxToolBar toolbar;
   private LesxBusinessResourceDataModel dataModel;
+  private ObservableList<LesxReportMonthBusiness> report = FXCollections.observableArrayList();
 
   public void init(LesxBusinessResourceDataModel dataModel) {
     this.dataModel = dataModel;
@@ -65,54 +83,75 @@ public class LesxYearDialogController extends LesxController {
         .get()));
     totalSellTitle.setText(LesxMessage.getMessage("TEXT-COLUMN_TITLE_YEAR_SELL", toolbar.yearProperty()
         .get()));
+    initializeTable();
+  }
+
+  @SuppressWarnings("unchecked")
+  private void initializeTable() {
+    month = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_MONTH"));
+    month.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        return new SimpleStringProperty(ELesxMonth.valueOf(data.getValue()
+            .getMonth())
+            .toString());
+      }
+    });
+    ap = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_AP"));
+    ap.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        return new SimpleStringProperty(String.valueOf(data.getValue()
+            .getAp()));
+      }
+    });
+    vida = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_LIFE"));
+    vida.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        return new SimpleStringProperty(String.valueOf(data.getValue()
+            .getVida()));
+      }
+    });
+    comision = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_COMISION"));
+    comision.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return new SimpleStringProperty(formatter.format(data.getValue()
+            .getComision()));
+      }
+    });
+    nbs = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_NBS"));
+    nbs.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return new SimpleStringProperty(formatter.format(data.getValue()
+            .getNBS()));
+      }
+    });
+    detailsTable.getColumns()
+        .setAll(month, vida, ap, comision, nbs);
+    detailsTable.setItems(report);
   }
 
   private void initializeData() {
     // Total NBS
-    double total = dataModel.getResourceBusinessList()
-        .stream()
-        .filter(rbItem -> {
-          int year = LocalDate.parse(rbItem.getBusiness()
-              .getDate(), LesxPropertyUtils.FORMATTER)
-              .getYear();
-          return year == toolbar.yearProperty()
-              .get();
-        })
-        .mapToDouble(rbItem -> rbItem.getBusiness()
-            .getNbs())
-        .sum();
+    double total = dataModel.getNBSTotalFromYear(toolbar.yearProperty()
+        .get());
     NumberFormat formatter = NumberFormat.getCurrencyInstance();
     totalNBS.setText(formatter.format(total));
     // Count Vida
-    long totalVida = dataModel.getResourceBusinessList()
-        .stream()
-        .filter(rbItem -> {
-          int year = LocalDate.parse(rbItem.getBusiness()
-              .getDate(), LesxPropertyUtils.FORMATTER)
-              .getYear();
-          return year == toolbar.yearProperty()
-              .get();
-        })
-        .filter(rbItem -> rbItem.getBusiness()
-            .getProduct()
-            .getTypeVida() != null)
-        .count();
+    long totalVida = dataModel.countTotalVidaFromYear(toolbar.yearProperty()
+        .get());
     quantityVida.setText(String.valueOf(totalVida));
     // Count AP
-    long totalAP = dataModel.getResourceBusinessList()
-        .stream()
-        .filter(rbItem -> {
-          int year = LocalDate.parse(rbItem.getBusiness()
-              .getDate(), LesxPropertyUtils.FORMATTER)
-              .getYear();
-          return year == toolbar.yearProperty()
-              .get();
-        })
-        .filter(rbItem -> rbItem.getBusiness()
-            .getProduct()
-            .getTypeAP() != null)
-        .count();
+    long totalAP = dataModel.countTotalAPFromYear(toolbar.yearProperty()
+        .get());
     quantityAP.setText(String.valueOf(totalAP));
+    report.setAll(dataModel.buildMonthToMonthReport(toolbar.yearProperty()
+        .get()));
   }
 
 }

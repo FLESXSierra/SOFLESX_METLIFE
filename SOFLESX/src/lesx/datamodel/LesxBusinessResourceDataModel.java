@@ -8,14 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javafx.scene.control.TreeItem;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxMonth;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxProperty;
+import lesx.property.properties.LesxReportMonthBusiness;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.ui.soflesx.LesxMain;
+import lesx.utils.LesxMisc;
 import lesx.utils.LesxPropertyUtils;
 
 public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourceBusiness> {
@@ -138,6 +141,95 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
       selectedItem = null;
       persist();
     }
+  }
+
+  public double getNBSTotalFromYear(Integer year) {
+    return getResourceBusinessList().stream()
+        .filter(rbItem -> {
+          int yearItem = LocalDate.parse(rbItem.getBusiness()
+              .getDate(), LesxPropertyUtils.FORMATTER)
+              .getYear();
+          return yearItem == year;
+        })
+        .mapToDouble(rbItem -> rbItem.getBusiness()
+            .getNbs())
+        .sum();
+  }
+
+  public long countTotalVidaFromYear(Integer year) {
+    return getResourceBusinessList().stream()
+        .filter(rbItem -> {
+          int yearItem = LocalDate.parse(rbItem.getBusiness()
+              .getDate(), LesxPropertyUtils.FORMATTER)
+              .getYear();
+          return yearItem == year;
+        })
+        .filter(rbItem -> rbItem.getBusiness()
+            .getProduct()
+            .getTypeVida() != null)
+        .count();
+  }
+
+  public long countTotalAPFromYear(Integer year) {
+    return getResourceBusinessList().stream()
+        .filter(rbItem -> {
+          int yearItem = LocalDate.parse(rbItem.getBusiness()
+              .getDate(), LesxPropertyUtils.FORMATTER)
+              .getYear();
+          return yearItem == year;
+        })
+        .filter(rbItem -> rbItem.getBusiness()
+            .getProduct()
+            .getTypeAP() != null)
+        .count();
+  }
+
+  public List<LesxReportMonthBusiness> buildMonthToMonthReport(Integer year) {
+    List<LesxReportMonthBusiness> result = new ArrayList<>();
+    LesxReportMonthBusiness report = null;
+    List<LesxResourceBusiness> monthRB = null;
+    List<LesxResourceBusiness> yearRB = getResourceBusinessList().stream()
+        .filter(rbItem -> {
+          int yearItem = LocalDate.parse(rbItem.getBusiness()
+              .getDate(), LesxPropertyUtils.FORMATTER)
+              .getYear();
+          return yearItem == year;
+        })
+        .collect(Collectors.toList());
+    if (!LesxMisc.isEmpty(yearRB)) {
+      for (ELesxMonth month : ELesxMonth.values()) {
+        monthRB = getResourceBusinessList().stream()
+            .filter(rbItem -> {
+              int monthItem = LocalDate.parse(rbItem.getBusiness()
+                  .getDate(), LesxPropertyUtils.FORMATTER)
+                  .getMonthValue();
+              return (monthItem - 1) == month.getKey();
+            })
+            .collect(Collectors.toList());
+        if (!LesxMisc.isEmpty(monthRB)) {
+          report = new LesxReportMonthBusiness(month.getKey());
+          report.setAp(monthRB.stream()
+              .filter(rbItem -> rbItem.getBusiness()
+                  .getProduct()
+                  .getTypeAP() != null)
+              .count());
+          report.setVida(monthRB.stream()
+              .filter(rbItem -> rbItem.getBusiness()
+                  .getProduct()
+                  .getTypeVida() != null)
+              .count());
+          report.setComision(monthRB.stream()
+              .mapToLong(rbItem -> rbItem.getComision())
+              .sum());
+          report.setNBS(monthRB.stream()
+              .mapToLong(rbItem -> rbItem.getBusiness()
+                  .getNbs())
+              .sum());
+          result.add(report);
+        }
+      }
+    }
+    return result;
   }
 
 }
