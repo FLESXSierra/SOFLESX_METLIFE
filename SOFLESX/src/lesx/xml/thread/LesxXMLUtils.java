@@ -19,6 +19,9 @@ public class LesxXMLUtils {
 
   private final static Logger LOGGER = Logger.getLogger(LesxXMLUtils.class.getName());
 
+  private static boolean resourceLoaded;
+  private static boolean businessLoaded;
+
   public static void importXMLFileToLesxProperty(Runnable run, ELesxUseCase useCase) {
     final Consumer<Pair<Boolean, Map<Long, Map<Long, ? extends LesxComponent>>>> consumer = obs -> {
       if (obs.getKey()) {
@@ -44,6 +47,24 @@ public class LesxXMLUtils {
     LesxXMLRead read = new LesxXMLRead(useCase);
     read.start();
     read.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, obs -> consumer.accept(read.getValue()));
+  }
+
+  public static void importAllXMLFileToLesxProperty(Runnable run) {
+    // TODO LOAD HERE ALL XML
+    LesxXMLUtils.importXMLFileToLesxProperty(() -> {
+      resourceLoaded = true;
+      verifyLoadedXML(run);
+    }, ELesxUseCase.UC_XML_RESOURCE);
+    LesxXMLUtils.importXMLFileToLesxProperty(() -> {
+      businessLoaded = true;
+      verifyLoadedXML(run);
+    }, ELesxUseCase.UC_XML_BUSINESS);
+  }
+
+  private static void verifyLoadedXML(Runnable run) {
+    if (resourceLoaded && businessLoaded) {
+      run.run();
+    }
   }
 
   public static void writeNewXML(Consumer<Pair<Boolean, Map<Long, Map<Long, ? extends LesxComponent>>>> consumer, ELesxUseCase useCase) {

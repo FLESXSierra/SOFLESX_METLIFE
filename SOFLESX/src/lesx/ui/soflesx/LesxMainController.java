@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import lesx.gui.message.LesxMessage;
-import lesx.property.properties.ELesxUseCase;
 import lesx.scene.controller.LesxController;
 import lesx.utils.LesxString;
 import lesx.xml.thread.LesxXMLUtils;
@@ -25,8 +24,6 @@ public class LesxMainController extends LesxController {
   @FXML
   ProgressIndicator progress;
 
-  private boolean resourceLoaded;
-  private boolean businessLoaded;
   private BooleanProperty allLoaded = new SimpleBooleanProperty(this, "allLoaded");
 
   public LesxMainController() {
@@ -49,16 +46,8 @@ public class LesxMainController extends LesxController {
 
   @Override
   protected void init() {
-    // TODO LOAD HERE ALL XML
     try {
-      LesxXMLUtils.importXMLFileToLesxProperty(() -> {
-        resourceLoaded = true;
-        verifyLoadedXML();
-      }, ELesxUseCase.UC_XML_RESOURCE);
-      LesxXMLUtils.importXMLFileToLesxProperty(() -> {
-        businessLoaded = true;
-        verifyLoadedXML();
-      }, ELesxUseCase.UC_XML_BUSINESS);
+      LesxXMLUtils.importAllXMLFileToLesxProperty(() -> allLoaded.set(true));
     }
     catch (RuntimeException ex) {
       loadText.setText(LesxMessage.getMessage("TEXT-LOADING_ERROR_TITLE"));
@@ -70,10 +59,6 @@ public class LesxMainController extends LesxController {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-XML_READER_DATA"), e);
       e.printStackTrace();
     }
-  }
-
-  private void verifyLoadedXML() {
-    allLoaded.set(resourceLoaded && businessLoaded);
   }
 
 }

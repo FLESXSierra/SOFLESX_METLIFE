@@ -11,6 +11,7 @@ TEXT-TITLE_SALE_DIALOG_EDIT = Editar venta.
 TEXT-TITLE_SELECT_COSTUMER_DIALOG = Selección de Objectos.
 TEXT-TITLE_REPORT_DIALOG_CREATE = Crear nuevo Reporte.
 TEXT-TITLE_YEAR_DIALOG = Seguimiento Año a Año.
+TEXT-TITLE_IMPORT_XML = Importando XML
 
 TEXT-BUTTON_OK = Ok
 TEXT-BUTTON_APPLY = Aplicar
@@ -38,8 +39,12 @@ TEXT-HEADER_LABEL_COMPONENT_PANE = Objecto: {0}
 TEXT-HEADER_LABEL_RESOURCE_PANE = Cliente: {0}
 TEXT-HEADER_SELECT_COSTUMER_DIALOG = Panel de selección.
 TEXT-HEADER_YEAR_DIALOG = En este año muchas metas hemos cumplido, Keep it up!, pero en especial, las siguientes son las destacadas
+TEXT-HEADER_IMPORTING_XML = Importando XML, por favor aguarde un segundo mientra culmina la operación.
 
 TEXT-LOADING_TITLE = Cargando.
+TEXT-LOADING_WAITING = Esperando archivos.
+TEXT-LOADING_SAVING = Guardando archivos.
+TEXT-LOADING_SUCCESS = Importacion exitosa.
 TEXT-LOADING_ERROR_TITLE = ¡Un error se ha generado!.
 
 TEXT-YEAR = Año
@@ -107,6 +112,10 @@ TEXT-ALERT_DIALOG_CONTEXT_REPORT_TREE_SELECT_NULL = No se puede agregar objectos
 TEXT-ALERT_DIALOG_CONTEXT_REPORT_FUNCTION_SELECT_NULL = No se puede editar la función si no se ecuentra seleccionada una previamente en la tabla.
 TEXT-ALERT_TITLE_NEW_SALE = Nuevo Cliente o Ya existente.
 TEXT-ALERT_HEADER_NEW_SALE = ¿Desea agregar una nueva venta a un cliente nuevo o ya existente?
+TITLE-SUCCESS_IMPORT_ALERT = Exito en la importación.
+TITLE-FAILED_IMPORT_ALERT = Importación fallida.
+TEXT-HEADER_IMPORT_SUCCESS_ALERT = Los datos han sido importados de manera exitosa, este dialogo se cerrará automáticamente.
+TEXT-HEADER_IMPORT_FAILED_ALERT = Has sucedido uno o varios errores durante la exportación, por favor revise la consola para mas info. Contacte al admin.
 
 TEXT-CHECKBOX_VIDA = VIDA
 TEXT-CHECKBOX_AP = AP

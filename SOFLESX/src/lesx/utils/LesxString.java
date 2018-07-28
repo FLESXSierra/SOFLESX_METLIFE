@@ -45,6 +45,7 @@ public class LesxString {
   public static final String EDIT_COMPONENT_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxEditComponentDialogFXML.fxml";
   public static final String SELECT_RESOURCE_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxSelectCostumerDialogFXML.fxml";
   public static final String YEAR_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxYearPaneFXML.fxml";
+  public static final String IMPORT_XML_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxImportXMLFXML.fxml";
 
   /**
    * Style CSS

@@ -117,7 +117,7 @@ public class LesxMainPageController extends LesxController {
     capp.setDisable(true);
     cMonth.setDisable(true);
     cYear2.setDisable(true);
-    importXML.setDisable(true);
+    importXML.setOnAction(obs -> importXML());
     exportXML.setOnAction(obs -> exportXML());
     main.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.MAIN));
     resourcesItem.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CLIENTES));
@@ -221,6 +221,13 @@ public class LesxMainPageController extends LesxController {
         ex.printStackTrace();
       }
     }
+  }
+
+  /**
+   * Import XML Files
+   */
+  private void importXML() {
+    LesxSceneController.showImportDialog(this);
   }
 
   public void setMainPane(Node node) {

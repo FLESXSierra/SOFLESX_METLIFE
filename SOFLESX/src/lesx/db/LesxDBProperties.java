@@ -27,6 +27,7 @@ import lesx.property.properties.LesxResource;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.utils.LesxMisc;
 import lesx.xml.thread.LesxXMLSaveData;
+import lesx.xml.thread.LesxXMLUtils;
 
 public class LesxDBProperties {
 
@@ -290,6 +291,29 @@ public class LesxDBProperties {
     });
     saveResourceThread.start();
     saveBusinessThread.start();
+  }
+
+  public void refresh() {
+    LOGGER.log(Level.INFO, "Called refresh");
+    dataMap.removeListener(resourceListener);
+    mapRB.removeListener(rbListener);
+    mapRB.clear();
+    dataMap.clear();
+    dataMap.addListener(resourceListener);
+    mapRB.addListener(rbListener);
+    try {
+      LesxXMLUtils.importAllXMLFileToLesxProperty(() -> {
+        //Nothing
+      });
+    }
+    catch (RuntimeException ex) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-XML_READER_DATA"), ex);
+      ex.printStackTrace();
+    }
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-XML_READER_DATA"), e);
+      e.printStackTrace();
+    }
   }
 
   private void isSavedComplete() {
