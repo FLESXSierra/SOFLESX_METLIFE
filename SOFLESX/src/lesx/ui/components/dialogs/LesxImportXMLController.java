@@ -49,8 +49,10 @@ public class LesxImportXMLController extends LesxController {
         loadText.textProperty()
             .bind(importTask.messageProperty());
         importTask.setOnFailed(obs -> result(false));
-        importTask.setOnSucceeded(obs -> result(true));
-        importTask.start();
+        importTask.setOnSucceeded(obs -> result(importTask.getValue()));
+        Thread tested = new Thread(importTask);
+        tested.setDaemon(true);
+        tested.start();
       }
       else {
         closeWindow();
