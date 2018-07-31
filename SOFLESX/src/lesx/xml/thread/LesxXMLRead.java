@@ -1,6 +1,6 @@
 package lesx.xml.thread;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -25,7 +25,7 @@ public class LesxXMLRead extends Service<Pair<Boolean, Map<Long, Map<Long, ? ext
 
   private final static Logger LOGGER = Logger.getLogger(LesxXMLRead.class.getName());
 
-  private String path;
+  private String name;
   private Boolean available;
   private ELesxUseCase useCase;
 
@@ -33,10 +33,10 @@ public class LesxXMLRead extends Service<Pair<Boolean, Map<Long, Map<Long, ? ext
     this.useCase = useCase;
     switch (useCase) {
       case UC_XML_RESOURCE:
-        this.path = LesxString.XML_RESOURCE_PATH;
+        this.name = LesxString.XML_RESOURCE_PATH;
         break;
       case UC_XML_BUSINESS:
-        this.path = LesxString.XML_BUSINESS_PATH;
+        this.name = LesxString.XML_BUSINESS_PATH;
         break;
       default:
         LOGGER.log(
@@ -55,8 +55,8 @@ public class LesxXMLRead extends Service<Pair<Boolean, Map<Long, Map<Long, ? ext
       protected Pair<Boolean, Map<Long, Map<Long, ? extends LesxComponent>>> call() throws Exception, JAXBException {
         available = false;
         Map<Long, Map<Long, ? extends LesxComponent>> result = new HashMap<>();
-        File xmlFile = new File(path);
-        if (xmlFile.exists()) {
+        InputStream xmlFile = LesxXMLRead.class.getResourceAsStream(name);
+        if (xmlFile != null) {
           try {
             available = true;
             // PLEASE BE SURE TO MODIFY ALSO IMPORT ACTION
@@ -88,7 +88,7 @@ public class LesxXMLRead extends Service<Pair<Boolean, Map<Long, Map<Long, ? ext
           }
           catch (Exception e) {
             available = true;
-            LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-XML_READER", path), e);
+            LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-XML_READER", name), e);
             e.printStackTrace();
           }
         }

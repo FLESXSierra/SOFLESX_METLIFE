@@ -1,29 +1,21 @@
 package lesx.gui.message;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import lesx.utils.LesxMisc;
+import lesx.utils.LesxString;
 
 public class LesxMessage {
   private final static Logger LOGGER = Logger.getLogger(LesxMessage.class.getName());
 
   public static String getMessage(String key) {
     Properties properties = new Properties();
-
     try {
-      File file = new File("src\\" + LesxMessage.class.getName()
-          .replace('.', '\\'));
-      String filename = file.getAbsolutePath();
-      if (LesxMisc.isEmptyString(filename)) {
-        LOGGER.severe("No se encuentra el archivo 'LesxMessage', por favor comuniquese con el admin.");
-        return "";
-      }
-      properties.load(new FileInputStream(filename));
+      properties.load(getFile());
       Object value = properties.get(key);
       if (!LesxMisc.isEmpty(value)) {
         return String.valueOf(value);
@@ -64,6 +56,27 @@ public class LesxMessage {
       }
     }
     return value;
+  }
+
+  /**
+   * Loads the file
+   *
+   * @param fileName File name
+   * @return InputStream
+   */
+  public static InputStream getFile() {
+    try {
+      InputStream stream = LesxMessage.class.getResourceAsStream(LesxString.NAME_MESSAGE_PROPERTIES_FILE);
+      if (stream == null) {
+        throw new IllegalArgumentException("Cannot find file " + LesxString.NAME_MESSAGE_PROPERTIES_FILE);
+      }
+      return stream;
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    return null;
   }
 
 }

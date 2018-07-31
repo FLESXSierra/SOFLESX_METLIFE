@@ -290,10 +290,12 @@ public class LesxMainPageController extends LesxController {
   protected void onCloseWindow() {
     if (pendingChangesProperty().get()) {
       save(() -> {
+        LesxMain.closeConsole();
         closeWindow();
       });
     }
     else {
+      LesxMain.closeConsole();
       closeWindow();
     }
   }

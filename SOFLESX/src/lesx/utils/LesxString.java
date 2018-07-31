@@ -5,10 +5,9 @@ public class LesxString {
   /**
    * XML Strings
    */
-  public static final String XML_RESOURCE_PATH = "src\\lesx\\xml\\files\\LesxResourceXML.xml";
-  public static final String XML_BUSINESS_PATH = "src\\lesx\\xml\\files\\LesxBusinessXML.xml";
-  public static final String XML_REPORT_TREE_PATH = "src\\lesx\\xml\\files\\LesxReportTreeXML.xml";
-  public static final String XML_REPORT_ITEMS_PATH = "src\\lesx\\xml\\files\\LesxReportItemsXML.xml";
+  public static final String XML_RESOURCE_PATH = "./data/LesxResourceXML.xml";
+  public static final String XML_BUSINESS_PATH = "./data/LesxBusinessXML.xml";
+  public static final String NAME_MESSAGE_PROPERTIES_FILE = "LesxMessage.properties";
   public static final String XML_NAME_RESOURCE = "LesxResourceXML.xml";
   public static final String XML_NAME_BUSINESS = "LesxBusinessXML.xml";
   public static final String ROOT_ELEMENT_XML = "PROPERTIES";

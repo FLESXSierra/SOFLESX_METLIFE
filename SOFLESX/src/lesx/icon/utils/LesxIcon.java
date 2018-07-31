@@ -11,27 +11,27 @@ public class LesxIcon {
 
   private final static Logger LOGGER = Logger.getLogger(LesxIcon.class.getName());
 
-  public static String HELP = "/lesx/icon/help.png";
-  public static String BAIT = "/lesx/icon/bait.png";
-  public static String PIRATE = "/lesx/icon/pirate.png";
-  public static String ADD = "/lesx/icon/add.png";
-  public static String CHART = "/lesx/icon/chart.png";
-  public static String CLOCK = "/lesx/icon/clock.png";
-  public static String DELETE = "/lesx/icon/delete.png";
-  public static String EDIT = "/lesx/icon/edit.png";
-  public static String ERASE = "/lesx/icon/erase.png";
-  public static String CHILDREN = "/lesx/icon/children.png";
-  public static String PEOPLE = "/lesx/icon/people.png";
-  public static String PRESENT = "/lesx/icon/gift.png";
-  public static String PARTY = "/lesx/icon/party.png";
-  public static String SELL = "/lesx/icon/sell.png";
-  public static String EDIT_SELL = "/lesx/icon/editSell.png";
-  public static String MONEY = "/lesx/icon/money.png";
+  public static String HELP = "/images/help.png";
+  public static String BAIT = "/images/bait.PNG";
+  public static String PIRATE = "/images/pirate.png";
+  public static String ADD = "/images/add.png";
+  public static String CHART = "/images/chart.png";
+  public static String CLOCK = "/images/clock.png";
+  public static String DELETE = "/images/delete.png";
+  public static String EDIT = "/images/edit.png";
+  public static String ERASE = "/images/erase.png";
+  public static String CHILDREN = "/images/children.png";
+  public static String PEOPLE = "/images/people.png";
+  public static String PRESENT = "/images/gift.png";
+  public static String PARTY = "/images/party.png";
+  public static String SELL = "/images/sell.png";
+  public static String EDIT_SELL = "/images/editSell.png";
+  public static String MONEY = "/images/money.png";
 
   public static ImageView getImage(String path) {
     ImageView imageView = null;
     try {
-      final Image image = new Image(path);
+      final Image image = new Image(LesxIcon.class.getResourceAsStream(path));
       imageView = new ImageView(image);
     }
     catch (Exception e) {
