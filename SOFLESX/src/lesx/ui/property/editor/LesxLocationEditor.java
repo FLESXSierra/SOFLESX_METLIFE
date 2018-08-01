@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -23,6 +24,7 @@ public class LesxLocationEditor extends ComboBox<String> {
   private BooleanProperty valid = new SimpleBooleanProperty(this, "valid", true);
   private ELesxPropertyType type;
   private ObjectProperty<Object> value;
+  private LesxProperty fxProperty;
   private boolean mandatory;
   private String text;
 
@@ -38,7 +40,9 @@ public class LesxLocationEditor extends ComboBox<String> {
     }
     mandatory = fxProperty.isMandatory();
     type = fxProperty.getType();
-    value = fxProperty.getPropertyValue();
+    value = new SimpleObjectProperty<>(this, "value", fxProperty.getPropertyValue()
+        .get());
+    this.fxProperty = fxProperty;
     setEditable(true);
     getEditor().textProperty()
         .addListener(obs -> valueChanged());
@@ -59,6 +63,9 @@ public class LesxLocationEditor extends ComboBox<String> {
     }
     else {
       LesxPropertyUtils.copyValueToTypeProperty(type, null, value);
+    }
+    if (!LesxMisc.equals(value.get(), fxProperty.getValue())) {
+      fxProperty.setValue(value.get());
     }
   }
 

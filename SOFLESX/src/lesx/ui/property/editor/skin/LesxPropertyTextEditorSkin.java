@@ -36,7 +36,10 @@ public class LesxPropertyTextEditorSkin extends TextFieldSkin {
   }
 
   private void textChanged(String text) {
-    LesxPropertyUtils.copyValueToTypeProperty(type, text, value);
+    if (!String.valueOf(text)
+        .equals(String.valueOf(value.get()))) {
+      LesxPropertyUtils.copyValueToTypeProperty(type, text, value);
+    }
   }
 
   private void changedValid(boolean valid) {
