@@ -1,6 +1,6 @@
 package lesx.xml.thread;
 
-import java.io.InputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -55,7 +55,7 @@ public class LesxXMLRead extends Service<Pair<Boolean, Map<Long, Map<Long, ? ext
       protected Pair<Boolean, Map<Long, Map<Long, ? extends LesxComponent>>> call() throws Exception, JAXBException {
         available = false;
         Map<Long, Map<Long, ? extends LesxComponent>> result = new HashMap<>();
-        InputStream xmlFile = LesxXMLRead.class.getResourceAsStream(name);
+        File xmlFile = new File(name);
         if (xmlFile != null) {
           try {
             available = true;
