@@ -1,0 +1,10 @@
+-Caps_XTeck: 1
+-3D4nK_5_U_TC: true
+-XP: 19
+-Open_Files: false
+-First_Time: false
+-Test_Var: 6
+-Check_For_File: true
+-Enable_Security: true
+-Top-Kek: true
+-File_Key: 2Ab&GkAllAE-7JH

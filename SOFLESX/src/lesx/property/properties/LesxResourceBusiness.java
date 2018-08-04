@@ -1,6 +1,7 @@
 package lesx.property.properties;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import lesx.utils.LesxMisc;
 import lesx.utils.LesxPropertyUtils;
@@ -45,10 +46,17 @@ public class LesxResourceBusiness extends LesxComponent implements Cloneable {
   public Long getComision() {
     Long comision = null;
     if (getResource() != null && getBusiness() != null && getBusiness().getNbs() != null) {
-      int month = LocalDate.now()
-          .getMonthValue()
-          - LocalDate.parse(getResource().getRegistration_date(), LesxPropertyUtils.FORMATTER)
-              .getMonthValue();
+      comision = getBusiness().getNbs() / 24;
+    }
+    return comision;
+  }
+
+  public Long getComision(LocalDate date) {
+    Long comision = 0L;
+    if (getResource() != null && getBusiness() != null && getBusiness().getNbs() != null) {
+      int month = Period.between(LocalDate.parse(getBusiness().getDate(), LesxPropertyUtils.FORMATTER)
+          .withDayOfMonth(1), date.withDayOfMonth(1))
+          .getMonths();
       switch (month) {
         case 0:
           comision = getBusiness().getNbs() / 24;

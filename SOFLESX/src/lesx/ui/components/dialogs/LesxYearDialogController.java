@@ -93,7 +93,7 @@ public class LesxYearDialogController extends LesxController {
       @Override
       public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
         return new SimpleStringProperty(ELesxMonth.valueOf(data.getValue()
-            .getMonth())
+            .getMonth() - 1)
             .toString());
       }
     });
@@ -150,7 +150,7 @@ public class LesxYearDialogController extends LesxController {
     long totalAP = dataModel.countTotalAPFromYear(toolbar.yearProperty()
         .get());
     quantityAP.setText(String.valueOf(totalAP));
-    report.setAll(dataModel.buildMonthToMonthReport(toolbar.yearProperty()
+    report.setAll(dataModel.getMonthToMonthReport(toolbar.yearProperty()
         .get()));
   }
 

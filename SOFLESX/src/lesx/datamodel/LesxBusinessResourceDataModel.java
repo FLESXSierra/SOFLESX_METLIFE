@@ -18,7 +18,6 @@ import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxReportMonthBusiness;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.ui.soflesx.LesxMain;
-import lesx.utils.LesxMisc;
 import lesx.utils.LesxPropertyUtils;
 
 public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourceBusiness> {
@@ -26,6 +25,8 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   private final static Logger LOGGER = Logger.getLogger(LesxBusinessResourceDataModel.class.getName());
 
   private Map<Long, LesxResourceBusiness> map = new HashMap<>();
+  private Map<LocalDate, LesxReportMonthBusiness> monthReport = new HashMap<>();
+  private boolean buildMonthReport = true;
   private LesxResourceBusiness selectedItem;
 
   public LesxBusinessResourceDataModel() {
@@ -113,6 +114,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
           .getId());
       map.put(temp.getBusiness()
           .getId(), temp);
+      buildMonthReport = true;
       LOGGER.log(Level.INFO, LesxMessage.getMessage("INFO-OBJECT_ADDED", 1));
     }
     catch (Exception e) {
@@ -139,6 +141,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
           .getDbProperty()
           .removeBusiness(selectedItem.getBusiness());
       selectedItem = null;
+      buildMonthReport = true;
       persist();
     }
   }
@@ -184,52 +187,76 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         .count();
   }
 
-  public List<LesxReportMonthBusiness> buildMonthToMonthReport(Integer year) {
-    List<LesxReportMonthBusiness> result = new ArrayList<>();
-    LesxReportMonthBusiness report = null;
-    List<LesxResourceBusiness> monthRB = null;
-    List<LesxResourceBusiness> yearRB = getResourceBusinessList().stream()
-        .filter(rbItem -> {
-          int yearItem = LocalDate.parse(rbItem.getBusiness()
-              .getDate(), LesxPropertyUtils.FORMATTER)
-              .getYear();
-          return yearItem == year;
-        })
+  public List<LesxReportMonthBusiness> getMonthToMonthReport(Integer year) {
+    if (buildMonthReport) {
+      buildMonthToMonthReport();
+      buildMonthReport = false;
+    }
+    return monthReport.entrySet()
+        .stream()
+        .filter(entry -> entry.getKey()
+            .getYear() == year)
+        .map(entry -> entry.getValue())
         .collect(Collectors.toList());
-    if (!LesxMisc.isEmpty(yearRB)) {
-      for (ELesxMonth month : ELesxMonth.values()) {
-        monthRB = getResourceBusinessList().stream()
-            .filter(rbItem -> {
-              int monthItem = LocalDate.parse(rbItem.getBusiness()
-                  .getDate(), LesxPropertyUtils.FORMATTER)
-                  .getMonthValue();
-              return (monthItem - 1) == month.getKey();
-            })
-            .collect(Collectors.toList());
-        if (!LesxMisc.isEmpty(monthRB)) {
-          report = new LesxReportMonthBusiness(month.getKey());
-          report.setAp(monthRB.stream()
-              .filter(rbItem -> rbItem.getBusiness()
+  }
+
+  private void buildMonthToMonthReport() {
+    LocalDate currentDate;
+    LocalDate startDate;
+    boolean comision;
+    boolean firstReport = true;
+    int cont;
+    LesxReportMonthBusiness report = null;
+    LesxReportMonthBusiness current = null;
+    for (LesxResourceBusiness rb : getResourceBusinessList()) {
+      if (rb.getBusiness() != null) {
+        currentDate = LocalDate.parse(rb.getBusiness()
+            .getDate(), LesxPropertyUtils.FORMATTER);
+        startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue(), 1);
+        current = monthReport.get(startDate);
+        firstReport = true;
+        comision = true;
+        cont = 1;
+        while (comision) {
+          if (current != null) {
+            current.setComision(current.getComision() + rb.getComision(startDate));
+            if (firstReport) {
+              current.setNBS(current.getNBS() + rb.getBusiness()
+                  .getNbs());
+              int ap = rb.getBusiness()
                   .getProduct()
-                  .getTypeAP() != null)
-              .count());
-          report.setVida(monthRB.stream()
-              .filter(rbItem -> rbItem.getBusiness()
+                  .getTypeAP() != null ? 1 : 0;
+              current.setAp(current.getAp() + ap);
+              int vida = rb.getBusiness()
                   .getProduct()
-                  .getTypeVida() != null)
-              .count());
-          report.setComision(monthRB.stream()
-              .mapToLong(rbItem -> rbItem.getComision())
-              .sum());
-          report.setNBS(monthRB.stream()
-              .mapToLong(rbItem -> rbItem.getBusiness()
-                  .getNbs())
-              .sum());
-          result.add(report);
+                  .getTypeVida() != null ? 1 : 0;
+              current.setVida(current.getVida() + vida);
+            }
+          }
+          else {
+            report = new LesxReportMonthBusiness(startDate.getMonthValue());
+            report.setAp(firstReport && rb.getBusiness()
+                .getProduct()
+                .getTypeAP() != null ? 1L : 0L);
+            report.setVida(firstReport && rb.getBusiness()
+                .getProduct()
+                .getTypeVida() != null ? 1L : 0L);
+            report.setComision(rb.getComision(startDate));
+            report.setNBS(firstReport && rb.getBusiness()
+                .getNbs() != null
+                    ? rb.getBusiness()
+                        .getNbs()
+                    : 0L);
+            monthReport.put(startDate, report);
+          }
+          comision = cont <= 3;
+          cont++;
+          startDate = startDate.plusMonths(1);
+          current = monthReport.get(startDate);
+          firstReport = false;
         }
       }
     }
-    return result;
   }
 
 }

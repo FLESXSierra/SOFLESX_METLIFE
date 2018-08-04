@@ -49,6 +49,8 @@ public class LesxMainController extends LesxController {
   @Override
   protected void init() {
     File test = new File(LesxString.XML_RESOURCE_PATH);
+    test.getParentFile()
+        .mkdirs();
     LesxSecurityTask task = new LesxSecurityTask(!test.exists());
     task.setOnSucceeded(obs -> {
       if (task.getValue()) {

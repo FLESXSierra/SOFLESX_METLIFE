@@ -56,7 +56,7 @@ public class LesxXMLRead extends Service<Pair<Boolean, Map<Long, Map<Long, ? ext
         available = false;
         Map<Long, Map<Long, ? extends LesxComponent>> result = new HashMap<>();
         File xmlFile = new File(name);
-        if (xmlFile != null) {
+        if (xmlFile != null && xmlFile.exists()) {
           try {
             available = true;
             // PLEASE BE SURE TO MODIFY ALSO IMPORT ACTION

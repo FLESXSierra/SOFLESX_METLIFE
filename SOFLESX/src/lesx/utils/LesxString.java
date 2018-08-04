@@ -7,6 +7,7 @@ public class LesxString {
    */
   public static final String XML_RESOURCE_PATH = "./data/LesxResourceXML.xml";
   public static final String XML_BUSINESS_PATH = "./data/LesxBusinessXML.xml";
+  public static final String SETTINGS_FILE_PATH = "./data/settings.txt";
   public static final String NAME_MESSAGE_PROPERTIES_FILE = "LesxMessage.properties";
   public static final String XML_NAME_RESOURCE = "LesxResourceXML.xml";
   public static final String XML_NAME_BUSINESS = "LesxBusinessXML.xml";
@@ -88,5 +89,6 @@ public class LesxString {
   //Files
   public static final String FILE_KEY_1 = "-XP";
   public static final String FILE_KEY_2 = "-Test_Var";
+  public static final String FILE_KEY_3 = "-Top-Kek";
 
 }
