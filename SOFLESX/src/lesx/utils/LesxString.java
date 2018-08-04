@@ -90,5 +90,6 @@ public class LesxString {
   public static final String FILE_KEY_1 = "-XP";
   public static final String FILE_KEY_2 = "-Test_Var";
   public static final String FILE_KEY_3 = "-Top-Kek";
+  public static final String FILE_KEY_4 = "-Win-McOSX";
 
 }
