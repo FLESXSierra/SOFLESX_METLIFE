@@ -12,6 +12,7 @@ import lesx.utils.LesxString;
 public class LesxSecurityTask extends Task<Boolean> {
 
   private static final String STARTFILE = System.getProperty("user.home") + "/startFlesx.txt";
+
   private boolean first;
 
   public LesxSecurityTask(boolean first) {

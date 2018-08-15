@@ -119,7 +119,6 @@ public class Console extends WindowAdapter implements WindowListener, ActionList
     catch (Exception e) {
       //Nothing
     }
-    System.exit(0);
   }
 
   @Override

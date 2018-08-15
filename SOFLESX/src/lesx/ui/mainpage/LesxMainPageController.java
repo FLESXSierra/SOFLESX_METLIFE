@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -290,13 +291,19 @@ public class LesxMainPageController extends LesxController {
   protected void onCloseWindow() {
     if (pendingChangesProperty().get()) {
       save(() -> {
-        LesxMain.closeConsole();
         closeWindow();
+        Platform.runLater(() -> {
+          LesxMain.closeConsole();
+          System.exit(0);
+        });
       });
     }
     else {
-      LesxMain.closeConsole();
       closeWindow();
+      Platform.runLater(() -> {
+        LesxMain.closeConsole();
+        System.exit(0);
+      });
     }
   }
 
