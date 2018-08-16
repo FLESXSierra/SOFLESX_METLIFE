@@ -72,6 +72,8 @@ public class LesxMainPageController extends LesxController {
   @FXML
   MenuBar menu;
   @FXML
+  Label version;
+  @FXML
   LesxBirthdayButton bButton;
   @FXML
   AnchorPane mainPane;
@@ -143,11 +145,15 @@ public class LesxMainPageController extends LesxController {
   }
 
   private void showHelpDialog() {
+    StringBuilder content = new StringBuilder();
+    content.append(LesxMessage.getMessage("TEXT-VERSION"));
+    content.append("\n");
+    content.append(LesxMessage.getMessage("TEXT-ALERT_HEADER_REPORT_BUG"));
     LesxAlertBuilder.create()
         .setOwner(mainPane.getScene()
             .getWindow())
         .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_REPORT_BUG"))
-        .setContentText(LesxMessage.getMessage("TEXT-ALERT_HEADER_REPORT_BUG"))
+        .setContentText(content.toString())
         .setGraphic(LesxIcon.getImage(LesxIcon.HELP))
         .setButtons(ButtonType.OK)
         .showAndWait();

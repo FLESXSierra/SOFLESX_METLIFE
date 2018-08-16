@@ -7,19 +7,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="header" text="Label" />
-            <Separator prefWidth="200.0" />
-            <GridPane hgap="5.0" vgap="5.0" VBox.vgrow="ALWAYS">
+            <Label fx:id="header" text="Label" VBox.vgrow="NEVER" />
+            <Separator prefWidth="200.0" VBox.vgrow="NEVER" />
+            <GridPane hgap="5.0" vgap="5.0" VBox.vgrow="NEVER">
               <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" />
                 <ColumnConstraints hgrow="ALWAYS" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints />
               </rowConstraints>
                <children>
                   <VBox alignment="TOP_CENTER">
@@ -99,18 +99,14 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </GridPane>
-            <Separator />
-            <TitledPane animated="false" collapsible="false" prefHeight="200.0" text="Detalles" VBox.vgrow="ALWAYS">
+            <Separator VBox.vgrow="NEVER" />
+            <TitledPane animated="false" collapsible="false" text="Detalles" VBox.vgrow="ALWAYS">
                <content>
-                  <BorderPane>
-                     <center>
-                        <TableView fx:id="detailsTable" BorderPane.alignment="CENTER">
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
-                     </center>
-                  </BorderPane>
+                  <TableView fx:id="detailsTable" maxHeight="1.7976931348623157E308">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
                </content>
             </TitledPane>
          </children>
