@@ -1,6 +1,7 @@
 package lesx.ui.components.dialogs;
 
 import java.text.NumberFormat;
+import java.util.Comparator;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -54,6 +55,7 @@ public class LesxYearDialogController extends LesxController {
   private LesxToolBar toolbar;
   private LesxBusinessResourceDataModel dataModel;
   private ObservableList<LesxReportMonthBusiness> report = FXCollections.observableArrayList();
+  Comparator<LesxReportMonthBusiness> comparator = Comparator.comparingInt(LesxReportMonthBusiness::getMonth);
 
   public void init(LesxBusinessResourceDataModel dataModel) {
     this.dataModel = dataModel;
@@ -152,6 +154,7 @@ public class LesxYearDialogController extends LesxController {
     quantityAP.setText(String.valueOf(totalAP));
     report.setAll(dataModel.getMonthToMonthReport(toolbar.yearProperty()
         .get()));
+    FXCollections.sort(report, comparator);
   }
 
 }
