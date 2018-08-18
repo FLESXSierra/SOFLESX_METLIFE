@@ -49,7 +49,6 @@ public class LesxYearDialogController extends LesxController {
   private TableColumn<LesxReportMonthBusiness, String> month;
   private TableColumn<LesxReportMonthBusiness, String> ap;
   private TableColumn<LesxReportMonthBusiness, String> vida;
-  private TableColumn<LesxReportMonthBusiness, String> comision;
   private TableColumn<LesxReportMonthBusiness, String> nbs;
 
   private LesxToolBar toolbar;
@@ -115,15 +114,6 @@ public class LesxYearDialogController extends LesxController {
             .getVida()));
       }
     });
-    comision = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_COMISION"));
-    comision.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
-      @Override
-      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return new SimpleStringProperty(formatter.format(data.getValue()
-            .getComision()));
-      }
-    });
     nbs = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_NBS"));
     nbs.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
       @Override
@@ -134,7 +124,7 @@ public class LesxYearDialogController extends LesxController {
       }
     });
     detailsTable.getColumns()
-        .setAll(month, vida, ap, comision, nbs);
+        .setAll(month, vida, ap, nbs);
     detailsTable.setItems(report);
   }
 
@@ -152,7 +142,7 @@ public class LesxYearDialogController extends LesxController {
     long totalAP = dataModel.countTotalAPFromYear(toolbar.yearProperty()
         .get());
     quantityAP.setText(String.valueOf(totalAP));
-    report.setAll(dataModel.getMonthToMonthReport(toolbar.yearProperty()
+    report.setAll(dataModel.getMonthToMonthNBSReport(toolbar.yearProperty()
         .get()));
     FXCollections.sort(report, comparator);
   }

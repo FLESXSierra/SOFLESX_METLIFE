@@ -127,7 +127,6 @@ public class LesxMainPageController extends LesxController {
    */
   private void setUpMenuButtons() {
     capp.setDisable(true);
-    cMonth.setDisable(true);
     cYear2.setDisable(true);
     walkThrough.setDisable(true);
     importXML.setOnAction(obs -> importXML());
@@ -138,6 +137,7 @@ public class LesxMainPageController extends LesxController {
     saveFlesx.setOnAction(obs -> saveXMLAction());
     year.setOnAction(obs -> showYearDialog());
     reportBug.setOnAction(obs -> showHelpDialog());
+    cMonth.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.COMISION_MES));
     LesxMain.getInstance()
         .getDbProperty()
         .setListener(ELesxListenerType.UPDATE, () -> updateBirthDayButtonNames());

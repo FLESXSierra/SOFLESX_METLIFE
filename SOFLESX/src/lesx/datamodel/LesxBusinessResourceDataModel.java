@@ -187,6 +187,12 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         .count();
   }
 
+  public List<LesxReportMonthBusiness> getMonthToMonthNBSReport(Integer year) {
+    return getMonthToMonthReport(year).stream()
+        .filter(report -> report.getNBS() != null && report.getNBS() != 0)
+        .collect(Collectors.toList());
+  }
+
   public List<LesxReportMonthBusiness> getMonthToMonthReport(Integer year) {
     if (buildMonthReport) {
       buildMonthToMonthReport();

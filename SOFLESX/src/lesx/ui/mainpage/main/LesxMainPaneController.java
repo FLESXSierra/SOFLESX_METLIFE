@@ -53,7 +53,6 @@ public class LesxMainPaneController extends LesxController {
   private TreeTableColumn<LesxResourceBusiness, String> primaVida;
   private TreeTableColumn<LesxResourceBusiness, String> primaAP;
   private TreeTableColumn<LesxResourceBusiness, String> nbs;
-  private TreeTableColumn<LesxResourceBusiness, String> comision;
   private TreeTableColumn<LesxResourceBusiness, String> month;
   //Data
   private LesxResourcesDataModel dataModelResource = new LesxResourcesDataModel();
@@ -246,20 +245,6 @@ public class LesxMainPaneController extends LesxController {
                 : "");
       }
     });
-    comision = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_COMISION"));
-    comision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
-      @Override
-      public ObservableValue<String> call(javafx.scene.control.TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String> param) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return new SimpleStringProperty(parameterNotNull(param, false) && param.getValue()
-            .getValue()
-            .getComision() != null
-                ? formatter.format(param.getValue()
-                    .getValue()
-                    .getComision())
-                : "");
-      }
-    });
 
     month = new TreeTableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_MONTH"));
     month.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<LesxResourceBusiness, String>, ObservableValue<String>>() {
@@ -310,13 +295,10 @@ public class LesxMainPaneController extends LesxController {
     nbs.prefWidthProperty()
         .bind(table.widthProperty()
             .multiply(0.1));
-    comision.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.1));
 
     table.setShowRoot(false);
     table.getColumns()
-        .setAll(month, solicitud, nameColumn, cc, tipo, prima, nbs, comision);
+        .setAll(month, solicitud, nameColumn, cc, tipo, prima, nbs);
     updateTreeTableData();
   }
 
@@ -459,7 +441,7 @@ public class LesxMainPaneController extends LesxController {
   public void clearComponent() {
     LesxMain.getInstance()
         .getDbProperty()
-        .removeListener(ELesxListenerType.UPDATE, () -> updateTreeTableData());
+        .removeListenerRB(ELesxListenerType.UPDATE, () -> updateeDataFromCache());
   }
 
 }

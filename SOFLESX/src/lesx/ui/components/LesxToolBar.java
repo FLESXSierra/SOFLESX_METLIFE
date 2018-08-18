@@ -249,6 +249,9 @@ public class LesxToolBar extends ToolBar {
         actions.put(ACTIONS_EDIT_SELL, editSellAction);
         break;
       case UC_YEAR_ONLY:
+        if (deselect != null) {
+          buttons = Arrays.asList(deselect);
+        }
         year = new ComboBox<>();
         year.setMaxWidth(100);
         year.getItems()

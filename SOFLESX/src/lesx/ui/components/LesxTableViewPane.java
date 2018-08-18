@@ -39,6 +39,7 @@ public class LesxTableViewPane<T> extends VBox {
     toolBar.selectedFilterTableProperty()
         .bind(selectedFilterTable);
     table = new TableView<>();
+    table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     table.getSelectionModel()
         .selectedItemProperty()
         .addListener(obs -> selectedItemTable());
