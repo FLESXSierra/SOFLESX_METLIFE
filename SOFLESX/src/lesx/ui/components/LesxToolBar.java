@@ -360,7 +360,7 @@ public class LesxToolBar extends ToolBar {
     editSell = new Button();
     editSell.setText(null);
     editSell.setTooltip(generateToolTip(buttonType.EDIT_SELL));
-    editSell.setGraphic(LesxIcon.getImage(LesxIcon.EDIT_SELL));
+    editSell.setGraphic(LesxIcon.getImage(LesxIcon.EDIT));
     editSell.disableProperty()
         .bind(Bindings.not(selectedItem));
   }
