@@ -214,8 +214,10 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
     int cont;
     LesxReportMonthBusiness report = null;
     LesxReportMonthBusiness current = null;
+    LocalDate cancelledDate = null;
     for (LesxResourceBusiness rb : getResourceBusinessList()) {
-      if (rb.getBusiness() != null) {
+      if (rb.getBusiness() != null && rb.getBusiness()
+          .getNbs() != null) {
         currentDate = LocalDate.parse(rb.getBusiness()
             .getDate(), LesxPropertyUtils.FORMATTER);
         startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue(), 1);
@@ -223,7 +225,17 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         firstReport = true;
         comision = true;
         cont = 1;
+        if (rb.getBusiness()
+            .getCancelled()
+            .getValue()) {
+          cancelledDate = LocalDate.parse(rb.getBusiness()
+              .getCancelled()
+              .getDate(), LesxPropertyUtils.FORMATTER);
+        }
         while (comision) {
+          if (cancelledDate != null && cancelledDate.isBefore(startDate)) {
+            break;
+          }
           if (current != null) {
             current.setComision(current.getComision() + rb.getComision(startDate));
             if (firstReport) {

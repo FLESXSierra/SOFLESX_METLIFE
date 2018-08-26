@@ -43,8 +43,7 @@ public class LesxComponent implements Cloneable {
   @Override
   public LesxComponent clone() {
     try {
-      LesxComponent newComponent = (LesxComponent) super.clone();
-      return newComponent;
+      return (LesxComponent) super.clone();
     }
     catch (CloneNotSupportedException e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-PROPERTY_NOT_CLONNABLE", this), e);

@@ -148,7 +148,7 @@ public class LesxProperty implements Cloneable {
   protected LesxProperty clone() {
     try {
       LesxProperty clone = (LesxProperty) super.clone();
-      clone.value = new SimpleObjectProperty<>(this.getValue());
+      clone.value = new SimpleObjectProperty<>(this.getValue() instanceof LesxComponent ? ((LesxComponent) this.getValue()).clone() : this.getValue());
       return clone;
     }
     catch (CloneNotSupportedException e) {

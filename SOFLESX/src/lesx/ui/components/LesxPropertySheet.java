@@ -24,6 +24,7 @@ import lesx.ui.property.editor.LesxPeriodDatePicker;
 import lesx.ui.property.editor.LesxPriceTypeEditor;
 import lesx.ui.property.editor.LesxProductEditor;
 import lesx.ui.property.editor.LesxTextEditor;
+import lesx.ui.property.editor.LesxYesNoDateEditor;
 import lesx.ui.property.label.LesxPropertyLabel;
 import lesx.utils.LesxMisc;
 import lesx.utils.LesxString;
@@ -161,6 +162,13 @@ public class LesxPropertySheet {
               .bind(productEditor.validProperty());
           wrapperEditor.getChildren()
               .add(productEditor);
+          break;
+        case YES_NO_DATE:
+          final LesxYesNoDateEditor yesNoEditor = new LesxYesNoDateEditor(fxProperty);
+          nombre.getValidProperty()
+              .bind(yesNoEditor.validProperty());
+          wrapperEditor.getChildren()
+              .add(yesNoEditor);
           break;
         default:
           break;

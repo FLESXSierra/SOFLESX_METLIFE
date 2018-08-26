@@ -59,6 +59,12 @@ public enum ELesxPropertyType {
     public String toString() {
       return LesxString.PROPERTY_PRODUCT_TYPE;
     }
+  },
+  YES_NO_DATE(9) {
+    @Override
+    public String toString() {
+      return LesxString.PROPERTY_YES_NO_DATE;
+    }
   };
 
   private int key;

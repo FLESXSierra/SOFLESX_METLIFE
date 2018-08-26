@@ -18,6 +18,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
   private LesxProperty producto;
   private LesxProperty date;
   private LesxProperty resource_id;
+  private LesxProperty cancelled;
 
   public LesxBusiness() {
     initializeProperty();
@@ -40,6 +41,7 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
       resource_id.setValue(parse.getResource_id());
     }
     producto.setValue(new LesxProductType(parse.getProducto()));
+    cancelled.setValue(new LesxCancelledBusiness(parse.getCancelled()));
     date.setValue(parse.getDate());
   }
 
@@ -62,6 +64,9 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
       }
       if (date.propertyEquals(property)) {
         date.setValue(property.getValue());
+      }
+      if (cancelled.propertyEquals(property)) {
+        cancelled.setValue(property.getValue());
       }
     }
   }
@@ -92,7 +97,10 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
     resource_id.setReadOnly(true);
     resource_id.setUnique(true);
     resource_id.setVisible(false);
-    getPropertyValues().addAll(id, resource_id, producto, date);
+    cancelled = new LesxProperty();
+    cancelled.setType(ELesxPropertyType.YES_NO_DATE);
+    cancelled.setName(LesxString.PROPERTY_YES_NO_DATE);
+    getPropertyValues().addAll(id, resource_id, producto, date, cancelled);
     setKey(ELesxPropertyKeys.BUSINESS);
   }
 
@@ -110,6 +118,14 @@ public class LesxBusiness extends LesxComponent implements Cloneable {
 
   public void setProduct(LesxProductType producto) {
     this.producto.setValue(producto);
+  }
+
+  public LesxCancelledBusiness getCancelled() {
+    return (LesxCancelledBusiness) cancelled.getValue();
+  }
+
+  public void setCancelled(LesxCancelledBusiness producto) {
+    this.cancelled.setValue(producto);
   }
 
   public Long getNbs() {

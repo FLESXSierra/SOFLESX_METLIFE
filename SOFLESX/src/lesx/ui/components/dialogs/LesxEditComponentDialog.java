@@ -320,7 +320,7 @@ public class LesxEditComponentDialog extends LesxController {
   }
 
   protected void setPendingChanges(boolean pending) {
-    getPropertySheet().setPendingChanges(false);
+    getPropertySheet().setPendingChanges(pending);
   }
 
   /**

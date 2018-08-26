@@ -12,7 +12,9 @@ import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxPropertyKeys;
 import lesx.property.properties.ELesxUseCase;
 import lesx.property.properties.LesxBusiness;
+import lesx.property.properties.LesxCancelledBusiness;
 import lesx.property.properties.LesxComponent;
+import lesx.property.properties.LesxProductType;
 import lesx.property.properties.LesxResourceBusiness;
 
 public class LesxEditBusinessDialog extends LesxEditComponentDialog {
@@ -93,6 +95,8 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
       business = new LesxBusiness();
       business.setId(dataModel.createNewKeyForBusinessIdProperty());
       business.setKey(ELesxPropertyKeys.BUSINESS);
+      business.setCancelled(new LesxCancelledBusiness());
+      business.setProduct(new LesxProductType());
       if (dataModel.getComponentSelected() != null) {
         resourceBusiness = dataModel.getComponentSelected()
             .clone();

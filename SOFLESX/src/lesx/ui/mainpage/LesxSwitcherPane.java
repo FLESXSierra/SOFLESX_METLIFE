@@ -45,6 +45,9 @@ public class LesxSwitcherPane {
             .getResource(path)
             .openStream());
         mainPaneController = (LesxController) fxmlLoader.getController();
+        mainPaneController.pendingChangesProperty()
+            .set(controller.pendingChangesProperty()
+                .get());
         controller.pendingChangesProperty()
             .bindBidirectional(mainPaneController.pendingChangesProperty());
         controller.showProgressProperty()

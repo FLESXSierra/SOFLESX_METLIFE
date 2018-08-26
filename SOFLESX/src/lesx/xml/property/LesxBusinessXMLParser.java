@@ -19,6 +19,8 @@ public class LesxBusinessXMLParser {
   private Long resource_id;
   @XmlElement(name = LesxString.ATTR_XML_DATE)
   private String date;
+  @XmlElement(name = LesxString.ATTR_XML_CANCELLED)
+  private LesxCancelledBusinessXMLParser cancelled;
 
   public LesxBusinessXMLParser() {
     //Nothing
@@ -29,6 +31,7 @@ public class LesxBusinessXMLParser {
     this.producto = new LesxProductTypeXMLParser(business.getProduct());
     this.resource_id = business.getResource_id();
     this.date = business.getDate();
+    this.cancelled = new LesxCancelledBusinessXMLParser(business.getCancelled());
   }
 
   public Long getId() {
@@ -61,6 +64,14 @@ public class LesxBusinessXMLParser {
 
   public void setDate(String date) {
     this.date = date;
+  }
+
+  public LesxCancelledBusinessXMLParser getCancelled() {
+    return cancelled;
+  }
+
+  public void setCancelled(LesxCancelledBusinessXMLParser cancelled) {
+    this.cancelled = cancelled;
   }
 
 }

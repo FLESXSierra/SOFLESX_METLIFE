@@ -36,6 +36,8 @@ public class LesxString {
   public static final String ATTR_XML_TYPE_VIDA = "TIPO_VIDA";
   public static final String ATTR_XML_TYPE_AP = "TIPO_AP";
   public static final String ATTR_XML_DATE = "DATE";
+  public static final String ATTR_XML_VALUE = "VALOR";
+  public static final String ATTR_XML_CANCELLED = "CANCELADO";
 
   /**
    * Scene Controller
@@ -85,6 +87,7 @@ public class LesxString {
   public static final String PROPERTY_VIDA_C = "VidaC";
   public static final String PROPERTY_AP = "AP";
   public static final String PROPERTY_BUSINESS_DATE = "Fecha de Venta";
+  public static final String PROPERTY_YES_NO_DATE = "Cancelado";
 
   //Files
   public static final String FILE_KEY_1 = "-XP";

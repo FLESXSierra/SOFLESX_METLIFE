@@ -414,6 +414,7 @@ public class LesxMainPaneController extends LesxController {
             if (dataModelResource.getComponentSelected() != null) {
               dataModel.setComponentSelected(LesxResourceBusiness.of(dataModelResource.getComponentSelected(), null));
               addNewBusiness(useCase, true);
+              pendingChangesProperty().set(true);
             }
           });
         }

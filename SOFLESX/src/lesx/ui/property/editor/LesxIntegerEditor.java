@@ -9,7 +9,7 @@ public class LesxIntegerEditor extends LesxTextEditor {
   private BooleanProperty valid = new SimpleBooleanProperty(this, "valid", true);
 
   public LesxIntegerEditor(LesxProperty fxProperty) {
-    super(fxProperty);// TODO Triggering peding changes
+    super(fxProperty);
     LesxNumberFormatter format = new LesxNumberFormatter();
     setTextFormatter(format.getFormat());
   }
