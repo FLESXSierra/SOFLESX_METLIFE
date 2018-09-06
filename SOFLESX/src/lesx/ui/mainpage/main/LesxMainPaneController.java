@@ -267,34 +267,34 @@ public class LesxMainPaneController extends LesxController {
             .multiply(0.1));
     solicitud.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.1));
+            .multiply(0.11));
     nameColumn.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.14));
+            .multiply(0.15));
     cc.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.1));
+            .multiply(0.11));
     tipoAP.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.09));
+            .multiply(0.105));
     tipoVida.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.09));
+            .multiply(0.105));
     tipo.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.18));
+            .multiply(0.21));
     primaAP.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.09));
+            .multiply(0.105));
     primaVida.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.09));
+            .multiply(0.105));
     prima.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.18));
+            .multiply(0.21));
     nbs.prefWidthProperty()
         .bind(table.widthProperty()
-            .multiply(0.1));
+            .multiply(0.11));
 
     table.setShowRoot(false);
     table.getColumns()

@@ -15,7 +15,7 @@ public class LesxSwitcherPane {
   private final static Logger LOGGER = Logger.getLogger(LesxMessage.class.getName());
   public static final String MAIN = "/lesx/ui/mainpage/main/LesxMainPaneFXML.fxml";
   public final static String CLIENTES = "/lesx/ui/mainpage/resources/LesxResourcesPaneFXML.fxml";
-  public final static String CAPP = "";
+  public final static String CAPP = "/lesx/ui/mainpage/capp/LesxCAPPPaneFXML.fxml";
   public final static String COMISION_MES = "/lesx/ui/mainpage/comisionmes/LesxComisionMesPaneFXML.fxml";
   public final static String COMISION_AÑO = "";
 

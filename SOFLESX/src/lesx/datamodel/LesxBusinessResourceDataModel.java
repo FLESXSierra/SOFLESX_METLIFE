@@ -277,4 +277,30 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
     }
   }
 
+  public List<LesxReportMonthBusiness> getMonthToMonthCAPPReport(Integer year) {
+    if (buildMonthReport) {
+      buildMonthToMonthReport();
+      buildMonthReport = false;
+    }
+    LocalDate startDate;
+    List<LesxReportMonthBusiness> reportCapp = new ArrayList<>();
+    long leftOverCapp = 0;
+    for (int i = 0; i <= 11; i++) {
+      startDate = LocalDate.of(year, (i + 1), 1);
+      LesxReportMonthBusiness report = monthReport.get(startDate);
+      if (report != null) {
+        leftOverCapp = leftOverCapp + report.getCapp();
+      }
+      else {
+        report = new LesxReportMonthBusiness(i + 1);
+      }
+      if ((i + 1) % 3 == 0) {
+        report.setAchievedCAPP(leftOverCapp >= 15);
+        leftOverCapp = (leftOverCapp - 15) < 0 ? 0 : (leftOverCapp - 15);
+      }
+      reportCapp.add(report);
+    }
+    return reportCapp;
+  }
+
 }

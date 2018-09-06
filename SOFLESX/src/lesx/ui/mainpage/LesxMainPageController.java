@@ -126,7 +126,6 @@ public class LesxMainPageController extends LesxController {
    * Adds Listeners and and set to read only if needed.
    */
   private void setUpMenuButtons() {
-    capp.setDisable(true);
     cYear2.setDisable(true);
     walkThrough.setDisable(true);
     importXML.setOnAction(obs -> importXML());
@@ -138,6 +137,7 @@ public class LesxMainPageController extends LesxController {
     year.setOnAction(obs -> showYearDialog());
     reportBug.setOnAction(obs -> showHelpDialog());
     cMonth.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.COMISION_MES));
+    capp.setOnAction(obs -> LesxSwitcherPane.loadPane(LesxSwitcherPane.CAPP));
     LesxMain.getInstance()
         .getDbProperty()
         .setListener(ELesxListenerType.UPDATE, () -> updateBirthDayButtonNames());
