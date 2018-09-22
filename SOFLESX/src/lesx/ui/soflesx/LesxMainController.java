@@ -1,6 +1,5 @@
 package lesx.ui.soflesx;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,10 +47,7 @@ public class LesxMainController extends LesxController {
 
   @Override
   protected void init() {
-    File test = new File(LesxString.XML_RESOURCE_PATH);
-    test.getParentFile()
-        .mkdirs();
-    LesxSecurityTask task = new LesxSecurityTask(!test.exists());
+    LesxSecurityTask task = new LesxSecurityTask();
     task.setOnSucceeded(obs -> {
       if (task.getValue()) {
         initializeFlesx();
