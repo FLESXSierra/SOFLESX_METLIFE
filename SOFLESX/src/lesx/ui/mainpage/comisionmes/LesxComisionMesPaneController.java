@@ -78,7 +78,9 @@ public class LesxComisionMesPaneController extends LesxController {
       public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         return new SimpleStringProperty(formatter.format(data.getValue()
-            .getComision()));
+            .getComision()
+            * data.getValue()
+                .getPercent()));
       }
     });
     table.getColumns()

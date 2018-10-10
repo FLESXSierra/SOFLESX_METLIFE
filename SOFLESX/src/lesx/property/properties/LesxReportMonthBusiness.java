@@ -1,7 +1,5 @@
 package lesx.property.properties;
 
-import lesx.utils.LesxPair;
-
 public class LesxReportMonthBusiness extends LesxComponent {
 
   Integer month;
@@ -10,7 +8,7 @@ public class LesxReportMonthBusiness extends LesxComponent {
   Long NBS;
   Long comision;
   Long capp = 0L;
-  LesxPair<Boolean, Boolean> achievedCAPP = LesxPair.of(false, false);
+  Integer currentCapp = 0;
 
   public LesxReportMonthBusiness(Integer month) {
     this.month = month;
@@ -54,14 +52,6 @@ public class LesxReportMonthBusiness extends LesxComponent {
     return month;
   }
 
-  public void setAchievedCAPP(boolean achieved) {
-    achievedCAPP = LesxPair.of(true, achieved);
-  }
-
-  public LesxPair<Boolean, Boolean> getAchievedCAPP() {
-    return achievedCAPP;
-  }
-
   public long getCapp() {
     return capp;
   }
@@ -71,6 +61,27 @@ public class LesxReportMonthBusiness extends LesxComponent {
         .append("/")
         .append(capp);
     return cappString.toString();
+  }
+
+  public void setCurrentCAPP(int capp) {
+    currentCapp = capp;
+  }
+
+  public int getCurrentCAPP() {
+    return currentCapp;
+  }
+
+  public Double getPercent() {
+    if (currentCapp >= 15) {
+      return Double.valueOf(1.5);
+    }
+    else if (currentCapp >= 9) {
+      return Double.valueOf(1.375);
+    }
+    else if (currentCapp >= 5) {
+      return Double.valueOf(1.3);
+    }
+    return Double.valueOf(1);
   }
 
 }

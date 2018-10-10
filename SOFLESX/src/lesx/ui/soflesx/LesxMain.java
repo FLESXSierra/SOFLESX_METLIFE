@@ -80,7 +80,9 @@ public class LesxMain extends Application {
   }
 
   public static void closeConsole() {
-    console.close();
+    if (console != null) {
+      console.close();
+    }
   }
 
   public LesxDBProperties getDbProperty() {

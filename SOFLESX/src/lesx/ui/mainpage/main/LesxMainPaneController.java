@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -262,39 +263,39 @@ public class LesxMainPaneController extends LesxController {
       }
     });
 
-    month.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.1));
-    solicitud.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.11));
-    nameColumn.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.15));
-    cc.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.11));
-    tipoAP.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.105));
-    tipoVida.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.105));
-    tipo.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.21));
-    primaAP.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.105));
-    primaVida.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.105));
-    prima.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.21));
-    nbs.prefWidthProperty()
-        .bind(table.widthProperty()
-            .multiply(0.11));
+    //    month.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.1));
+    //    solicitud.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.11));
+    //    nameColumn.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.15));
+    //    cc.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.11));
+    //    tipoAP.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.105));
+    //    tipoVida.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.105));
+    //    tipo.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.21));
+    //    primaAP.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.105));
+    //    primaVida.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.105));
+    //    prima.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.21));
+    //    nbs.prefWidthProperty()
+    //        .bind(table.widthProperty()
+    //            .multiply(0.11));
 
     table.setShowRoot(false);
     table.getColumns()
@@ -357,18 +358,32 @@ public class LesxMainPaneController extends LesxController {
   }
 
   private void updateeDataFromCache() {
-    //Load Data Base
-    dataModelResource.setMap(LesxMain.getInstance()
-        .getDbProperty()
-        .getResourceMap());
+    showProgress.set(true);
     final LesxResourceBusiness temp = dataModel.getComponentSelected() != null ? dataModel.getComponentSelected()
         .clone() : null;
-    dataModel.setMap(LesxMain.getInstance()
-        .getDbProperty()
-        .getBusinessResourceMap());
-    dataModel.setComponentSelected(temp);
-    updateTreeTableData();
-    mainPane.selectItem(temp);
+    Task<Void> load = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        //Load Data Base
+        dataModelResource.setMap(LesxMain.getInstance()
+            .getDbProperty()
+            .getResourceMap());
+        dataModel.setMap(LesxMain.getInstance()
+            .getDbProperty()
+            .getBusinessResourceMap());
+        dataModel.setComponentSelected(temp);
+        return null;
+      }
+
+      @Override
+      protected void succeeded() {
+        updateTreeTableData();
+        mainPane.selectItem(temp);
+        showProgress.set(false);
+      }
+    };
+    Thread test = new Thread(load);
+    test.start();
   }
 
   private void createRunnables() {

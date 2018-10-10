@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -25,7 +27,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   private final static Logger LOGGER = Logger.getLogger(LesxBusinessResourceDataModel.class.getName());
 
   private Map<Long, LesxResourceBusiness> map = new HashMap<>();
-  private Map<LocalDate, LesxReportMonthBusiness> monthReport = new HashMap<>();
+  private TreeMap<LocalDate, LesxReportMonthBusiness> monthReport = new TreeMap<>();
   private boolean buildMonthReport = true;
   private LesxResourceBusiness selectedItem;
 
@@ -227,7 +229,11 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         cont = 1;
         if (rb.getBusiness()
             .getCancelled()
-            .getValue()) {
+            .getValue() != null
+            && rb.getBusiness()
+                .getCancelled()
+                .getValue()
+                .booleanValue()) {
           cancelledDate = LocalDate.parse(rb.getBusiness()
               .getCancelled()
               .getDate(), LesxPropertyUtils.FORMATTER);
@@ -275,6 +281,28 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         }
       }
     }
+    insertCAPP();
+  }
+
+  /**
+   * Is assumed that buildMonthReport is {@code false}
+   */
+  private void insertCAPP() {
+    LocalDate currentDate;
+    LesxReportMonthBusiness report;
+    int capp = 0;
+    int newCapp = 0;
+    for (Entry<LocalDate, LesxReportMonthBusiness> entry : monthReport.entrySet()) {
+      currentDate = entry.getKey();
+      report = entry.getValue();
+      capp += report.getCapp();
+      report.setCurrentCAPP(newCapp);
+      if (currentDate.getMonth()
+          .getValue() % 3 == 0) {
+        newCapp = capp;
+        capp = newCapp - 15 < 0 ? 0 : newCapp - 15;
+      }
+    }
   }
 
   public List<LesxReportMonthBusiness> getMonthToMonthCAPPReport(Integer year) {
@@ -295,7 +323,6 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         report = new LesxReportMonthBusiness(i + 1);
       }
       if ((i + 1) % 3 == 0) {
-        report.setAchievedCAPP(leftOverCapp >= 15);
         leftOverCapp = (leftOverCapp - 15) < 0 ? 0 : (leftOverCapp - 15);
       }
       reportCapp.add(report);

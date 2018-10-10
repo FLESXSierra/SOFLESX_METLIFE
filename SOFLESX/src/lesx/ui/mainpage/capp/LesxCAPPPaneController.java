@@ -33,6 +33,7 @@ public class LesxCAPPPaneController extends LesxController {
   private TableView<LesxReportMonthBusiness> table;
   private TableColumn<LesxReportMonthBusiness, String> month;
   private TableColumn<LesxReportMonthBusiness, String> capp;
+  private TableColumn<LesxReportMonthBusiness, String> percent;
   private ObservableList<LesxReportMonthBusiness> report = FXCollections.observableArrayList();
 
   private BooleanProperty showProgress = new SimpleBooleanProperty(this, "showProgress", false);
@@ -81,8 +82,18 @@ public class LesxCAPPPaneController extends LesxController {
             .getStringCapp());
       }
     });
+    percent = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_PERCENT"));
+    percent.setCellFactory(col -> new LesxCAPPCellFactory());
+    percent.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        return new SimpleStringProperty(data.getValue()
+            .getPercent()
+            .toString() + "%");
+      }
+    });
     table.getColumns()
-        .setAll(month, capp);
+        .setAll(month, capp, percent);
     table.setItems(report);
   }
 
