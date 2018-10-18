@@ -39,6 +39,7 @@ public class LesxTreeTableViewPane<T> extends VBox {
     toolBar.setPrefHeight(40);
     toolBar.setMinHeight(Region.USE_PREF_SIZE);
     table = new TreeTableView<>();
+    table.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
     table.getSelectionModel()
         .selectedItemProperty()
         .addListener(obs -> selectedItemTable());

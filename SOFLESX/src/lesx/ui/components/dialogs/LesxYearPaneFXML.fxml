@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="container" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="header" text="Label" VBox.vgrow="NEVER" />
             <Separator prefWidth="200.0" VBox.vgrow="NEVER" />
@@ -100,7 +100,7 @@
                </padding>
             </GridPane>
             <Separator VBox.vgrow="NEVER" />
-            <TitledPane animated="false" collapsible="false" text="Detalles" VBox.vgrow="ALWAYS">
+            <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="Detalles" VBox.vgrow="ALWAYS">
                <content>
                   <TableView fx:id="detailsTable" maxHeight="1.7976931348623157E308">
                      <columnResizePolicy>
