@@ -400,7 +400,12 @@ public class LesxMainPaneController extends LesxController {
   private void addNewBusiness(ELesxUseCase useCase, boolean isCreated) {
     if (useCase != EDIT) {
       if (mainPane.isSelectedResourceBusinessItem() || isCreated) {
-        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> pendingChangesProperty().set(true));
+        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+          pendingChangesProperty().set(true);
+          updateTreeTableData();
+          dataModelResource.setComponentSelected(null);
+          mainPane.selectItem(dataModel.getComponentSelected());
+        });
       }
       else {
         ButtonType result = null;
@@ -439,7 +444,12 @@ public class LesxMainPaneController extends LesxController {
       }
     }
     else {
-      LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> pendingChangesProperty().set(true));
+      LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+        LesxResourceBusiness temp = dataModel.getComponentSelected();
+        pendingChangesProperty().set(true);
+        updateTreeTableData();
+        mainPane.selectItem(temp);
+      });
     }
   }
 

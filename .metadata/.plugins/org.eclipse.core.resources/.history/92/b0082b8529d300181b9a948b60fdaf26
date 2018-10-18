@@ -73,7 +73,7 @@ public class LesxDBProperties {
    *
    * @param data Map<Long,LesxCostumer>
    */
-  public synchronized void setResourceMap(Map<Long, LesxResource> data) {
+  public void setResourceMap(Map<Long, LesxResource> data) {
     Preconditions.checkNotNull(data, "Map must not be null");
     dataMap.removeListener(resourceListener);
     dataMap.remove(ELesxPropertyKeys.RESOURCE.getValue());
@@ -176,7 +176,7 @@ public class LesxDBProperties {
     return names;
   }
 
-  public synchronized void buildBusinessResourceMap() {
+  public void buildBusinessResourceMap() {
     LOGGER.log(Level.INFO, "Called buildBusinessResourceMap");
     mapRB.removeListener(rbListener);
     mapRB.clear();
@@ -206,7 +206,7 @@ public class LesxDBProperties {
     return mapRB;
   }
 
-  public synchronized void setBusinessResourceMap(Map<Long, LesxResourceBusiness> mapRB) {
+  public void setBusinessResourceMap(Map<Long, LesxResourceBusiness> mapRB) {
     LOGGER.log(Level.INFO, "Called setBusinessResourceMap");
     this.mapRB.removeListener(rbListener);
     this.mapRB.clear();

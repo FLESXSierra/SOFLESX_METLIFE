@@ -20,7 +20,6 @@ import lesx.property.properties.LesxProperty;
 import lesx.property.properties.LesxReportMonthBusiness;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.ui.soflesx.LesxMain;
-import lesx.utils.LesxMisc;
 import lesx.utils.LesxPropertyUtils;
 
 public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourceBusiness> {
@@ -128,7 +127,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   }
 
   public Long createNewKeyForBusinessIdProperty() {
-    return (LesxMisc.isEmpty(map) ? 1 : Collections.max(map.keySet()) + 1);
+    return (Collections.max(map.keySet()) + 1);
   }
 
   public boolean isDuplicate(LesxResourceBusiness resourceBusiness, ELesxUseCase isCreate) {
