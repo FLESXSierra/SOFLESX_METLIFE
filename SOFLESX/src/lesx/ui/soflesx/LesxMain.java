@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lesx.db.LesxDBProperties;
 import lesx.gui.message.LesxMessage;
-import lesx.logger.Console;
 import lesx.logger.LesxLogger;
 import lesx.scene.controller.LesxSceneController;
 import lesx.utils.LesxString;
@@ -24,12 +23,10 @@ public class LesxMain extends Application {
   private static LesxDBProperties dbProperty;
   private static StringProperty title = new SimpleStringProperty("title");
   private static LesxSceneController sceneController;
-  private static Console console;
   private Stage mainStage;
 
   public static void main(String[] args) {
     //Setting Logger
-    //    console = new Console();
     LogManager.getLogManager()
         .reset();
     LOGGER = LogManager.getLogManager()
@@ -77,12 +74,6 @@ public class LesxMain extends Application {
 
   public static void setTitle(String newTitle) {
     title.set(newTitle);
-  }
-
-  public static void closeConsole() {
-    if (console != null) {
-      console.close();
-    }
   }
 
   public LesxDBProperties getDbProperty() {

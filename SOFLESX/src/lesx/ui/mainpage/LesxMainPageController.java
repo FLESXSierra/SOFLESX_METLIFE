@@ -298,18 +298,16 @@ public class LesxMainPageController extends LesxController {
     if (pendingChangesProperty().get()) {
       save(() -> {
         closeWindow();
-        Platform.runLater(() -> {
-          LesxMain.closeConsole();
+        Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> {
           System.exit(0);
-        });
+        })));
       });
     }
     else {
       closeWindow();
-      Platform.runLater(() -> {
-        LesxMain.closeConsole();
+      Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> {
         System.exit(0);
-      });
+      })));
     }
   }
 
