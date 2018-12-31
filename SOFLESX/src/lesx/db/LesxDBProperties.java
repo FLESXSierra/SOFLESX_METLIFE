@@ -43,8 +43,7 @@ public class LesxDBProperties {
   private Runnable postSaved;
   private boolean resourceSaved;
   private boolean businessSaved;
-  private static final String NOW = LocalDate.now()
-      .format(DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH));
+  private static final LocalDate NOW = LocalDate.now();
 
   public LesxDBProperties() {
     dataMap = FXCollections.observableHashMap();
@@ -166,7 +165,7 @@ public class LesxDBProperties {
     final List<String> names = new ArrayList<>();
     if (!LesxMisc.isEmpty(map)) {
       for (Entry<Long, LesxResource> entry : map.entrySet()) {
-        if (NOW.equals(entry.getValue()
+        if (isBirthDay(entry.getValue()
             .getBirthday())) {
           names.add(entry.getValue()
               .getName());
@@ -174,6 +173,15 @@ public class LesxDBProperties {
       }
     }
     return names;
+  }
+
+  private boolean isBirthDay(String birthday) {
+    LocalDate resourceDate = LocalDate
+        .parse(birthday, DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH));
+    if (resourceDate != null) {
+      return NOW.getMonth() == resourceDate.getMonth() && NOW.getDayOfMonth() == resourceDate.getDayOfMonth();
+    }
+    return false;
   }
 
   public synchronized void buildBusinessResourceMap() {

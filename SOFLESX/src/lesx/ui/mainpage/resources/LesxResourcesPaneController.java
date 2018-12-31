@@ -290,11 +290,13 @@ public class LesxResourcesPaneController extends LesxController {
       ignoreListener = true;
       filterTable();
       fillDataOnTree();
-      tree.getSelectionModel()
-          .select(mapTree.get(ELesxLocations.getLocation(temp.getLocation())));
+      if (temp != null) {
+        tree.getSelectionModel()
+            .select(mapTree.get(ELesxLocations.getLocation(temp.getLocation())));
+        table.getSelectionModel()
+            .select(temp);
+      }
       ignoreListener = false;
-      table.getSelectionModel()
-          .select(temp);
     });
   }
 
