@@ -44,13 +44,13 @@ public class LesxImportXMLController extends LesxController {
       fileChooser.setTitle("Open files");
       fileChooser.setSelectedExtensionFilter(extFilter);
       final List<File> files = fileChooser.showOpenMultipleDialog(window);
-      ButtonType result = LesxAlertBuilder.create()
+      ButtonType result = files != null ? LesxAlertBuilder.create()
           .setTitle(LesxMessage.getMessage("TEXT-ALERT_TITLE_IMPORT_XML"))
           .setContentText(LesxMessage.getMessage("TEXT-ALERT_HEADER_IMPORT_XML"))
           .setOwner(window)
           .setButtons(ButtonType.YES, ButtonType.NO)
           .showAndWait()
-          .orElse(null);
+          .orElse(null) : null;
       if (ButtonType.YES.equals(result)) {
         if (!LesxMisc.isEmpty(files)) {
           LesxXMLImportData importTask = new LesxXMLImportData(files);
