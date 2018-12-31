@@ -278,6 +278,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
           cont++;
           startDate = startDate.plusMonths(1);
           current = monthReport.get(startDate);
+          cancelledDate = null;
           firstReport = false;
         }
       }
