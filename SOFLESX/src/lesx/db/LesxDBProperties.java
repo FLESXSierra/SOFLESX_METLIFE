@@ -1,10 +1,8 @@
 package lesx.db;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -26,6 +24,7 @@ import lesx.property.properties.LesxComponent;
 import lesx.property.properties.LesxResource;
 import lesx.property.properties.LesxResourceBusiness;
 import lesx.utils.LesxMisc;
+import lesx.utils.LesxPropertyUtils;
 import lesx.xml.thread.LesxXMLSaveData;
 import lesx.xml.thread.LesxXMLUtils;
 
@@ -176,8 +175,7 @@ public class LesxDBProperties {
   }
 
   private boolean isBirthDay(String birthday) {
-    LocalDate resourceDate = LocalDate
-        .parse(birthday, DateTimeFormatter.ofPattern(LesxMessage.getMessage("DATE-FORMATTER_PERIOD_DATE_FORMAT"), Locale.ENGLISH));
+    LocalDate resourceDate = LocalDate.parse(birthday, LesxPropertyUtils.FORMATTER);
     if (resourceDate != null) {
       return NOW.getMonth() == resourceDate.getMonth() && NOW.getDayOfMonth() == resourceDate.getDayOfMonth();
     }
