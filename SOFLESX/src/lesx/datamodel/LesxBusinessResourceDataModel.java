@@ -67,10 +67,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
     }
     LesxMain.getInstance()
         .getDbProperty()
-        .setBusinessResourceMap(map);
-    LesxMain.getInstance()
-        .getDbProperty()
-        .buildBusinessResourceMap();
+        .buildBusinessResourceMapAndNotify();
   }
 
   public TreeItem<LesxResourceBusiness> getTreeItem(ELesxMonth month, Integer year) {

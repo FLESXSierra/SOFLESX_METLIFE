@@ -246,9 +246,10 @@ public class LesxResourcesPaneController extends LesxController {
     table.getSelectionModel()
         .selectedItemProperty()
         .addListener(obs -> selectedItemTable());
+    updateCache = () -> refreshDataFromCache();
     LesxMain.getInstance()
         .getDbProperty()
-        .setListener(ELesxListenerType.UPDATE, () -> refreshDataFromCache());
+        .setListener(ELesxListenerType.UPDATE, updateCache);
     createRunnables();
   }
 
@@ -327,7 +328,7 @@ public class LesxResourcesPaneController extends LesxController {
   public void clearComponent() {
     LesxMain.getInstance()
         .getDbProperty()
-        .removeListener(ELesxListenerType.UPDATE, () -> refreshDataFromCache());
+        .removeListener(ELesxListenerType.UPDATE, updateCache);
   }
 
   @Override

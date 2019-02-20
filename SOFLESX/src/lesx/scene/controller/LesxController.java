@@ -13,6 +13,7 @@ public class LesxController {
   private boolean forceClose;
   private BooleanProperty showProgress = new SimpleBooleanProperty(this, "showProgress", false);
   private BooleanProperty pendingChanges = new SimpleBooleanProperty(this, "pendingChanges", false);
+  protected Runnable updateCache;
 
   public LesxController() {
     //Nothing

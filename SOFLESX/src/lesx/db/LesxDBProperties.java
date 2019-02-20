@@ -35,13 +35,13 @@ public class LesxDBProperties {
   private ObservableMap<Long, Map<Long, ? extends LesxComponent>> dataMap;
   private ListMultimap<ELesxListenerType, Runnable> listeners;
   private ListMultimap<ELesxListenerType, Runnable> listenersRB;
-  private LesxMapChangeListener<Long, Map<Long, ? extends LesxComponent>> resourceListener = new LesxMapChangeListener<>();
-  private LesxMapChangeListener<Long, LesxResourceBusiness> rbListener = new LesxMapChangeListener<>(false);
   private ObservableMap<Long, LesxResourceBusiness> mapRB;
   private boolean businessResourceMapBuild;
   private Runnable postSaved;
   private boolean resourceSaved;
   private boolean businessSaved;
+  private boolean ignoreRBListener;
+  private boolean ignoreResourceListener;
   private static final LocalDate NOW = LocalDate.now();
 
   public LesxDBProperties() {
@@ -49,8 +49,8 @@ public class LesxDBProperties {
     listeners = ArrayListMultimap.create();
     listenersRB = ArrayListMultimap.create();
     mapRB = FXCollections.observableHashMap();
-    dataMap.addListener(resourceListener);
-    mapRB.addListener(rbListener);
+    dataMap.addListener(new LesxMapChangeListener<>());
+    mapRB.addListener(new LesxMapChangeListener<>(false));
   }
 
   public void setDataMap(Map<Long, Map<Long, ? extends LesxComponent>> map) {
@@ -73,9 +73,9 @@ public class LesxDBProperties {
    */
   public synchronized void setResourceMap(Map<Long, LesxResource> data) {
     Preconditions.checkNotNull(data, "Map must not be null");
-    dataMap.removeListener(resourceListener);
+    ignoreResourceListener = true;
     dataMap.remove(ELesxPropertyKeys.RESOURCE.getValue());
-    dataMap.addListener(resourceListener);
+    ignoreResourceListener = false;
     dataMap.put(ELesxPropertyKeys.RESOURCE.getValue(), data);
     businessResourceMapBuild = false;
   }
@@ -92,9 +92,9 @@ public class LesxDBProperties {
   }
 
   public void setBusinessMap(Map<Long, LesxBusiness> priceMap) {
-    dataMap.removeListener(resourceListener);
+    ignoreResourceListener = true;
     dataMap.remove(ELesxPropertyKeys.BUSINESS.getValue());
-    dataMap.addListener(resourceListener);
+    ignoreResourceListener = false;
     dataMap.put(ELesxPropertyKeys.BUSINESS.getValue(), priceMap);
     businessResourceMapBuild = false;
   }
@@ -184,7 +184,7 @@ public class LesxDBProperties {
 
   public synchronized void buildBusinessResourceMap() {
     LOGGER.log(Level.INFO, "Called buildBusinessResourceMap");
-    mapRB.removeListener(rbListener);
+    ignoreRBListener = true;
     mapRB.clear();
     if (getResourceMap() != null && getBusinessMap() != null) {
       for (Entry<Long, LesxBusiness> entry : getBusinessMap().entrySet()) {
@@ -201,7 +201,7 @@ public class LesxDBProperties {
       businessResourceMapBuild = false;
       LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FOUND_NULL_DATAMODEL"));
     }
-    mapRB.addListener(rbListener);
+    ignoreRBListener = false;
   }
 
   public Map<Long, LesxResourceBusiness> getBusinessResourceMap() {
@@ -212,13 +212,14 @@ public class LesxDBProperties {
     return mapRB;
   }
 
-  public synchronized void setBusinessResourceMap(Map<Long, LesxResourceBusiness> mapRB) {
+  public synchronized void buildBusinessResourceMapAndNotify() {
     LOGGER.log(Level.INFO, "Called setBusinessResourceMap");
-    this.mapRB.removeListener(rbListener);
-    this.mapRB.clear();
-    this.mapRB.addListener(rbListener);
-    this.mapRB.putAll(mapRB);
-    businessResourceMapBuild = true;
+    buildBusinessResourceMap();
+    //TODO: Re do this map listener into actual Events, notify and shit.... sighs ... what I was thinking god damn....
+    ignoreRBListener = true;
+    this.mapRB.put(-1000L, null); // decoy shit
+    ignoreRBListener = false;
+    this.mapRB.remove(-1000L);
   }
 
   public boolean isBusinessResourceMapBuild() {
@@ -260,23 +261,26 @@ public class LesxDBProperties {
 
     @Override
     public void onChanged(Change<? extends V, ? extends K> change) {
-      List<Runnable> runnables = isResource ? listeners.get(ELesxListenerType.UPDATE) : listenersRB.get(ELesxListenerType.UPDATE);
-      if (!LesxMisc.isEmpty(runnables)) {
-        LOGGER.log(Level.INFO, "Executing Runnable -- Cache Action (Updated)");
-        runnables.forEach(run -> run.run());
-      }
-      if (change.wasAdded()) {
-        runnables = isResource ? listeners.get(ELesxListenerType.ADD) : listenersRB.get(ELesxListenerType.ADD);
+      if ((!ignoreRBListener && !isResource) || (!ignoreResourceListener && isResource)) {
+        List<Runnable> runnables = isResource ? listeners.get(ELesxListenerType.UPDATE) : listenersRB.get(ELesxListenerType.UPDATE);
+        LOGGER.log(Level.INFO, "Runnables (Updated) size: " + runnables.size());
         if (!LesxMisc.isEmpty(runnables)) {
-          LOGGER.log(Level.INFO, "Executing Runnable -- Cache Action (Added)");
+          LOGGER.log(Level.INFO, "Executing Runnable -- Cache Action (Updated)");
           runnables.forEach(run -> run.run());
         }
-      }
-      if (change.wasRemoved()) {
-        runnables = isResource ? listeners.get(ELesxListenerType.REMOVE) : listenersRB.get(ELesxListenerType.REMOVE);
-        if (!LesxMisc.isEmpty(runnables)) {
-          LOGGER.log(Level.INFO, "Executing Runnable -- Cache Action (Removed)");
-          runnables.forEach(run -> run.run());
+        if (change.wasAdded()) {
+          runnables = isResource ? listeners.get(ELesxListenerType.ADD) : listenersRB.get(ELesxListenerType.ADD);
+          if (!LesxMisc.isEmpty(runnables)) {
+            LOGGER.log(Level.INFO, "Executing Runnable -- Cache Action (Added)");
+            runnables.forEach(run -> run.run());
+          }
+        }
+        if (change.wasRemoved()) {
+          runnables = isResource ? listeners.get(ELesxListenerType.REMOVE) : listenersRB.get(ELesxListenerType.REMOVE);
+          if (!LesxMisc.isEmpty(runnables)) {
+            LOGGER.log(Level.INFO, "Executing Runnable -- Cache Action (Removed)");
+            runnables.forEach(run -> run.run());
+          }
         }
       }
     }
@@ -301,12 +305,12 @@ public class LesxDBProperties {
 
   public void refresh() {
     LOGGER.log(Level.INFO, "Called refresh");
-    dataMap.removeListener(resourceListener);
-    mapRB.removeListener(rbListener);
+    ignoreResourceListener = true;
+    ignoreRBListener = true;
     mapRB.clear();
     dataMap.clear();
-    dataMap.addListener(resourceListener);
-    mapRB.addListener(rbListener);
+    ignoreResourceListener = false;
+    ignoreRBListener = false;
     try {
       LesxXMLUtils.importAllXMLFileToLesxProperty(() -> {
         //Nothing

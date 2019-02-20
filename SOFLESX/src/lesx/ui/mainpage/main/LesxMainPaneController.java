@@ -317,9 +317,10 @@ public class LesxMainPaneController extends LesxController {
           }
         });
     year.addListener(obs -> updateTreeTableData());
+    updateCache = () -> updateeDataFromCache();
     LesxMain.getInstance()
         .getDbProperty()
-        .setListenerRB(ELesxListenerType.UPDATE, () -> updateeDataFromCache());
+        .setListenerRB(ELesxListenerType.UPDATE, updateCache);
     createRunnables();
   }
 
@@ -413,7 +414,7 @@ public class LesxMainPaneController extends LesxController {
   public void clearComponent() {
     LesxMain.getInstance()
         .getDbProperty()
-        .removeListenerRB(ELesxListenerType.UPDATE, () -> updateeDataFromCache());
+        .removeListenerRB(ELesxListenerType.UPDATE, updateCache);
   }
 
 }

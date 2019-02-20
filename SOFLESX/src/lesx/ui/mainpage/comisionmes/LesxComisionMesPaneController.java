@@ -53,9 +53,10 @@ public class LesxComisionMesPaneController extends LesxController {
     dataModel = new LesxBusinessResourceDataModel(LesxMain.getInstance()
         .getDbProperty()
         .getBusinessResourceMap());
+    updateCache = () -> updateDataFromCache();
     LesxMain.getInstance()
         .getDbProperty()
-        .setListenerRB(ELesxListenerType.UPDATE, () -> updateDataFromCache());
+        .setListenerRB(ELesxListenerType.UPDATE, updateCache);
     initializeTable();
     loadDataInTable();
     showProgress.set(false);
@@ -110,6 +111,6 @@ public class LesxComisionMesPaneController extends LesxController {
   public void clearComponent() {
     LesxMain.getInstance()
         .getDbProperty()
-        .removeListenerRB(ELesxListenerType.UPDATE, () -> updateDataFromCache());
+        .removeListenerRB(ELesxListenerType.UPDATE, updateCache);
   }
 }
