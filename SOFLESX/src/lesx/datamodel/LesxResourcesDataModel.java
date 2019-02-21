@@ -127,6 +127,7 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
   public void deleteSelectedCostumer() {
     if (resourceSelected != null) {
       map.remove(resourceSelected.getId());
+      resourceSelected = null;
       persist();
     }
   }
@@ -168,7 +169,7 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
   }
 
   public Long createNewKeyForIdProperty() {
-    return (Collections.max(map.keySet()) + 1);
+    return map.isEmpty() ? 1 : (Collections.max(map.keySet()) + 1);
   }
 
   public boolean isDuplicate(LesxResource resource, ELesxUseCase useCase) {
