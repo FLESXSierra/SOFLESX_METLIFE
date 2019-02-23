@@ -1,8 +1,11 @@
 package lesx.ui.soflesx;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +36,14 @@ public class LesxMain extends Application {
         .getLogger("");
     LOGGER.addHandler(new LesxLogger());
     LOGGER.log(Level.INFO, "Initializing");
+    try {
+      final FileHandler fileHandling = new FileHandler(LesxString.LOG_PATH);
+      fileHandling.setFormatter(new SimpleFormatter());
+      LOGGER.addHandler(fileHandling);
+    }
+    catch (SecurityException | IOException e) {
+      e.printStackTrace();
+    }
     //Create DataBase
     dbProperty = new LesxDBProperties();
     launch(args);

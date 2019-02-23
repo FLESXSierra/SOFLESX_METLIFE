@@ -42,6 +42,7 @@ public class LesxDBProperties {
   private boolean businessSaved;
   private boolean ignoreRBListener;
   private boolean ignoreResourceListener;
+  private final LesxXMLSaveData saveService = new LesxXMLSaveData();
   private static final LocalDate NOW = LocalDate.now();
 
   public LesxDBProperties() {
@@ -142,19 +143,13 @@ public class LesxDBProperties {
   public void saveResourceXML(Map<Long, LesxResource> resourceMap, Runnable run) {
     LOGGER.log(Level.INFO, "Called saveResourceXML");
     setResourceMap(resourceMap);
-    LesxXMLSaveData saveThread = new LesxXMLSaveData(resourceMap.values(), ELesxUseCase.UC_XML_RESOURCE);
-    saveThread.start(); // Saving loading message
-    saveThread.setOnSucceeded(obs -> run.run());
-    saveThread.setOnFailed(obs -> run.run());
+    saveService.submit(resourceMap.values(), ELesxUseCase.UC_XML_RESOURCE, run);
   }
 
   public void saveBusinessXML(Map<Long, LesxBusiness> businessMap, Runnable run) {
     LOGGER.log(Level.INFO, "Called saveBusinessXML");
     setBusinessMap(businessMap);
-    LesxXMLSaveData saveThread = new LesxXMLSaveData(businessMap.values(), ELesxUseCase.UC_XML_BUSINESS);
-    saveThread.start();
-    saveThread.setOnSucceeded(obs -> run.run());
-    saveThread.setOnFailed(obs -> run.run());
+    saveService.submit(businessMap.values(), ELesxUseCase.UC_XML_BUSINESS, run);
   }
 
   @SuppressWarnings("unchecked")
@@ -289,18 +284,14 @@ public class LesxDBProperties {
   public void persist(Runnable postSave) {
     LOGGER.log(Level.INFO, "Called persist");
     this.postSaved = postSave;
-    LesxXMLSaveData saveResourceThread = new LesxXMLSaveData(getResourceMap().values(), ELesxUseCase.UC_XML_RESOURCE);
-    saveResourceThread.setOnSucceeded(obs -> {
+    saveService.submit(getResourceMap().values(), ELesxUseCase.UC_XML_RESOURCE, () -> {
       resourceSaved = true;
       isSavedComplete();
     });
-    LesxXMLSaveData saveBusinessThread = new LesxXMLSaveData(getBusinessMap().values(), ELesxUseCase.UC_XML_BUSINESS);
-    saveBusinessThread.setOnSucceeded(obs -> {
+    saveService.submit(getBusinessMap().values(), ELesxUseCase.UC_XML_BUSINESS, () -> {
       businessSaved = true;
       isSavedComplete();
     });
-    saveResourceThread.start();
-    saveBusinessThread.start();
   }
 
   public void refresh() {
@@ -332,6 +323,12 @@ public class LesxDBProperties {
       resourceSaved = false;
       businessSaved = false;
     }
+  }
+
+  public void clear() {
+    dataMap = null;
+    mapRB = null;
+    saveService.shutDown();
   }
 
 }

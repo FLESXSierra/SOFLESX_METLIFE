@@ -4,6 +4,8 @@ import static lesx.property.properties.ELesxUseCase.EDIT;
 
 import java.text.NumberFormat;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -36,6 +38,8 @@ import lesx.utils.LesxAlertBuilder;
 import lesx.utils.LesxButtonType;
 
 public class LesxMainPaneController extends LesxController {
+
+  private final static Logger LOGGER = Logger.getLogger(LesxMainPaneController.class.getName());
 
   @FXML
   LesxTreeTableViewPane<LesxResourceBusiness> mainPane;
@@ -347,6 +351,13 @@ public class LesxMainPaneController extends LesxController {
         updateTreeTableData();
         mainPane.selectItem(temp);
         showProgress.set(false);
+      }
+
+      @Override
+      protected void failed() {
+        LOGGER.log(Level.SEVERE, getException().getLocalizedMessage());
+        getException().printStackTrace();
+        super.failed();
       }
     };
     Thread test = new Thread(load);

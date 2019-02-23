@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -14,7 +16,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import lesx.gui.message.LesxMessage;
 import lesx.property.properties.ELesxUseCase;
@@ -26,7 +27,7 @@ import lesx.utils.LesxString;
 import lesx.xml.property.LesxListBusinessXMLParser;
 import lesx.xml.property.LesxListResourceXMLParser;
 
-public class LesxXMLSaveData extends Service<Boolean> {
+public class LesxXMLSaveData {
 
   private final static Logger LOGGER = Logger.getLogger(LesxXMLSaveData.class.getName());
 
@@ -34,8 +35,18 @@ public class LesxXMLSaveData extends Service<Boolean> {
   private List<LesxBusiness> business = new ArrayList<>();
   private String path = "";
   private ELesxUseCase useCase;
+  private ExecutorService service = Executors.newSingleThreadExecutor(obs -> {
+    Thread t = new Thread(obs);
+    t.setDaemon(true);
+    return t;
+  });
 
-  public LesxXMLSaveData(Collection<? extends LesxComponent> map, ELesxUseCase useCase) {
+  public void submit(Collection<? extends LesxComponent> map, ELesxUseCase useCase, Runnable onSucceed) {
+    configureMaps(map, useCase);
+    service.submit(createTask(onSucceed));
+  }
+
+  private void configureMaps(Collection<? extends LesxComponent> map, ELesxUseCase useCase) {
     this.useCase = useCase;
     try {
       switch (useCase) {
@@ -68,8 +79,7 @@ public class LesxXMLSaveData extends Service<Boolean> {
 
   }
 
-  @Override
-  protected Task<Boolean> createTask() {
+  private Task<Boolean> createTask(Runnable onSucceed) {
     return new Task<Boolean>() {
       @Override
       protected Boolean call() throws JAXBException, IOException {
@@ -118,7 +128,18 @@ public class LesxXMLSaveData extends Service<Boolean> {
         return success;
       }
 
+      @Override
+      protected void succeeded() {
+        super.succeeded();
+        if (onSucceed != null) {
+          onSucceed.run();
+        }
+      }
     };
+  }
+
+  public void shutDown() {
+    service.shutdownNow();
   }
 
 }

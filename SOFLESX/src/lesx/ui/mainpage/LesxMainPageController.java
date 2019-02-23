@@ -295,20 +295,16 @@ public class LesxMainPageController extends LesxController {
 
   @Override
   protected void onCloseWindow() {
-    if (pendingChangesProperty().get()) {
-      save(() -> {
-        closeWindow();
-        Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> {
-          System.exit(0);
-        })));
-      });
-    }
-    else {
+    // Temporally changes on IOs is not saving
+    save(() -> {
+      LesxMain.getInstance()
+          .getDbProperty()
+          .clear();
       closeWindow();
-      Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> {
+      Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> {
         System.exit(0);
-      })));
-    }
+      }))));
+    });
   }
 
   @Override
