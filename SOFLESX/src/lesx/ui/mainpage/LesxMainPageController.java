@@ -295,6 +295,7 @@ public class LesxMainPageController extends LesxController {
 
   @Override
   protected void onCloseWindow() {
+    //    if (pendingChangesProperty().get()) {
     // Temporally changes on IOs is not saving
     save(() -> {
       LesxMain.getInstance()
@@ -305,6 +306,13 @@ public class LesxMainPageController extends LesxController {
         System.exit(0);
       }))));
     });
+    //  }
+    //    else {
+    //      closeWindow();
+    //      Platform.runLater(() -> Platform.runLater(() -> Platform.runLater(() -> {
+    //        System.exit(0);
+    //      })));
+    //    }
   }
 
   @Override

@@ -378,7 +378,10 @@ public class LesxMainPaneController extends LesxController {
   private void addNewBusiness(ELesxUseCase useCase, boolean isCreated) {
     if (useCase != EDIT) {
       if (mainPane.isSelectedResourceBusinessItem() || isCreated) {
-        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> pendingChangesProperty().set(true));
+        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+          pendingChangesProperty().set(true);
+          dataModelResource.setComponentSelected(null);
+        });
       }
       else {
         ButtonType result = null;
