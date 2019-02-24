@@ -122,13 +122,15 @@ public class LesxDBProperties {
     List<LesxResource> result = new ArrayList<>();
     LesxResource value;
     Map<Long, LesxResource> costumerMap = getResourceMap();
-    for (Long key : keys) {
-      value = costumerMap.get(key);
-      if (!LesxMisc.isEmpty(value)) {
-        result.add(value);
-      }
-      else {
-        LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-NO_COSTUMER_FOUND_BY_KEY", String.valueOf(key)));
+    if (costumerMap != null) {
+      for (Long key : keys) {
+        value = costumerMap.get(key);
+        if (!LesxMisc.isEmpty(value)) {
+          result.add(value);
+        }
+        else {
+          LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-NO_COSTUMER_FOUND_BY_KEY", String.valueOf(key)));
+        }
       }
     }
     return result;
@@ -284,14 +286,26 @@ public class LesxDBProperties {
   public void persist(Runnable postSave) {
     LOGGER.log(Level.INFO, "Called persist");
     this.postSaved = postSave;
-    saveService.submit(getResourceMap().values(), ELesxUseCase.UC_XML_RESOURCE, () -> {
+    if (getResourceMap() != null) {
+      saveService.submit(getResourceMap().values(), ELesxUseCase.UC_XML_RESOURCE, () -> {
+        resourceSaved = true;
+        isSavedComplete();
+      });
+    }
+    else {
       resourceSaved = true;
       isSavedComplete();
-    });
-    saveService.submit(getBusinessMap().values(), ELesxUseCase.UC_XML_BUSINESS, () -> {
+    }
+    if (getBusinessMap() != null) {
+      saveService.submit(getBusinessMap().values(), ELesxUseCase.UC_XML_BUSINESS, () -> {
+        businessSaved = true;
+        isSavedComplete();
+      });
+    }
+    else {
       businessSaved = true;
       isSavedComplete();
-    });
+    }
   }
 
   public void refresh() {

@@ -7,7 +7,7 @@ public class LesxString {
    */
   public static final String XML_RESOURCE_PATH = "./data/LesxResourceXML.xml";
   public static final String XML_BUSINESS_PATH = "./data/LesxBusinessXML.xml";
-  public static final String LOG_PATH = "./data/logFile.log";
+  public static final String LOG_PATH = "./data/logs/logFile";
   public static final String SETTINGS_FILE_PATH = "./data/settings.txt";
   public static final String NAME_MESSAGE_PROPERTIES_FILE = "LesxMessage.properties";
   public static final String XML_NAME_RESOURCE = "LesxResourceXML.xml";

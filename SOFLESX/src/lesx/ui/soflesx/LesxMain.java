@@ -1,6 +1,7 @@
 package lesx.ui.soflesx;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -37,7 +38,7 @@ public class LesxMain extends Application {
     LOGGER.addHandler(new LesxLogger());
     LOGGER.log(Level.INFO, "Initializing");
     try {
-      final FileHandler fileHandling = new FileHandler(LesxString.LOG_PATH);
+      final FileHandler fileHandling = new FileHandler(LesxString.LOG_PATH + LocalDate.now() + "(" + generateNumber() + ")" + ".log");
       fileHandling.setFormatter(new SimpleFormatter());
       LOGGER.addHandler(fileHandling);
     }
@@ -47,6 +48,10 @@ public class LesxMain extends Application {
     //Create DataBase
     dbProperty = new LesxDBProperties();
     launch(args);
+  }
+
+  private static String generateNumber() {
+    return String.valueOf(Math.round(Math.random() * 10000));
   }
 
   @Override

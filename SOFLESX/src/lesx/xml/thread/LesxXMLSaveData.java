@@ -34,7 +34,6 @@ public class LesxXMLSaveData {
   private List<LesxResource> resources = new ArrayList<>();
   private List<LesxBusiness> business = new ArrayList<>();
   private String path = "";
-  private ELesxUseCase useCase;
   private ExecutorService service = Executors.newSingleThreadExecutor(obs -> {
     Thread t = new Thread(obs);
     t.setDaemon(true);
@@ -43,11 +42,11 @@ public class LesxXMLSaveData {
 
   public void submit(Collection<? extends LesxComponent> map, ELesxUseCase useCase, Runnable onSucceed) {
     configureMaps(map, useCase);
-    service.submit(createTask(onSucceed));
+    service.submit(createTask(onSucceed, useCase));
   }
 
   private void configureMaps(Collection<? extends LesxComponent> map, ELesxUseCase useCase) {
-    this.useCase = useCase;
+    LOGGER.log(Level.INFO, "Configuring maps for '" + useCase + "' use case");
     try {
       switch (useCase) {
         case UC_XML_RESOURCE:
@@ -68,6 +67,7 @@ public class LesxXMLSaveData {
           new Throwable(new IllegalArgumentException("Use case not supported"));
           break;
       }
+      LOGGER.log(Level.INFO, "Configured maps for '" + useCase + "' use case");
     }
     catch (ClassCastException ce) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-CAST_XML_DATA_SAVE", map.getClass(), useCase), ce);
@@ -79,17 +79,20 @@ public class LesxXMLSaveData {
 
   }
 
-  private Task<Boolean> createTask(Runnable onSucceed) {
+  private Task<Boolean> createTask(Runnable onSucceed, ELesxUseCase useCase) {
     return new Task<Boolean>() {
       @Override
       protected Boolean call() throws JAXBException, IOException {
+        LOGGER.log(Level.INFO, "Saving maps for '" + useCase + "' use case");
         boolean success = false;
         File xmlFile = new File(path);
+        LOGGER.log(Level.INFO, "Searching for : '" + path + "' path file");
         if (xmlFile.exists()) {
           JAXBContext context;
           Unmarshaller jaxbUnmarshaller;
           JAXBContext jaxbContext;
           Marshaller jaxbMarshaller;
+          LOGGER.log(Level.INFO, "Configuring unmarshaller for '" + useCase + "' use case");
           try {
             switch (useCase) {
               case UC_XML_RESOURCE:
@@ -102,6 +105,7 @@ public class LesxXMLSaveData {
                 jaxbContext = JAXBContext.newInstance(LesxListResourceXMLParser.class);
                 jaxbMarshaller = jaxbContext.createMarshaller();
                 jaxbMarshaller.marshal(propertiesResources, xmlFile);
+                LOGGER.log(Level.INFO, "Marshalled LesxListResourceXMLParser Instance");
                 success = true;
                 break;
               case UC_XML_BUSINESS:
@@ -114,6 +118,7 @@ public class LesxXMLSaveData {
                 jaxbContext = JAXBContext.newInstance(LesxListBusinessXMLParser.class);
                 jaxbMarshaller = jaxbContext.createMarshaller();
                 jaxbMarshaller.marshal(propertiesBusiness, xmlFile);
+                LOGGER.log(Level.INFO, "Marshalled LesxListBusinessXMLParser Instance");
                 success = true;
                 break;
               default:
@@ -131,6 +136,7 @@ public class LesxXMLSaveData {
       @Override
       protected void succeeded() {
         super.succeeded();
+        LOGGER.log(Level.INFO, "Saved maps for '" + useCase + "' use case");
         if (onSucceed != null) {
           onSucceed.run();
         }
@@ -139,6 +145,7 @@ public class LesxXMLSaveData {
   }
 
   public void shutDown() {
+    LOGGER.log(Level.INFO, "Shutting down Executor Service");
     service.shutdownNow();
   }
 
