@@ -100,8 +100,8 @@ public class LesxProductEditor extends ComboBox<String> {
     //initialize Listener
     build = obs -> buildValue();
     //Adds data
-    productsVidaCombo.setListValues(ELesxProductType.stringList());
-    productsAPCombo.setListValues(ELesxProductType.stringList());
+    productsVidaCombo.setListValues(ELesxProductType.stringNotAPList());
+    productsAPCombo.setListValues(ELesxProductType.stringAPList());
     //Adds text
     vida.setText(LesxMessage.getMessage("TEXT-CHECKBOX_VIDA"));
     ap.setText(LesxMessage.getMessage("TEXT-CHECKBOX_AP"));

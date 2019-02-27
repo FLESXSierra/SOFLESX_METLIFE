@@ -355,7 +355,7 @@ public class LesxMainPaneController extends LesxController {
 
       @Override
       protected void failed() {
-        LOGGER.log(Level.SEVERE, getException().getLocalizedMessage());
+        LOGGER.log(Level.SEVERE, getException().getLocalizedMessage(), getException());
         getException().printStackTrace();
         super.failed();
       }
@@ -378,10 +378,11 @@ public class LesxMainPaneController extends LesxController {
   private void addNewBusiness(ELesxUseCase useCase, boolean isCreated) {
     if (useCase != EDIT) {
       if (mainPane.isSelectedResourceBusinessItem() || isCreated) {
-        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, () -> {
+        final Runnable onSave = () -> {
           pendingChangesProperty().set(true);
           dataModelResource.setComponentSelected(null);
-        });
+        };
+        LesxSceneController.showBusinessEditDialog(this, useCase, dataModel, onSave, onSave);
       }
       else {
         ButtonType result = null;

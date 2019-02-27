@@ -185,7 +185,7 @@ public class LesxResourcesDataModel implements ILesxDataModel<LesxResource> {
       LOGGER.log(Level.INFO, LesxMessage.getMessage("INFO-OBJECT_ADDED", 1));
     }
     catch (Exception e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-DATA_MODEL_SAVE", resource.getName(), resource));
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-DATA_MODEL_SAVE", resource.getName(), resource), e);
       e.printStackTrace();
     }
   }

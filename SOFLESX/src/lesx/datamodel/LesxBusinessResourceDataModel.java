@@ -119,7 +119,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-DATA_MODEL_SAVE", resourceBusiness.getResource()
-          .getName(), resourceBusiness));
+          .getName(), resourceBusiness), e);
       e.printStackTrace();
     }
   }
@@ -148,6 +148,8 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   public double getNBSTotalFromYear(Integer year) {
     return getResourceBusinessList().stream()
+        .filter(rbItem -> rbItem.getBusiness()
+            .getNbs() != null)
         .filter(rbItem -> {
           int yearItem = LocalDate.parse(rbItem.getBusiness()
               .getDate(), LesxPropertyUtils.FORMATTER)

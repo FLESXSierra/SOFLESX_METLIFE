@@ -109,7 +109,7 @@ public class LesxPropertyUtils {
       }
     }
     catch (NumberFormatException e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-PROPERTY_UTILS_PARSING", type, valueProperty.get()));
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-PROPERTY_UTILS_PARSING", type, valueProperty.get()), e);
       e.printStackTrace();
     }
   }

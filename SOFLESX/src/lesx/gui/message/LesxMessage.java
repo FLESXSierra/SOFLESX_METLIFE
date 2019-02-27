@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lesx.utils.LesxMisc;
@@ -24,12 +25,12 @@ public class LesxMessage {
       return "";
     }
     catch (FileNotFoundException e) {
-      LOGGER.severe("No se encuentra el archivo 'LesxMessage', por favor comuniquese con el admin.");
+      LOGGER.log(Level.SEVERE, "No se encuentra el archivo 'LesxMessage', por favor comuniquese con el admin.", e);
       e.printStackTrace();
       return "";
     }
     catch (IOException e) {
-      LOGGER.severe("Por favor comuniquese con el admin.");
+      LOGGER.log(Level.SEVERE, "Por favor comuniquese con el admin.", e);
       e.printStackTrace();
       return "";
     }

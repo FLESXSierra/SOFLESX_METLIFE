@@ -50,13 +50,9 @@ public class LesxSceneController {
           .centerOnScreen();
       controller.init();
     }
-    catch (IOException e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"), e);
       e.printStackTrace();
-    }
-    catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
-      ex.printStackTrace();
     }
   }
 
@@ -82,17 +78,22 @@ public class LesxSceneController {
       controllerResource.afterSaveProperty()
           .addListener(obs -> runnable.run());
     }
-    catch (IOException e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"), e);
       e.printStackTrace();
-    }
-    catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
-      ex.printStackTrace();
     }
   }
 
   public static void showBusinessEditDialog(LesxController controller, ELesxUseCase useCase, LesxBusinessResourceDataModel dataModel, Runnable runnable) {
+    showBusinessEditDialog(controller, useCase, dataModel, runnable, null);
+  }
+
+  public static void showBusinessEditDialog(
+      LesxController controller,
+      ELesxUseCase useCase,
+      LesxBusinessResourceDataModel dataModel,
+      Runnable runnable,
+      Runnable afterClose) {
     try {
       FXMLLoader fxmlLoader = new FXMLLoader(controller.getClass()
           .getResource(LesxString.EDIT_COMPONENT_DIALOG_PATH));
@@ -102,6 +103,9 @@ public class LesxSceneController {
       Pane root = fxmlLoader.load();
       controllerResource.init(dataModel, useCase);
       controllerResource.setWindow(stage);
+      if (afterClose != null) {
+        controllerResource.setOnClose(afterClose);
+      }
       stage.setTitle(controllerResource.getTitle());
       stage.setScene(new Scene(root));
       stage.initOwner(LesxMain.getInstance()
@@ -115,12 +119,8 @@ public class LesxSceneController {
           .addListener(obs -> runnable.run());
     }
     catch (IOException e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"), e);
       e.printStackTrace();
-    }
-    catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
-      ex.printStackTrace();
     }
   }
 
@@ -150,13 +150,9 @@ public class LesxSceneController {
             }
           });
     }
-    catch (IOException e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"), e);
       e.printStackTrace();
-    }
-    catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
-      ex.printStackTrace();
     }
   }
 
@@ -179,13 +175,9 @@ public class LesxSceneController {
       stage.sizeToScene();
       stage.show();
     }
-    catch (IOException e) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"), e);
       e.printStackTrace();
-    }
-    catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
-      ex.printStackTrace();
     }
   }
 
@@ -208,13 +200,9 @@ public class LesxSceneController {
       stage.sizeToScene();
       stage.show();
     }
-    catch (IOException e) {
+    catch (Exception e) {
       LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
       e.printStackTrace();
-    }
-    catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-MAIN_ACTIVATE_FXML"));
-      ex.printStackTrace();
     }
   }
 

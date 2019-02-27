@@ -24,6 +24,7 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
   private LesxBusinessResourceDataModel dataModel;
   private LesxResourceBusiness resourceBusiness;
   private LesxBusiness business;
+  private Runnable onClose;
 
   @FXML
   @Override
@@ -108,6 +109,23 @@ public class LesxEditBusinessDialog extends LesxEditComponentDialog {
         LOGGER.log(Level.SEVERE, LesxMessage.getMessage("ERROR-NO_NULL_VALUE", "'resourceBusiness'"));
       }
     }
+  }
+
+  public void setOnClose(Runnable onClose) {
+    this.onClose = onClose;
+  }
+
+  @Override
+  protected boolean consumeEvent() {
+    return false;
+  }
+
+  @Override
+  protected void onCloseWindow() {
+    if (onClose != null) {
+      onClose.run();
+    }
+    super.onCloseWindow();
   }
 
   @Override

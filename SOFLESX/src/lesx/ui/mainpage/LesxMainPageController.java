@@ -239,7 +239,7 @@ public class LesxMainPageController extends LesxController {
         Files.copy(business.toPath(), destination.toPath());
       }
       catch (FileAlreadyExistsException e) {
-        LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"));
+        LOGGER.log(Level.WARNING, LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"), e);
         LesxAlertBuilder.create()
             .setType(AlertType.WARNING)
             .setHeaderText(LesxMessage.getMessage("WARNING-FILES_ALREADY_EXIST"))
