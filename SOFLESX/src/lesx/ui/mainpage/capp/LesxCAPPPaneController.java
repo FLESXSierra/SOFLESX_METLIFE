@@ -1,6 +1,7 @@
 package lesx.ui.mainpage.capp;
 
 import java.util.Comparator;
+import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -10,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -33,6 +35,7 @@ public class LesxCAPPPaneController extends LesxController {
   private TableView<LesxReportMonthBusiness> table;
   private TableColumn<LesxReportMonthBusiness, String> month;
   private TableColumn<LesxReportMonthBusiness, String> capp;
+  private TableColumn<LesxReportMonthBusiness, String> capp_15;
   private TableColumn<LesxReportMonthBusiness, String> percent;
   private ObservableList<LesxReportMonthBusiness> report = FXCollections.observableArrayList();
 
@@ -43,7 +46,6 @@ public class LesxCAPPPaneController extends LesxController {
 
   @FXML
   public void initialize() {
-    showProgress.set(true);
     table = tablePane.getTable();
     tablePane.setUseCase(ELesxUseCase.UC_YEAR_ONLY);
     yearProperty.bind(tablePane.getToolBar()
@@ -59,7 +61,6 @@ public class LesxCAPPPaneController extends LesxController {
         .setListenerRB(ELesxListenerType.UPDATE, updateCache);
     initializeTable();
     loadDataInTable();
-    showProgress.set(false);
   }
 
   @SuppressWarnings("unchecked")
@@ -83,6 +84,15 @@ public class LesxCAPPPaneController extends LesxController {
             .getStringCapp());
       }
     });
+    capp_15 = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_CAPP_15"));
+    capp_15.setCellFactory(col -> new LesxCAPPCellFactory());
+    capp_15.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
+      @Override
+      public ObservableValue<String> call(CellDataFeatures<LesxReportMonthBusiness, String> data) {
+        return new SimpleStringProperty(data.getValue()
+            .getStringCapp15());
+      }
+    });
     percent = new TableColumn<>(LesxMessage.getMessage("TEXT-COLUMN_NAME_PERCENT"));
     percent.setCellFactory(col -> new LesxCAPPCellFactory());
     percent.setCellValueFactory(new Callback<CellDataFeatures<LesxReportMonthBusiness, String>, ObservableValue<String>>() {
@@ -94,7 +104,7 @@ public class LesxCAPPPaneController extends LesxController {
       }
     });
     table.getColumns()
-        .setAll(month, capp, percent);
+        .setAll(month, capp, capp_15, percent);
     table.setItems(report);
   }
 
@@ -106,9 +116,23 @@ public class LesxCAPPPaneController extends LesxController {
     loadDataInTable();
   }
 
-  private void loadDataInTable() {
-    report.setAll(dataModel.getMonthToMonthCAPPReport(yearProperty.get()));
-    FXCollections.sort(report, comparator);
+  private synchronized void loadDataInTable() {
+    showProgress.set(true);
+    Task<List<LesxReportMonthBusiness>> load = new Task<List<LesxReportMonthBusiness>>() {
+      @Override
+      protected List<LesxReportMonthBusiness> call() throws Exception {
+        return dataModel.getMonthToMonthCAPPReport(yearProperty.get());
+      }
+
+      @Override
+      protected void succeeded() {
+        report.setAll(getValue());
+        FXCollections.sort(report, comparator);
+        showProgress.set(false);
+      }
+    };
+    Thread thread = new Thread(load);
+    thread.start();
   }
 
   @Override

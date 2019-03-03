@@ -132,6 +132,11 @@ public enum ELesxProductType {
     public String toString() {
       return "GASTOS MEDICOS AZUL";
     }
+
+    @Override
+    protected boolean isAP() {
+      return true;
+    }
   },
   AP_GASTOS_MEDICOS_AZUL(16) {
     @Override
@@ -226,10 +231,15 @@ public enum ELesxProductType {
       return "Dotal 20";
     }
   },
-  COMPLEMENTARIO_SALUD_AZUL(29) {
+  AP_SALUD_AZUL(29) {
     @Override
     public String toString() {
-      return "Complementario Salud Azul";
+      return "AP Salud Azul";
+    }
+
+    @Override
+    protected boolean isAP() {
+      return true;
     }
   },
   AP_FAMILIA(30) {
@@ -252,12 +262,6 @@ public enum ELesxProductType {
     @Override
     protected boolean isAP() {
       return true;
-    }
-  },
-  COMPLEMENTARIO_RENTA_AZUL(32) {
-    @Override
-    public String toString() {
-      return "Complementario Renta Azul";
     }
   },
   AP_BIENESTAR(33) {
@@ -297,6 +301,33 @@ public enum ELesxProductType {
     @Override
     public String toString() {
       return "FAMILIA AZUL PESOS";
+    }
+
+    @Override
+    protected boolean isAP() {
+      return true;
+    }
+  },
+  DO_MAS_PROTECCION(37) {
+    @Override
+    public String toString() {
+      return "DO Más protección";
+    }
+
+    @Override
+    protected boolean isAP() {
+      return true;
+    }
+  },
+  DO_RENTA_CLINICA(36) {
+    @Override
+    public String toString() {
+      return "DO Renta Clínica";
+    }
+
+    @Override
+    protected boolean isAP() {
+      return true;
     }
   };
 

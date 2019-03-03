@@ -29,6 +29,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   private Map<Long, LesxResourceBusiness> map = new HashMap<>();
   private TreeMap<LocalDate, LesxReportMonthBusiness> monthReport = new TreeMap<>();
+  private HashMap<Integer, List<LesxReportMonthBusiness>> cacheYerReport = new HashMap<>();
   private boolean buildMonthReport = true;
   private LesxResourceBusiness selectedItem;
 
@@ -110,11 +111,11 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   public void addResourceBusiness(LesxResourceBusiness resourceBusiness) {
     try {
       final LesxResourceBusiness temp = resourceBusiness.clone();
+      buildNewCapp(resourceBusiness, true);
       map.remove(temp.getBusiness()
           .getId());
       map.put(temp.getBusiness()
           .getId(), temp);
-      buildMonthReport = true;
       LOGGER.log(Level.INFO, LesxMessage.getMessage("INFO-OBJECT_ADDED", 1));
     }
     catch (Exception e) {
@@ -135,15 +136,58 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
 
   public void deleteSelectedBusiness() {
     if (selectedItem != null && selectedItem.getBusiness() != null) {
+      buildNewCapp(selectedItem, false);
       map.remove(selectedItem.getBusiness()
           .getId());
       LesxMain.getInstance()
           .getDbProperty()
           .removeBusiness(selectedItem.getBusiness());
       selectedItem = null;
-      buildMonthReport = true;
       persist();
     }
+  }
+
+  private void buildNewCapp(LesxResourceBusiness rb, boolean isAdding) {
+    LocalDate currentDate = LocalDate.parse(rb.getBusiness()
+        .getDate(), LesxPropertyUtils.FORMATTER);
+    LocalDate startDate;
+    LesxReportMonthBusiness currentReport;
+    int removeCapp_AP = 0;
+    int removeCapp_Vida = 0;
+    Long currentCapp_AP = 0L;
+    Long currentCapp_Vida = 0L;
+    int toUpdateCapp_AP = rb.getBusiness()
+        .getProduct()
+        .getTypeAP() != null ? 1 : 0;
+    int toUpdateCapp_Vida = rb.getBusiness()
+        .getProduct()
+        .getTypeVida() != null ? 1 : 0;
+    if (isAdding) {
+      LesxResourceBusiness updateRB = map.get(rb.getBusiness()
+          .getId());
+      if (updateRB != null) {
+        removeCapp_AP = updateRB.getBusiness()
+            .getProduct()
+            .getTypeAP() != null ? 1 : 0;
+        removeCapp_Vida = updateRB.getBusiness()
+            .getProduct()
+            .getTypeVida() != null ? 1 : 0;
+      }
+    }
+    for (int i = 0; i <= 2; i++) {
+      startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() + i, 1);
+      currentReport = monthReport.get(startDate);
+      if (currentReport != null) {
+        currentCapp_AP = currentReport.getCappAp15();
+        currentCapp_Vida = currentReport.getCappVida15();
+        currentReport.setCappAp15(isAdding ? (Math.max(currentCapp_AP - removeCapp_AP + toUpdateCapp_AP, 0)) : (Math.max(currentCapp_AP - toUpdateCapp_AP, 0)));
+        currentReport.setCappVida15(
+            isAdding ? (Math.max(currentCapp_Vida - removeCapp_Vida + toUpdateCapp_Vida, 0)) : (Math.max(currentCapp_Vida - toUpdateCapp_Vida, 0)));
+      }
+      removeCapp_AP = 0;
+      removeCapp_Vida = 0;
+    }
+    buildYearReports(currentDate.getYear());
   }
 
   public double getNBSTotalFromYear(Integer year) {
@@ -211,9 +255,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   private void buildMonthToMonthReport() {
     LocalDate currentDate;
     LocalDate startDate;
-    boolean comision;
     boolean firstReport = true;
-    int cont;
     LesxReportMonthBusiness report = null;
     LesxReportMonthBusiness current = null;
     LocalDate cancelledDate = null;
@@ -225,8 +267,6 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
         startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue(), 1);
         current = monthReport.get(startDate);
         firstReport = true;
-        comision = true;
-        cont = 1;
         if (rb.getBusiness()
             .getCancelled()
             .getValue() != null
@@ -238,7 +278,7 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
               .getCancelled()
               .getDate(), LesxPropertyUtils.FORMATTER);
         }
-        while (comision) {
+        for (int cont = 1; cont <= 3; cont++) {
           if (cancelledDate != null && cancelledDate.isBefore(startDate)) {
             break;
           }
@@ -273,8 +313,6 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
                     : 0L);
             monthReport.put(startDate, report);
           }
-          comision = cont <= 3;
-          cont++;
           startDate = startDate.plusMonths(1);
           current = monthReport.get(startDate);
           cancelledDate = null;
@@ -291,44 +329,50 @@ public class LesxBusinessResourceDataModel implements ILesxDataModel<LesxResourc
   private void insertCAPP() {
     LocalDate currentDate;
     LesxReportMonthBusiness report;
-    int capp = 0;
-    int newCapp = 0;
+    LesxReportMonthBusiness currentReport;
+    int capp_ap_15 = 0;
+    int capp_vida_15 = 0;
     for (Entry<LocalDate, LesxReportMonthBusiness> entry : monthReport.entrySet()) {
       currentDate = entry.getKey();
       report = entry.getValue();
-      capp += report.getCapp();
-      report.setCurrentCAPP(newCapp);
-      if (currentDate.getMonth()
-          .getValue() % 3 == 0) {
-        newCapp = capp;
-        capp = newCapp - 15 < 0 ? 0 : newCapp - 15;
+      for (int i = 2; i >= 0; i--) {
+        currentReport = monthReport.get(currentDate.minusMonths(i));
+        if (currentReport != null) {
+          capp_vida_15 += currentReport.getVida() != null ? currentReport.getVida() : 0;
+          capp_ap_15 += currentReport.getAp() != null ? currentReport.getAp() : 0;
+        }
       }
+      report.setCappAp15((capp_ap_15 - 15) >= 0 ? 0 : Long.valueOf(15 - capp_ap_15));
+      report.setCappVida15((capp_vida_15 - 15) >= 0 ? 0 : Long.valueOf(15 - capp_vida_15));
+      capp_vida_15 = 0;
+      capp_ap_15 = 0;
     }
   }
 
   public List<LesxReportMonthBusiness> getMonthToMonthCAPPReport(Integer year) {
+    if (cacheYerReport.get(year) == null) {
+      buildYearReports(year);
+    }
+    return cacheYerReport.get(year);
+  }
+
+  private void buildYearReports(Integer year) {
     if (buildMonthReport) {
       buildMonthToMonthReport();
       buildMonthReport = false;
     }
     LocalDate startDate;
     List<LesxReportMonthBusiness> reportCapp = new ArrayList<>();
-    long leftOverCapp = 0;
+    cacheYerReport.remove(year);
     for (int i = 0; i <= 11; i++) {
       startDate = LocalDate.of(year, (i + 1), 1);
       LesxReportMonthBusiness report = monthReport.get(startDate);
-      if (report != null) {
-        leftOverCapp = leftOverCapp + report.getCapp();
-      }
-      else {
+      if (report == null) {
         report = new LesxReportMonthBusiness(i + 1);
-      }
-      if ((i + 1) % 3 == 0) {
-        leftOverCapp = (leftOverCapp - 15) < 0 ? 0 : (leftOverCapp - 15);
       }
       reportCapp.add(report);
     }
-    return reportCapp;
+    cacheYerReport.put(year, reportCapp);
   }
 
 }
