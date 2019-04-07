@@ -12,12 +12,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.TitledPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
@@ -36,43 +37,44 @@ import lesx.utils.LesxAlertBuilder;
 import lesx.utils.LesxButtonType;
 import lesx.utils.LesxString;
 
-public class LesxMainPageController extends LesxController {
+public class LesxMainPageController2 extends LesxController {
+
   @FXML
-  MenuItem importXML;
+  Accordion accordion;
   @FXML
-  MenuItem exportXML;
+  TitledPane fileMenu;
   @FXML
-  MenuItem saveFlesx;
+  TitledPane bussiness;
   @FXML
-  MenuItem main;
+  TitledPane comisions;
   @FXML
-  MenuItem newSell;
+  TitledPane help;
   @FXML
-  MenuItem resourcesItem;
+  ImageView image;
   @FXML
-  MenuItem year;
+  Button importXML;
   @FXML
-  MenuItem capp;
+  Button exportXML;
   @FXML
-  MenuItem cMonth;
+  Button saveFlesx;
   @FXML
-  MenuItem cYear2;
+  Button main;
   @FXML
-  MenuItem reportBug;
+  Button newSell;
   @FXML
-  MenuItem walkThrough;
+  Button resourcesItem;
   @FXML
-  Menu fileMenu;
+  Button year;
   @FXML
-  Menu bussiness;
+  Button capp;
   @FXML
-  Menu comisions;
+  Button cMonth;
   @FXML
-  Menu help;
+  Button cYear2;
   @FXML
-  MenuBar menu;
+  Button reportBug;
   @FXML
-  Label version;
+  Button walkThrough;
   @FXML
   LesxBirthdayButton bButton;
   @FXML
@@ -82,18 +84,18 @@ public class LesxMainPageController extends LesxController {
   @FXML
   Label loading;
 
-  private final static Logger LOGGER = Logger.getLogger(LesxMainPageController.class.getName());
+  private final static Logger LOGGER = Logger.getLogger(LesxMainPageController2.class.getName());
 
   private BooleanProperty showProgress = new SimpleBooleanProperty(this, "showProgress", false);
 
-  public LesxMainPageController() {
+  public LesxMainPageController2() {
     //Nothing
   }
 
   @FXML
   public void initialize() {
     //Sets all texts
-    //    LesxSwitcherPane.setMainController(this);
+    LesxSwitcherPane.setMainController(this);
     setTitle(LesxMessage.getMessage("TEXT-TITLE_MAINPAGE"));
     loading.setText(LesxMessage.getMessage("TEXT-LOADING_TITLE"));
     importXML.setText(LesxMessage.getMessage("TEXT-MENUITEM_IMPORT_SAVE"));
@@ -112,6 +114,9 @@ public class LesxMainPageController extends LesxController {
     help.setText(LesxMessage.getMessage("TEXT-MENUBAR_HELP"));
     reportBug.setText(LesxMessage.getMessage("TEXT-MENUITEM_REPORT_BUG"));
     walkThrough.setText(LesxMessage.getMessage("TEXT-MENUITEM_WALK_THROUGH"));
+    image.setImage(LesxIcon.getImage(LesxIcon.METLIFE)
+        .getImage());
+    accordion.setExpandedPane(bussiness);
   }
 
   @Override

@@ -1,4 +1,4 @@
-package lesx.ui.components.skin;
+package lesx.ui.components.birthdayButton;
 
 import com.sun.javafx.scene.control.skin.ButtonSkin;
 
@@ -8,7 +8,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
 import javafx.stage.StageStyle;
 import lesx.icon.utils.LesxIcon;
-import lesx.ui.components.LesxBirthdayButton;
 import lesx.ui.soflesx.LesxMain;
 import lesx.utils.LesxAlertBuilder;
 
@@ -23,8 +22,6 @@ public class LesxBirthdayButtonSkin extends ButtonSkin {
     button.getNames()
         .addListener((ListChangeListener<String>) obs -> rebuildButton());
     button.setOnAction(obs -> showAlert());
-    button.setMaxWidth(16);
-    button.setMaxHeight(16);
     rebuildButton();
   }
 

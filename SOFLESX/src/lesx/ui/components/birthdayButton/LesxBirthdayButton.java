@@ -1,11 +1,10 @@
-package lesx.ui.components;
+package lesx.ui.components.birthdayButton;
 
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
-import lesx.ui.components.skin.LesxBirthdayButtonSkin;
 
 public class LesxBirthdayButton extends Button {
 
@@ -13,6 +12,7 @@ public class LesxBirthdayButton extends Button {
 
   public LesxBirthdayButton() {
     super();
+    setId("birday-button");
   }
 
   public ObservableList<String> getNames() {

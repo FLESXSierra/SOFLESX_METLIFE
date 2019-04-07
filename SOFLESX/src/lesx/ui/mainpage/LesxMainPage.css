@@ -1,0 +1,70 @@
+{
+/*#############*/
+/* MAIN COLORS */
+/*#############*/
+
+-lesx-metlife-blue: #0061a0;
+-lesx-metlife-lightblue: #027ccc;
+-lesx-blue-dual-linear-gradient: linear-gradient(-lesx-metlife-lightblue, -lesx-metlife-blue);
+-lesx-blue-linear-gradient: linear-gradient(-lesx-metlife-blue, -lesx-metlife-lightblue, -lesx-metlife-blue);
+-lesx-darkblue-linear-gradient: linear-gradient(-lesx-metlife-blue, #004e82, -lesx-metlife-blue);
+
+}
+
+/*#################*/
+/* BIRTHDAY BUTTON */
+/*#################*/
+#birday-button {
+	-fx-content-display: CENTER;
+  	-fx-outer-border: derive(-lesx-metlife-blue, 0%);
+ 	-fx-background-color: -lesx-blue-dual-linear-gradient;
+}
+#birday-button:pressed:hover {
+	-fx-background-color:-lesx-darkblue-linear-gradient;
+}
+#birday-button:hover {
+ 	-fx-background-color: -lesx-metlife-lightblue;
+}
+/*########################*/
+/* ACCORDION MENU BUTTON  */
+/*########################*/
+.accordion{
+	-fx-background-color:-lesx-metlife-blue;
+	-fx-background-insets: 0;
+}
+.accordion .titled-pane .title {
+	-fx-background-color: -lesx-blue-dual-linear-gradient;
+	-fx-outer-border: derive(-lesx-metlife-blue, -27%);
+}
+
+.accordion .titled-pane .content {
+	-fx-background-color:-lesx-metlife-blue;
+	-fx-background-insets: 0;
+}
+
+.accordion .titled-pane .title .text{
+	-fx-fill: white;
+}
+
+.accordion .titled-pane .arrow-button .arrow{
+	-fx-background-color: white;
+}
+
+.accordion .titled-pane > *.content{
+	-fx-padding:0;	
+}
+
+.accordion .titled-pane > *.content .button {
+	-fx-background-radius: 0px;
+  	-fx-outer-border: derive(-lesx-metlife-blue, 0%);
+ 	-fx-background-color: -lesx-blue-linear-gradient;
+ 	-fx-text-fill:white;
+}
+
+.accordion .titled-pane .title:pressed:hover, .accordion .titled-pane > *.content .button:pressed:hover {
+	-fx-background-color: -lesx-darkblue-linear-gradient;
+}
+
+.accordion .titled-pane .title:hover, .accordion .titled-pane > *.content .button:hover {
+	-fx-background-color: -lesx-metlife-lightblue;
+}
