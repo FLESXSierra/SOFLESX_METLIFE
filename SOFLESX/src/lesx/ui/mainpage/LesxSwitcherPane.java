@@ -19,11 +19,11 @@ public class LesxSwitcherPane {
   public final static String COMISION_MES = "/lesx/ui/mainpage/comisionmes/LesxComisionMesPaneFXML.fxml";
   public final static String COMISION_AÑO = "";
 
-  private static LesxMainPageController2 controller;
+  private static LesxMainPageController controller;
   private static String actualPage = "";
   private static LesxController mainPaneController;
 
-  public static void setMainController(LesxMainPageController2 controller) {
+  public static void setMainController(LesxMainPageController controller) {
     LesxSwitcherPane.controller = controller;
   }
 

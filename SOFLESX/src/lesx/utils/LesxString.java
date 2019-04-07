@@ -44,7 +44,7 @@ public class LesxString {
    * Scene Controller
    */
   public static final String MAIN_SCENE_PATH = "/lesx/ui/soflesx/MainFXML.fxml";
-  public static final String MAINPAGE_PATH = "/lesx/ui/mainpage/LesxMainPageFXML2.fxml";
+  public static final String MAINPAGE_PATH = "/lesx/ui/mainpage/LesxMainPageFXML.fxml";
   public static final String EDIT_COMPONENT_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxEditComponentDialogFXML.fxml";
   public static final String SELECT_RESOURCE_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxSelectCostumerDialogFXML.fxml";
   public static final String YEAR_DIALOG_PATH = "/lesx/ui/components/dialogs/LesxYearPaneFXML.fxml";
